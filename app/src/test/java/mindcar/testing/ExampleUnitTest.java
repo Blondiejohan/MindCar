@@ -1,4 +1,4 @@
-package mindcar.mindcar;
+package mindcar.testing;
 
 import org.junit.Test;
 

@@ -1,2 +1,0 @@
-# MindCar
-MindCar Project

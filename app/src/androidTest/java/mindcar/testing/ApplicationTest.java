@@ -1,4 +1,4 @@
-package mindcar.mindcar;
+package mindcar.testing;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
