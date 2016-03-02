@@ -30,6 +30,9 @@ public class MainActivity extends Activity {
     TextView dev;
     TGDevice tgDevice;
     final boolean rawEnabled = true;
+    
+    EEGObject eeg = new EEGObject();
+    SmartCar car = new SmartCar();
 
     /** Called when the activity is first created. */
     @Override
@@ -85,6 +88,7 @@ public class MainActivity extends Activity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Connected.write(checkCommand(car));
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
 
@@ -124,22 +128,19 @@ public class MainActivity extends Activity {
                     break;
                 case TGDevice.MSG_ATTENTION:
                     //att = msg.arg1;
+                    eeg.setAttention(msg.arg1);
                     String tmpAtt = "Attention: " + msg.arg1 + "\n";
                     att.setText(tmpAtt);
-                    if(msg.arg1>50 && msg.arg1!=0) {
-                        String f = "f";
-                        Connected.write(f.getBytes());
-                    }else{
-                        String s = "s";
-                        Connected.write(s.getBytes());
-                    }
+                    
                     //Log.v("HelloA", "Attention: " + att + "\n");
                     break;
                 case TGDevice.MSG_MEDITATION:
+                    eeg.setMeditation(msg.arg1);
                     String tmpMed = "Meditation: " + msg.arg1 + "\n";
                     med.setText(tmpMed);
                     break;
                 case TGDevice.MSG_BLINK:
+                    eeg.setBlink(msg.arg1);
                     String tmpBlink = "Blink: " + msg.arg1 + "\n";
                     blink.setText(tmpBlink);
                     break;
@@ -157,11 +158,17 @@ public class MainActivity extends Activity {
                 default:
                     break;
             }
+            car.setCommand(eeg);
         }
     };
 
     public void doStuff(View view) {
         if(tgDevice.getState() != TGDevice.STATE_CONNECTING && tgDevice.getState() != TGDevice.STATE_CONNECTED)
             tgDevice.connect(rawEnabled);
+    }
+    
+    public byte[] checkCommand(SmartCar car){
+        return CommandUtils.toByteArray(car);   
+    }
     }
 }
