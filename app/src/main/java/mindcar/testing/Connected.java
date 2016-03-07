@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
+// Where is the comments?
 class Connected extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
