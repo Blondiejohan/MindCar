@@ -1,4 +1,4 @@
-package com.example.sid.myapplication;
+package mindcar.testing;
 
 /**
  * Object storing values from a Neurosky Mindwave Mobile

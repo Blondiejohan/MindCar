@@ -1,4 +1,4 @@
-package com.example.sid.myapplication;
+package mindcar.testing;
 
 /**
  * Enum for different commands for the SmartCar

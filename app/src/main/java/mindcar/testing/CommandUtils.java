@@ -1,4 +1,4 @@
-package com.example.sid.myapplication;
+package mindcar.testing;
 
 /**
  * Utility class for the Command enum

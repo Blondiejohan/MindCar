@@ -1,4 +1,4 @@
-package com.example.sid.myapplication;
+package mindcar.testing;
 
 import android.graphics.Path;
 
