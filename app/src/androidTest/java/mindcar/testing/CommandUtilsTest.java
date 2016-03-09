@@ -1,15 +1,20 @@
 package mindcar.testing;
 
-import com.example.sid.mindcontrollablecar.Command;import com.example.sid.mindcontrollablecar.CommandUtils;import junit.framework.Assert;import junit.framework.TestCase;
+import junit.framework.Assert;import junit.framework.TestCase;
 
 import mindcar.testing.objects.Command;
 import mindcar.testing.util.CommandUtils;
 
 /**
- * Created by sid on 3/3/16.
+ * Tests for the CommandUtils class
+ * Created by Mattias Landkvist & Nikos Sasopoulos on 3/3/16.
  */
 public class CommandUtilsTest extends TestCase {
 
+    /**
+     * Tests if toByteArray() generates the right byte[]
+     * @throws Exception
+     */
     public void testToByteArray() throws Exception {
         Assert.assertEquals(CommandUtils.toByteArray(Command.FORWARD), Command.FORWARD.name().getBytes());
     }
