@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.objects;
 
 /**
  * Enum for different commands for the SmartCar

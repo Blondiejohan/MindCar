@@ -1,12 +1,11 @@
-package mindcar.testing;
+package mindcar.testing.util;
 
 import android.os.Message;
-import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
 
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import mindcar.testing.objects.EEGObject;
+import mindcar.testing.objects.SmartCar;
 
 /**
  * Created by sid on 3/7/16.
@@ -35,14 +34,20 @@ public class MessageParser {
                 break;
             case TGDevice.MSG_RAW_COUNT:
                 //tv.append("Raw Count: " + msg.arg1 + "\n");
+                parseEEG(TGDevice.MSG_EEG_POWER, eeg);
                 break;
             case TGDevice.MSG_LOW_BATTERY:
                 break;
-            case TGDevice.MSG_RAW_MULTI:
+            case TGDevice.MSG_EEG_POWER:
                 break;
             default:
                 break;
         }
+    }
 
+    public static void parseEEG(int rawEEG, EEGObject eeg){
+        if(rawEEG >= 0 && rawEEG <= 3){
+            eeg.setDelta(rawEEG);
+        }
     }
 }

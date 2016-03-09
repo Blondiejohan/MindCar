@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.objects;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;

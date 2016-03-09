@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.objects;
 
 /**
  * Object storing values from a Neurosky Mindwave Mobile
@@ -8,6 +8,7 @@ public class EEGObject {
     private int attention;
     private int meditation;
     private int blink;
+    private int delta;
     //TODO - integrate patterns?
 
     /**
@@ -62,5 +63,9 @@ public class EEGObject {
      */
     public void setBlink(int blink){
         this.blink = blink;
+    }
+
+    public void setDelta(int delta) {
+        this.delta = delta;
     }
 }

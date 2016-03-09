@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.ui;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -10,11 +10,18 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
 
 import java.util.Set;
+
+import mindcar.testing.objects.Connected;
+import mindcar.testing.R;
+import mindcar.testing.objects.Connection;
+import mindcar.testing.objects.EEGObject;
+import mindcar.testing.objects.SmartCar;
+import mindcar.testing.util.CommandUtils;
+import mindcar.testing.util.MessageParser;
 
 public class MainActivity extends Activity {
     BluetoothAdapter bluetoothAdapter;

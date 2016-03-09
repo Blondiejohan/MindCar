@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.objects;
 
 import android.bluetooth.BluetoothSocket;
 
@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 
 // Where is the comments?
-class Connected extends Thread {
+public class Connected extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     static OutputStream mmOutStream;

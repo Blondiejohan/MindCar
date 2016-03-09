@@ -1,4 +1,6 @@
-package mindcar.testing;
+package mindcar.testing.util;
+
+import mindcar.testing.objects.Command;
 
 /**
  * Utility class for the Command enum

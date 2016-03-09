@@ -1,6 +1,4 @@
-package mindcar.testing;
-
-import android.graphics.Path;
+package mindcar.testing.objects;
 
 /**
  * Object: This object is used for updating values for different parts of our project
