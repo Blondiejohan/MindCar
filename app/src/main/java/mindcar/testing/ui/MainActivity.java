@@ -10,18 +10,15 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
 
 import java.util.Set;
 
-import mindcar.testing.objects.Connected;
 import mindcar.testing.R;
+import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.Connection;
-import mindcar.testing.objects.EEGObject;
-import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.CommandUtils;
-import mindcar.testing.util.MessageParser;
 
 public class MainActivity extends Activity {
     BluetoothAdapter bluetoothAdapter;
@@ -37,9 +34,6 @@ public class MainActivity extends Activity {
     TextView dev;
     TGDevice tgDevice;
     final boolean rawEnabled = true;
-    
-    EEGObject eeg = new EEGObject();
-    SmartCar car = new SmartCar();
 
     /** Called when the activity is first created. */
     @Override
@@ -70,7 +64,7 @@ public class MainActivity extends Activity {
             if (devices.size() > 0) {
                 for (BluetoothDevice device : devices) {
 
-                        mDevice=device;
+                    mDevice=device;
                 }
             }
             String tmpDev = "Dev: " + mDevice.getName() + "\n";
@@ -95,8 +89,78 @@ public class MainActivity extends Activity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Connected.write(CommandUtils.toByteArray(car.getCommands()));
-            MessageParser.parseMessage(msg, car, eeg);
+            switch (msg.what) {
+                case TGDevice.MSG_STATE_CHANGE:
+
+                    switch (msg.arg1) {
+                        case TGDevice.STATE_IDLE:
+                            break;
+                        case TGDevice.STATE_CONNECTING:
+                            tv.append("Connecting...\n");
+                            break;
+                        case TGDevice.STATE_CONNECTED:
+                            tv.append("Connected.\n");
+                            tgDevice.start();
+                            break;
+                        case TGDevice.STATE_NOT_FOUND:
+                            tv.append("Can't find\n");
+                            break;
+                        case TGDevice.STATE_NOT_PAIRED:
+                            tv.append("not paired\n");
+                            break;
+                        case TGDevice.STATE_DISCONNECTED:
+                            tv.append("Disconnected mang\n");
+                    }
+
+                    break;
+                case TGDevice.MSG_POOR_SIGNAL:
+                    //signal = msg.arg1;
+                    String tmpNoise = "Noise: " + msg.arg1 + "\n";
+                    noise.setText(tmpNoise);
+                    break;
+                case TGDevice.MSG_RAW_DATA:
+                    //raw1 = msg.arg1;
+                    String tmpRaw = "Raw Data: " + msg.arg1 + "\n";
+                    raw.setText(tmpRaw);
+                    break;
+                case TGDevice.MSG_HEART_RATE:
+                    tv.append("Heart rate: " + msg.arg1 + "\n");
+                    break;
+                case TGDevice.MSG_ATTENTION:
+                    //att = msg.arg1;
+                    String tmpAtt = "Attention: " + msg.arg1 + "\n";
+                    att.setText(tmpAtt);
+                    if(msg.arg1>50 && msg.arg1!=0) {
+                        String f = "f";
+                        Connected.write(f.getBytes());
+                    }else{
+                        String s = "s";
+                        Connected.write(s.getBytes());
+                    }
+                    //Log.v("HelloA", "Attention: " + att + "\n");
+                    break;
+                case TGDevice.MSG_MEDITATION:
+                    String tmpMed = "Meditation: " + msg.arg1 + "\n";
+                    med.setText(tmpMed);
+                    break;
+                case TGDevice.MSG_BLINK:
+                    String tmpBlink = "Blink: " + msg.arg1 + "\n";
+                    blink.setText(tmpBlink);
+                    break;
+                case TGDevice.MSG_RAW_COUNT:
+                    //tv.append("Raw Count: " + msg.arg1 + "\n");
+                    break;
+                case TGDevice.MSG_LOW_BATTERY:
+                    Toast.makeText(getApplicationContext(), "Low battery!", Toast.LENGTH_SHORT).show();
+                    break;
+                case TGDevice.MSG_RAW_MULTI:
+                    // TGRawMulti rawM = (TGRawMulti)msg.obj;
+                    //String tmpRaw = "Raw1: " + rawM.ch1 + "\nRaw2: " + rawM.ch2;
+                    //raw.setText(tmpRaw);
+                    break;
+                default:
+                    break;
+            }
         }
     };
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity2"
+    android:padding="@dimen/activity_vertical_margin">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect and Scan"
+        android:id="@+id/connect"
+        android:layout_gravity="center" />
+
+    <ProgressBar
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        style="@style/GenericProgressIndicator"/>
+
+    <TextView
+        android:layout_width="152dp"
+        android:textAlignment="center"
+        android:layout_height="82dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/text"
+        android:layout_gravity="center_horizontal|top" />
+
+
+</FrameLayout>
