@@ -4,16 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.MainActivity">
-=======
     android:fitsSystemWindows="true"
-    tools:context=".HomeActivity">
->>>>>>> Sanja
+    tools:context="mindcar.testing.Register">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_register" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
