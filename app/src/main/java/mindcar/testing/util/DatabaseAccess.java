@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.util;
 
 /**
  * Created by colak on 03/04/16.
@@ -60,18 +60,12 @@ public class DatabaseAccess {
      */
     public boolean checkUser(String userName, String password) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "' AND password = '" + password + "'", null);
-        if (cursor.getCount() == 1)
-            return true;
-        else
-            return false;
+        return cursor.getCount() == 1;
     }
 
     public boolean checkAvailability(String userName) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
-        if (cursor.getCount() == 0)
-            return true;
-        else
-            return false;
+        return cursor.getCount() == 0;
     }
 
     public void addRegistration(String userName, String password){

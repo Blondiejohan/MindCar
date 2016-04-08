@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.util;
 
 /**
  * Created by colak on 03/04/16.

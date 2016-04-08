@@ -1,4 +1,4 @@
-package mindcar.testing;
+package mindcar.testing.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.*;
+import mindcar.testing.util.DatabaseAccess;
+import mindcar.testing.R;
 
 public class Login2 extends Activity implements View.OnClickListener {
 
