@@ -6,13 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Created by Johan Laptop on 2016-02-29.
+ */
 
-// Where is the comments?
 public class Connected extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     static OutputStream mmOutStream;
 
+
+    // Constructor for creating a new connected object.
     public Connected(BluetoothSocket socket) {
         mmSocket = socket;
         InputStream tmpIn = null;
@@ -24,6 +28,9 @@ public class Connected extends Thread {
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
     }
+
+    // Dont know how mutch of this method is needed. Might need to clean it up.
+    // Right now it seems to read answers from the device.
     public void run() {
         byte[] buffer = new byte[1024];
         int begin = 0;
@@ -48,12 +55,14 @@ public class Connected extends Thread {
     }
 
 
-
+    // Sends an array of bytes through the outstream to the chosen device.
     public static void write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
         } catch (IOException e) { }
     }
+
+    // Closes the socket.
     public void cancel() {
         try {
             mmSocket.close();
