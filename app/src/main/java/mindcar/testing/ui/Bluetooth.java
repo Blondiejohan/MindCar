@@ -63,7 +63,7 @@ public class Bluetooth extends Activity {
             @Override
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, HomeActivity.class));
+                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
