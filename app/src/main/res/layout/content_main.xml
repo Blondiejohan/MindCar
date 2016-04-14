@@ -35,13 +35,4 @@
         android:textAlignment="center"
         style="@style/AppTheme" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/attentionBar"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/bLogout"
-        android:layout_alignStart="@+id/bLogout" />
 </RelativeLayout>
