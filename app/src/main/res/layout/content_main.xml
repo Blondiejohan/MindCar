@@ -10,24 +10,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.Register"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    style="@style/AppTheme">
+
 
     <TextView
         android:layout_width="wrap_content"
-        android:text = "Welcome to Mind Car Application!"
         android:layout_height="wrap_content"
-        android:id="@+id/welcome" />
-
+        android:text="Attention"
+        android:id="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="43dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LOGOUT"
+        android:text="Logout"
         android:id="@+id/bLogout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="101dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textAlignment="center"
+        style="@style/AppTheme" />
+
 </RelativeLayout>

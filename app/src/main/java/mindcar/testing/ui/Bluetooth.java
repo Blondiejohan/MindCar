@@ -127,7 +127,7 @@ public class Bluetooth extends Activity {
                 Log.i("new", bondDevice.getName());
 
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, HomeActivity.class));
+                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
                 } else {
                             String car = "Group 2";
                             String headset = "MindWave Mobile";
