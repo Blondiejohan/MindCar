@@ -36,11 +36,12 @@ public class Bluetooth extends Activity {
     public ProgressBar loading;
     public TextView text;
     public TGDevice headset;
-    // we are going to call this when we the activity is created
     private BluetoothAdapter theAdapter;// this class intitilizes bt hardware on a device
 
-
-    //  gets the defaultadapter
+    /**
+     * Sets the text, shows the connect button and makes the loading dissapear
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,9 @@ public class Bluetooth extends Activity {
 
     }
 
-    // Sets up the button, text and loading icon. Also sets the onclicklisteners.
+    /**
+     * Sets the UI element.
+     */
     public void setupUI() {
         connect = (Button) findViewById(R.id.connect);
         connect.setVisibility(View.GONE);
@@ -61,10 +64,13 @@ public class Bluetooth extends Activity {
         loading.setVisibility(View.GONE);
         text = (TextView) findViewById(R.id.text);
 
-        // Click this to start looking for new devices, starts an activifyforresult that is discovery.
-        // Register a reciever thats listens for new devices connecting
-        // updates the text and switches the connect button for the loading icon.
-        // If the correct devices isn't found withing 5 seconds it calls verify.
+        /**
+         * Click this to start looking for new devices, starts an activifyforresult that is discovery.
+         * Register a reciever thats listens for new devices connecting
+         * Checks to see if both the devices are paired and connectable.
+         * updates the text and switches the connect button for the loading icon.
+         * If the correct devices isn't found withing 10 seconds it calls verify.
+         */
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +122,12 @@ public class Bluetooth extends Activity {
         }); // end connect
     }
 
-    // This is the method that gets called when the startactivityforresult find a result.
+    /**
+     * This is the method that gets called when the startactivityforresult find a result.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == DISCOVERY_REQUEST) {
@@ -126,7 +137,9 @@ public class Bluetooth extends Activity {
         }
     }
 
-    // Sets a reciever that reacts to all the devices found.
+    /**
+     * Sets a reciever that reacts to all the devices found.
+     */
     public void findDevices() { //check for devices
 
             if (theAdapter.startDiscovery()) {
@@ -135,12 +148,13 @@ public class Bluetooth extends Activity {
     }
 
 
-
-        // create a broadCast Receiver that gets called when new devices are found.
-        // If both car and headset appear in bonded list it goes to main screen.
-        // If a new device is found it checks if it is a new device or a paired device.
-        // If a paired device is found it checks if it is the car and starts a connection with it.
-        // if a new device is found it checks if it is the car or headset and if it is it starts a connection.
+    /**
+     * create a broadCast Receiver that gets called when new devices are found.
+     * If both car and headset appear in bonded list it goes to main screen.
+     * If a new device is found it checks if it is a new device or a paired device.
+     * If a paired device is found it checks if it is the car and starts a connection with it.
+     * if a new device is found it checks if it is the car or headset and if it is it starts a connection.
+     */
         protected BroadcastReceiver bondedResult = new BroadcastReceiver() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override

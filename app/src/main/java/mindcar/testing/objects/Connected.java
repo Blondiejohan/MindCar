@@ -16,7 +16,10 @@ public class Connected extends Thread {
     static OutputStream mmOutStream;
 
 
-    // Constructor for creating a new connected object.
+    /**
+     * Constructor for creating a new connected object.
+     * @param socket
+     */
     public Connected(BluetoothSocket socket) {
         mmSocket = socket;
         InputStream tmpIn = null;
@@ -29,8 +32,10 @@ public class Connected extends Thread {
         mmOutStream = tmpOut;
     }
 
-    // Dont know how mutch of this method is needed. Might need to clean it up.
-    // Right now it seems to read answers from the device.
+    /**
+     * Dont know how mutch of this method is needed. Might need to clean it up.
+     * Right now it seems to read answers from the device.
+     */
     public void run() {
         byte[] buffer = new byte[1024];
         int begin = 0;
@@ -55,14 +60,19 @@ public class Connected extends Thread {
     }
 
 
-    // Sends an array of bytes through the outstream to the chosen device.
+    /**
+     * Sends an array of bytes through the outstream to the chosen device.
+     * @param bytes
+     */
     public static void write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
         } catch (IOException e) { }
     }
 
-    // Closes the socket.
+    /**
+     * Closes the socket.
+     */
     public void cancel() {
         try {
             mmSocket.close();

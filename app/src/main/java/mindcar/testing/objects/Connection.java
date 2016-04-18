@@ -2,7 +2,7 @@ package mindcar.testing.objects;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import mindcar.testing.objects.Connected;
+
 import java.io.IOException;
 import java.util.UUID;
 
@@ -21,7 +21,10 @@ private final BluetoothSocket aSocket;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 
-    // Constructor for creating a new connection.
+    /**
+     * Constructor for creating a new connection.
+     * @param device
+     */
     public Connection(BluetoothDevice device) {
         BluetoothSocket tmp = null;
         aDevice = device;
@@ -33,7 +36,9 @@ private final BluetoothSocket aSocket;
         aSocket = tmp;
     }
 
-    // run method that creates a new connected and starts the connection to the socket.
+    /**
+     * run method that creates a new connected and starts the connection to the socket.
+     */
     public void run() {
 
         Connected aConnected = new Connected(aSocket);
@@ -49,7 +54,9 @@ private final BluetoothSocket aSocket;
         }
     }
 
-    // Closes the connection to the socket.
+    /**
+     * Closes the connection to the socket.
+     */
     public void cancel() {
         try {
             aSocket.close();
