@@ -13,10 +13,8 @@ import android.widget.ProgressBar;
 import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
-import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.MessageParser;
 
 
@@ -73,11 +71,12 @@ public class DisplayProfile extends AppCompatActivity {
     public final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what== TGDevice.MSG_ATTENTION){
-                Connected.write(CommandUtils.toByteArray(car.getCommands()));
+            if(msg.what== TGDevice.MSG_RAW_MULTI){
+                //Connected.write(CommandUtils.toByteArray(car.getCommands()));
                 MessageParser.parseMessage(msg, car, eeg);
-                attentionBar.setProgress(msg.arg1);
+                //attentionBar.setProgress(msg.arg1);
                 //Toast.makeText(getApplicationContext(), "Attention = "+msg, Toast.LENGTH_SHORT).show();
+
             }
             }
     };

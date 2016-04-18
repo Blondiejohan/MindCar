@@ -62,10 +62,11 @@ public class Connected extends Thread {
 
     /**
      * Sends an array of bytes through the outstream to the chosen device.
-     * @param bytes
+     * @param message
      */
-    public static void write(byte[] bytes) {
+    public static void write(String message) {
         try {
+            byte[] bytes = message.getBytes();
             mmOutStream.write(bytes);
         } catch (IOException e) { }
     }

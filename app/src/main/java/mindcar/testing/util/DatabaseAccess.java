@@ -67,6 +67,10 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
         return cursor.getCount() == 0;
     }
+    public String getDirection(String direction) {
+        Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
+        return cursor.toString();
+    }
 
     public void addRegistration(String userName, String password){
         ContentValues values = new ContentValues();
@@ -78,7 +82,7 @@ public class DatabaseAccess {
     public void addDirection(String direction, String pattern ){
         ContentValues values = new ContentValues();
         values.put("direction", direction);
-        values.put("object",pattern);
+        values.put("object", pattern);
         database.insert("PATTERNS", null, values);
     }
 }
