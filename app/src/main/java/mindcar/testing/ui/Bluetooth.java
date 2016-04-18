@@ -16,6 +16,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.neurosky.thinkgear.TGDevice;
+
+import java.util.Set;
+
 import mindcar.testing.R;
 import mindcar.testing.objects.Connection;
 
@@ -30,6 +35,7 @@ public class Bluetooth extends Activity {
     public Button connect;
     public ProgressBar loading;
     public TextView text;
+    public TGDevice headset;
     // we are going to call this when we the activity is created
     private BluetoothAdapter theAdapter;// this class intitilizes bt hardware on a device
 
@@ -63,7 +69,25 @@ public class Bluetooth extends Activity {
             @Override
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    try{
+                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
+                        for (BluetoothDevice  btDev : devs){
+                            String car = "Group 2";
+                            String head = "MindWave Mobile";
+                            if (btDev.getName().equals(car)) {
+                                Connection conn = new Connection(btDev);
+                                conn.start();
+                            }
+                            if (btDev.getName().equals(head)) {
+                                headset.start();
+                                headset.stop();
+                            }
+                        }
+                        startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    }catch(NullPointerException e){
+                        Log.e("catch",e.getMessage());
+                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
+                    }
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -127,7 +151,27 @@ public class Bluetooth extends Activity {
                 Log.i("new", bondDevice.getName());
 
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    String message;
+                    try{
+                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
+                        String car = "Group 2";
+                        String head = "MindWave Mobile";
+                        for (BluetoothDevice  btDev : devs){
+                            if (btDev.getName().equals(car)) {
+                                Connection conn = new Connection(btDev);
+                                conn.start();
+                            }
+                            if (btDev.getName().equals(head)) {
+                                headset.start();
+                                headset.stop();
+                            }
+                        }
+                        startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    }catch(NullPointerException e){
+                        Log.e("catch",e.getMessage());
+                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
+                    }
+
                 } else {
                             String car = "Group 2";
                             String headset = "MindWave Mobile";
@@ -151,4 +195,6 @@ public class Bluetooth extends Activity {
                         }
                 }
     };
+
+
 }
