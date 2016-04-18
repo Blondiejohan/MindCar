@@ -74,4 +74,11 @@ public class DatabaseAccess {
         values.put("password", password);
         database.insert("USERS", null, values);
     }
+
+    public void addDirection(String direction, String pattern ){
+        ContentValues values = new ContentValues();
+        values.put("direction", direction);
+        values.put("object",pattern);
+        database.insert("PATTERNS", null, values);
+    }
 }
