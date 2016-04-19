@@ -55,7 +55,7 @@ public class Pattern <T> {
 
     }
 
-    private T get(int i) {
+    public T get(int i) {
         return list.get(i);
     }
 }

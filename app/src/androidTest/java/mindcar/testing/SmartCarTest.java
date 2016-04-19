@@ -3,7 +3,7 @@ package mindcar.testing;
 import junit.framework.Assert;import junit.framework.TestCase;
 
 import mindcar.testing.objects.Command;
-import mindcar.testing.objects.EEGObject;
+import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.SmartCar;
 
 /**
@@ -33,9 +33,9 @@ public class SmartCarTest extends TestCase {
      * @throws Exception
      */
     public void testSetCommand() throws Exception {
-        EEGObject eeg = new EEGObject();
+        Eeg eeg = new Eeg();
         eeg.setAttention(70);
-        car.setCommand(eeg);
+        car.setCommand(Command.BACKWARD);
         assertEquals(car.getCommands(), Command.FORWARD);
     }
 
