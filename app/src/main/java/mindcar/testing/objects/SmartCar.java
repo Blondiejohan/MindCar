@@ -32,15 +32,11 @@ public class SmartCar {
     }
 
     /**
-     * Set the Command of this instance according to the EEGObject
-     * @param eeg
+     * Assigns command to this command
+     * @param command
      */
-    public void setCommand(EEGObject eeg){
-        if(eeg.getAttention() >= 40) {
-            this.command = Command.FORWARD;
-        } else {
-            this.command = Command.STOP;
-        }
+    public void setCommand(Command command){
+        this.command = command;
     }
 
     /**
