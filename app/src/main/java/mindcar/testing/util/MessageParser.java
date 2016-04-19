@@ -34,11 +34,13 @@ public class MessageParser {
     }
 
     /**
-     * assigning commands by comparing patterns
-      * @param pattern
+     * Assigning commands by comparing patterns
+     * @param pattern
      * @param car
      */
     public static void assignCommand(Pattern<Eeg> pattern, SmartCar car){
+
+        //TODO - Connect with saved patterns
         Pattern<Eeg> rightPattern = null;
         Pattern<Eeg> leftPattern = null;
         Pattern<Eeg> forwardPattern = null;

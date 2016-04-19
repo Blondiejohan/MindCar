@@ -13,7 +13,7 @@ import android.widget.Toast;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
-public class Login2 extends Activity implements View.OnClickListener {
+public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin;
     EditText ET_USER_NAME, ET_PASS;
@@ -22,7 +22,7 @@ public class Login2 extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_start);
 
         ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
         ET_PASS = (EditText) findViewById(R.id.ET_PASS);
@@ -43,7 +43,7 @@ public class Login2 extends Activity implements View.OnClickListener {
                 if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
-                    startActivity(new Intent(this, Bluetooth.class));
+                    startActivity(new Intent(this, BluetoothActivity.class));
                     //startActivity(new Intent(this, Connection.class));
                 }
                 else
@@ -51,7 +51,7 @@ public class Login2 extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.ET_REG_HERE:
-                startActivity(new Intent(this, Register.class));
+                startActivity(new Intent(this, RegistrationActivity.class));
                 break;
         }
 

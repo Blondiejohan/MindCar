@@ -24,7 +24,7 @@ import mindcar.testing.objects.Connection;
  * Created by Johan And Sarah.
  */
 
-public class Bluetooth extends Activity {
+public class BluetoothActivity extends Activity {
 
     private static final int DISCOVERY_REQUEST = 1;
     public Button connect;
@@ -56,14 +56,14 @@ public class Bluetooth extends Activity {
         text = (TextView) findViewById(R.id.text);
 
         // Click this to start looking for new devices, starts an activifyforresult that is discovery.
-        // Register a reciever thats listens for new devices connecting
+        // RegistrationActivity a reciever thats listens for new devices connecting
         // updates the text and switches the connect button for the loading icon.
         // If the correct devices isn't found withing 5 seconds it calls verify.
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -127,7 +127,7 @@ public class Bluetooth extends Activity {
                 Log.i("new", bondDevice.getName());
 
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(Bluetooth.this, DisplayProfile.class));
+                    startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
                 } else {
                             String car = "Group 2";
                             String headset = "MindWave Mobile";

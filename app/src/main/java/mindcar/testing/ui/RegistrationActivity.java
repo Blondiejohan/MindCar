@@ -12,7 +12,7 @@ import android.widget.Toast;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
-public class Register extends Activity implements View.OnClickListener {
+public class RegistrationActivity extends Activity implements View.OnClickListener {
 
     Button bRegister;
     EditText ET_USER_NAME, ET_PASS;
@@ -46,7 +46,7 @@ public class Register extends Activity implements View.OnClickListener {
                         Toast.makeText(getApplicationContext(), "Add " + ET_USER_NAME.getText().toString() + " " + ET_PASS.getText().toString(), Toast.LENGTH_SHORT).show();
                         databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString());
                         //databaseAccess.close();
-                        startActivity(new Intent(this, Login2.class));
+                        startActivity(new Intent(this, StartActivity.class));
                     }
                     else
                         Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();

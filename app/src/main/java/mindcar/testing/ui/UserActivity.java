@@ -21,18 +21,19 @@ import mindcar.testing.util.MessageParser;
 /**
  * Created by madiseniman on 07/04/16.
  */
-public class DisplayProfile extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity {
 
-    SmartCar car;
-    Eeg eeg;
-    TGDevice tgDevice;
-    //ProgressBar attentionBar;
-    Pattern<Eeg> pattern;
+    private SmartCar car;
+    private Eeg eeg;
+    private TGDevice tgDevice;
+    private Pattern<Eeg> pattern;
     private Command x;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_displayprofile);
+        setContentView(R.layout.activity_user);
         pattern  = new Pattern<>();
         car = new SmartCar();
         x = car.getCommands();
