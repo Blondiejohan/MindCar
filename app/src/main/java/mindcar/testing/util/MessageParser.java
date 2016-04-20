@@ -18,44 +18,46 @@ public class MessageParser {
 
     /**
      * Saves incomming raw values to a eeg object.
+     *
      * @param msg
      * @param eeg
      */
-    public static void parseMessage(Message msg, Eeg eeg){
-        if(msg.what == TGDevice.MSG_RAW_MULTI){
-            TGRawMulti rawMulti = (TGRawMulti) msg.obj;
-            eeg.setDelta(rawMulti.ch1);
-            eeg.setTheta(rawMulti.ch2);
-            eeg.setAlpha((rawMulti.ch3 + rawMulti.ch4) /2);
-            eeg.setBeta((rawMulti.ch5 + rawMulti.ch6) /2);
-            eeg.setGamma((rawMulti.ch7 + rawMulti.ch8) /2);
+    public static void parseMessage(Message msg, Eeg eeg) {
 
-        }
+        TGRawMulti rawMulti = (TGRawMulti) msg.obj;
+        eeg.setDelta(rawMulti.ch1);
+        eeg.setTheta(rawMulti.ch2);
+        eeg.setAlpha((rawMulti.ch3 + rawMulti.ch4) / 2);
+        eeg.setBeta((rawMulti.ch5 + rawMulti.ch6) / 2);
+        eeg.setGamma((rawMulti.ch7 + rawMulti.ch8) / 2);
+
+
     }
 
     /**
      * Assigning commands by comparing patterns
+     *
      * @param pattern
      * @param car
      */
-    public static void assignCommand(Pattern<Eeg> pattern, SmartCar car){
+    public static void assignCommand(Pattern<Eeg> pattern, SmartCar car) {
 
         //TODO - Connect with saved patterns
         Pattern<Eeg> rightPattern = null;
         Pattern<Eeg> leftPattern = null;
         Pattern<Eeg> forwardPattern = null;
-        Pattern<Eeg> backwardPattern= null;
-        Pattern<Eeg> stopPattern= null;
+        Pattern<Eeg> backwardPattern = null;
+        Pattern<Eeg> stopPattern = null;
 
-        if(pattern.equals(rightPattern)){
+        if (pattern.equals(rightPattern)) {
             car.setCommand(Command.RIGHT);
-        } else if (pattern.equals(leftPattern)){
+        } else if (pattern.equals(leftPattern)) {
             car.setCommand(Command.LEFT);
-        }else if (pattern.equals(forwardPattern)){
+        } else if (pattern.equals(forwardPattern)) {
             car.setCommand(Command.FORWARD);
-        }else if(pattern.equals(backwardPattern)){
+        } else if (pattern.equals(backwardPattern)) {
             car.setCommand(Command.BACKWARD);
-        }else if(pattern.equals(stopPattern)){
+        } else if (pattern.equals(stopPattern)) {
             car.setCommand(Command.STOP);
         }
     }

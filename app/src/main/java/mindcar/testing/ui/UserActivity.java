@@ -34,7 +34,7 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        pattern  = new Pattern<>();
+        pattern = new Pattern<>();
         car = new SmartCar();
         x = car.getCommands();
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
@@ -42,22 +42,19 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    public String getUserName(String un){
+    public String getUserName(String un) {
         String username = null;
         //code for retrieving the username from the database
         return username;
     }
 
-    public int getBatteryLevel(){
+    public int getBatteryLevel() {
         int batterylvl = 0;
         //code for getting and displaying the SmartCar's battery level
         return batterylvl;
     }
 
-    public int getSpeed(){
+    public int getSpeed() {
         int speed = 0;
         //code for getting and displaying a live reading of SmartCar's speed while driving.
         return speed;
@@ -70,14 +67,17 @@ public class UserActivity extends AppCompatActivity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+
+            if (car.getCommands() != x) {
+                Connected.write(CommandUtils.toByteArray(car.getCommands()));
+            }
+            if (msg.what == TGDevice.MSG_RAW_MULTI) {
                 eeg = new Eeg();
-                if(car.getCommands()!= x) {
-                    Connected.write(CommandUtils.toByteArray(car.getCommands()));
-                }
                 MessageParser.parseMessage(msg, eeg);
                 pattern.add(eeg);
                 x = car.getCommands();
             }
+        }
 
 
     };
