@@ -1,8 +1,9 @@
 package mindcar.testing.objects;
 
 import android.app.Activity;
+import android.util.Log;
 
-import com.neurosky.thinkgear.TGRawMulti;
+import com.neurosky.thinkgear.TGEegPower;
 
 import mindcar.testing.util.DatabaseAccess;
 
@@ -39,15 +40,15 @@ public class ComparePatterns extends Activity {
      * This is the constructor to start comparing.
      * @param input
      */
-    public ComparePatterns(TGRawMulti input){
-        this.delta = input.ch1;
-        this.theta = input.ch2;
-        this.lowAlpha = input.ch3;
-        this.highAlpha = input.ch4;
-        this.lowBeta = input.ch5;
-        this.highBeta = input.ch6;
-        this.lowGamma = input.ch7;
-        this.midGamma = input.ch8;
+    public ComparePatterns(TGEegPower input){
+        this.delta = input.delta;
+        this.theta = input.theta;
+        this.lowAlpha = input.lowAlpha;
+        this.highAlpha = input.highAlpha;
+        this.lowBeta = input.lowBeta;
+        this.highBeta = input.highBeta;
+        this.lowGamma = input.lowGamma;
+        this.midGamma = input.midGamma;
     }
 
 
@@ -59,9 +60,11 @@ public class ComparePatterns extends Activity {
      * @return
      */
     public Boolean compare(String in){
+        Log.i("started comparing", in);
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
         String inDirection = databaseAccess.getDirection(in);
+        Log.i("data ",inDirection);
         StringBuilder result = new StringBuilder("");
         this.bottomDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('a'),inDirection.indexOf('b')));
         this.topDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('b'),inDirection.indexOf('c')));
@@ -142,7 +145,7 @@ public class ComparePatterns extends Activity {
         }else{
             result.append('n');
         }
-
+        Log.i("result ",result.toString());
         return result.toString().contains("y");
     }
 }

@@ -9,13 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.neurosky.thinkgear.TGDevice;
+import com.neurosky.thinkgear.TGEegPower;
 
 import mindcar.testing.R;
+import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.MessageParser;
 
 
 /**
@@ -28,22 +31,42 @@ public class DisplayProfile extends AppCompatActivity {
     TGDevice tgDevice;
     ProgressBar attentionBar;
     Button patterns;
+    Button start;
+    TextView attention;
     private BluetoothAdapter dpAdapter;// this class intitilizes bt hardware on a device
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displayprofile);
         dpAdapter = BluetoothAdapter.getDefaultAdapter();
-        tgDevice = new TGDevice(dpAdapter,handler);
+        tgDevice = new TGDevice(dpAdapter, handler);
+        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+            tgDevice.connect(true);
+            tgDevice.start();
+        }
         patterns = (Button) findViewById(R.id.patterns);
+        start = (ToggleButton) findViewById(R.id.toggleButton);
+        attention = (TextView) findViewById(R.id.attention);
         attentionBar = (ProgressBar) findViewById(R.id.attentionBar);
         patterns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tgDevice.stop();
                 startActivity(new Intent(DisplayProfile.this, SavePatterns.class));
+
             }
         }); // end patterns
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attention.setText("test");
+
+            }
+        }); // end start
     }
 
     public String getUserName(String un){
@@ -71,9 +94,23 @@ public class DisplayProfile extends AppCompatActivity {
     public final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what== TGDevice.MSG_RAW_MULTI){
+            if(msg.what== TGDevice.MSG_EEG_POWER){
+                ComparePatterns comp = new ComparePatterns((TGEegPower) msg.obj);
+                if(comp.compare("left")){
+                    attention.setText("Left");
+                    //Connected.write("l");
+                }else if (comp.compare("right")){
+                    attention.setText("Right");
+                    //Connected.write("r");
+                }else if (comp.compare("forward")){
+                    attention.setText("Forward");
+                    //Connected.write("f");
+                }else if (comp.compare("stop")){
+                    attention.setText("Stop");
+                    //Connected.write("s");
+                }
                 //Connected.write(CommandUtils.toByteArray(car.getCommands()));
-                MessageParser.parseMessage(msg, car, eeg);
+                //MessageParser.parseMessage(msg, car, eeg);
                 //attentionBar.setProgress(msg.arg1);
                 //Toast.makeText(getApplicationContext(), "Attention = "+msg, Toast.LENGTH_SHORT).show();
 

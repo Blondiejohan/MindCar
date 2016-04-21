@@ -16,6 +16,6 @@ public class CommandUtilsTest extends TestCase {
      * @throws Exception
      */
     public void testToByteArray() throws Exception {
-        Assert.assertEquals(CommandUtils.toByteArray(Command.FORWARD), Command.FORWARD.name().getBytes());
+        Assert.assertEquals(CommandUtils.toByteArray(Command.f), Command.f.name().getBytes());
     }
 }

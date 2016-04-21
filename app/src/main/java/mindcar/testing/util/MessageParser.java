@@ -3,10 +3,7 @@ package mindcar.testing.util;
 import android.os.Message;
 
 import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGRawMulti;
 
-import mindcar.testing.objects.ComparePatterns;
-import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.SmartCar;
 
@@ -44,16 +41,6 @@ public class MessageParser {
             case TGDevice.MSG_EEG_POWER:
                 break;
             case TGDevice.MSG_RAW_MULTI:
-                ComparePatterns comp = new ComparePatterns((TGRawMulti) msg.obj);
-                if(comp.compare("left")){
-                    Connected.write("l");
-                }else if (comp.compare("right")){
-                Connected.write("r");
-                }else if (comp.compare("forward")){
-                    Connected.write("f");
-                }else if (comp.compare("stop")){
-                    Connected.write("s");
-                }
                 break;
             default:
                 break;
