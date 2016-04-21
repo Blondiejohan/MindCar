@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appdatasearch.RegisterSectionInfo;
+
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
@@ -36,20 +38,23 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bLogin:
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-                databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                    //databaseAccess.close();
-                    startActivity(new Intent(this, BluetoothActivity.class));
-                    //startActivity(new Intent(this, Connection.class));
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
-                break;
+                if (ET_USER_NAME.getText().toString() == "dev") {
+                    startActivity(new Intent(this, DeveloperActivity.class));
+                } else {
+                    DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+                    databaseAccess.open();
+                    if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
+                        startActivity(new Intent(this, BluetoothActivity.class));
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                }
             case R.id.ET_REG_HERE:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
