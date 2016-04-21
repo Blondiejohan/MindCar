@@ -145,7 +145,6 @@ public class ComparePatterns extends Activity {
         }else{
             result.append('n');
         }
-        Log.i("result ",result.toString());
         return result.toString().contains("n");
     }
 }
