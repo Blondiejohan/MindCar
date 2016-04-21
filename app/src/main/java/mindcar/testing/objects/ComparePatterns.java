@@ -66,29 +66,29 @@ public class ComparePatterns extends Activity {
         String inDirection = databaseAccess.getDirection(in);
         Log.i("data ",inDirection);
         StringBuilder result = new StringBuilder("");
-        this.bottomDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('a'),inDirection.indexOf('b')));
-        this.topDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('b'),inDirection.indexOf('c')));
+        this.bottomDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('a')+1,inDirection.indexOf('b')));
+        this.topDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('b')+1,inDirection.indexOf('c')));
 
-        this.bottomTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('c'),inDirection.indexOf('d')));
-        this.topTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('d'),inDirection.indexOf('e')));
+        this.bottomTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('c')+1,inDirection.indexOf('d')));
+        this.topTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('d')+1,inDirection.indexOf('e')));
 
-        this.bottomLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('e'),inDirection.indexOf('f')));
-        this.topLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('f'),inDirection.indexOf('g')));
+        this.bottomLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('e')+1,inDirection.indexOf('f')));
+        this.topLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('f')+1,inDirection.indexOf('g')));
 
-        this.bottomHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('g'),inDirection.indexOf('h')));
-        this.topHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('h'),inDirection.indexOf('i')));
+        this.bottomHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('g')+1,inDirection.indexOf('h')));
+        this.topHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('h')+1,inDirection.indexOf('i')));
 
-        this.bottomLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('i'),inDirection.indexOf('j')));
-        this.topLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('j'),inDirection.indexOf('k')));
+        this.bottomLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('i')+1,inDirection.indexOf('j')));
+        this.topLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('j')+1,inDirection.indexOf('k')));
 
-        this.bottomHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('k'),inDirection.indexOf('l')));
-        this.topHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('l'),inDirection.indexOf('m')));
+        this.bottomHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('k')+1,inDirection.indexOf('l')));
+        this.topHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('l')+1,inDirection.indexOf('m')));
 
-        this.bottomLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('m'),inDirection.indexOf('n')));
-        this.topLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('n'),inDirection.indexOf('o')));
+        this.bottomLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('m')+1,inDirection.indexOf('n')));
+        this.topLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('n')+1,inDirection.indexOf('o')));
 
-        this.bottomMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('o'),inDirection.indexOf('p')));
-        this.topMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('p'),inDirection.indexOf('q')));
+        this.bottomMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('o')+1,inDirection.indexOf('p')));
+        this.topMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('p')+1,inDirection.indexOf('q')));
 
         //delta
         if (delta>bottomDelta && delta<topDelta){
@@ -146,6 +146,6 @@ public class ComparePatterns extends Activity {
             result.append('n');
         }
         Log.i("result ",result.toString());
-        return result.toString().contains("y");
+        return result.toString().contains("n");
     }
 }

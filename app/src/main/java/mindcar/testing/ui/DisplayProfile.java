@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -98,15 +99,19 @@ public class DisplayProfile extends AppCompatActivity {
                 ComparePatterns comp = new ComparePatterns((TGEegPower) msg.obj);
                 if(comp.compare("left")){
                     attention.setText("Left");
+                    Log.i("result","Matched Left");
                     //Connected.write("l");
-                }else if (comp.compare("right")){
+                }if (comp.compare("right")){
                     attention.setText("Right");
+                    Log.i("result", "Matched Right");
                     //Connected.write("r");
-                }else if (comp.compare("forward")){
+                }if (comp.compare("forward")){
                     attention.setText("Forward");
+                    Log.i("result", "Matched Forward");
                     //Connected.write("f");
-                }else if (comp.compare("stop")){
+                }if (comp.compare("stop")){
                     attention.setText("Stop");
+                    Log.i("result", "Matched Stop");
                     //Connected.write("s");
                 }
                 //Connected.write(CommandUtils.toByteArray(car.getCommands()));

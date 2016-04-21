@@ -71,7 +71,7 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
         String str="";
         if (cursor.moveToFirst()) {
-             str = cursor.getString(cursor.getColumnIndex(direction));
+                 str = cursor.getString(cursor.getColumnIndex(direction)+3);
         }
         return str;
     }
