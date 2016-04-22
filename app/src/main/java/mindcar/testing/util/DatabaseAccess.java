@@ -68,6 +68,16 @@ public class DatabaseAccess {
         return cursor.getCount() == 0;
     }
 
+    public int getNumberOfRows(String table){
+        Cursor cursor = database.rawQuery("select id from " + table + ";",null);
+        return cursor.getCount();
+    }
+
+    public Cursor getRow(String table, int i){
+        Cursor cursor = database.rawQuery("select * from " + table + " where id = " + i + ";",null);
+        return cursor;
+    }
+
     public void addRegistration(String userName, String password){
         ContentValues values = new ContentValues();
         values.put("username", userName);
