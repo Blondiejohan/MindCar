@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
+
+import java.util.Set;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Connection;
@@ -26,7 +29,7 @@ import mindcar.testing.objects.Connection;
  * Created by Johan And Sarah.
  */
 
-public class Bluetooth extends Activity {
+public class BluetoothActivity extends Activity {
 
     private static final int DISCOVERY_REQUEST = 1;
     public Button connect;
@@ -72,7 +75,25 @@ public class Bluetooth extends Activity {
             @Override
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-
+                    try{
+                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
+                        for (BluetoothDevice  btDev : devs){
+                            String car = "Group 2";
+                            String head = "MindWave Mobile";
+                            if (btDev.getName().equals(car)) {
+                                Connection conn = new Connection(btDev);
+                                conn.start();
+                            }
+                            if (btDev.getName().equals(head)) {
+                                headset.start();
+                                headset.stop();
+                            }
+                        }
+                        startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
+                    }catch(NullPointerException e){
+                        Log.e("catch",e.getMessage());
+                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
+                    }
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -141,37 +162,53 @@ public class Bluetooth extends Activity {
 
                 BluetoothDevice bondDevice;
                 bondDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //Log.i("new", bondDevice.getName());
+                Log.i("new", bondDevice.getName());
 
-                if (bondDevice.getName() != null) {
-
-
-                    if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                        String message;
-
-
-                    } else {
+                if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
+                    String message;
+                    try{
+                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
                         String car = "Group 2";
-                        String headset = "MindWave Mobile";
-                        if (theAdapter.getBondedDevices().contains(bondDevice)) {
-                            if (bondDevice.getName().equals(car)) {
-                                Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
-                                Connection conn = new Connection(bondDevice);
+                        String head = "MindWave Mobile";
+                        for (BluetoothDevice  btDev : devs){
+                            if (btDev.getName().equals(car)) {
+                                Connection conn = new Connection(btDev);
                                 conn.start();
                             }
-                            if (bondDevice.getName().equals(headset)) {
-                                Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            if (bondDevice.getName().equals(car) || bondDevice.getName().equals(headset)) {
-                                Toast.makeText(getApplicationContext(), bondDevice.getName() + " found, trying to pair", Toast.LENGTH_LONG).show();
-                                bondDevice.createBond();
-                                registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
-
+                            if (btDev.getName().equals(head)) {
+                                headset.start();
+                                headset.stop();
                             }
                         }
+                        startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
+                    }catch(NullPointerException e){
+                        Log.e("catch",e.getMessage());
+                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
                     }
+
+                } else {
+                            String car = "Group 2";
+                            String headset = "MindWave Mobile";
+                            if (theAdapter.getBondedDevices().contains(bondDevice)) {
+                                if (bondDevice.getName().equals(car)) {
+                                    Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
+                                    Connection conn = new Connection(bondDevice);
+                                    conn.start();
+                                }
+                                if (bondDevice.getName().equals(headset)) {
+                                    Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                if (bondDevice.getName().equals(car) || bondDevice.getName().equals(headset)) {
+                                    Toast.makeText(getApplicationContext(), bondDevice.getName() + " found, trying to pair", Toast.LENGTH_LONG).show();
+                                        bondDevice.createBond();
+                                        registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
+
+                                }
+                            }
+                        }
                 }
-            }
     };
+
+
 }

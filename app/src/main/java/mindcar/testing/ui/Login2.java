@@ -43,7 +43,7 @@ public class Login2 extends Activity implements View.OnClickListener {
                 if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
-                    startActivity(new Intent(this, DisplayProfile.class));
+                    startActivity(new Intent(this, BluetoothActivity.class));
                     //startActivity(new Intent(this, Connection.class));
                 }
                 else
