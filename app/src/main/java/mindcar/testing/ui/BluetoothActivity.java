@@ -16,11 +16,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.neurosky.thinkgear.TGDevice;
-
-import java.util.Set;
-
 import mindcar.testing.R;
 import mindcar.testing.objects.Connection;
 
@@ -35,13 +30,11 @@ public class BluetoothActivity extends Activity {
     public Button connect;
     public ProgressBar loading;
     public TextView text;
-    public TGDevice headset;
+    // we are going to call this when we the activity is created
     private BluetoothAdapter theAdapter;// this class intitilizes bt hardware on a device
 
-    /**
-     * Sets the text, shows the connect button and makes the loading dissapear
-     * @param savedInstanceState
-     */
+
+    //  gets the defaultadapter
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +47,7 @@ public class BluetoothActivity extends Activity {
 
     }
 
-    /**
-     * Sets the UI element.
-     */
+    // Sets up the button, text and loading icon. Also sets the onclicklisteners.
     public void setupUI() {
         connect = (Button) findViewById(R.id.connect);
         connect.setVisibility(View.GONE);
@@ -64,36 +55,15 @@ public class BluetoothActivity extends Activity {
         loading.setVisibility(View.GONE);
         text = (TextView) findViewById(R.id.text);
 
-        /**
-         * Click this to start looking for new devices, starts an activifyforresult that is discovery.
-         * Register a reciever thats listens for new devices connecting
-         * Checks to see if both the devices are paired and connectable.
-         * updates the text and switches the connect button for the loading icon.
-         * If the correct devices isn't found withing 10 seconds it calls verify.
-         */
+        // Click this to start looking for new devices, starts an activifyforresult that is discovery.
+        // RegistrationActivity a reciever thats listens for new devices connecting
+        // updates the text and switches the connect button for the loading icon.
+        // If the correct devices isn't found withing 5 seconds it calls verify.
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    try{
-                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
-                        for (BluetoothDevice  btDev : devs){
-                            String car = "Group 2";
-                            String head = "MindWave Mobile";
-                            if (btDev.getName().equals(car)) {
-                                Connection conn = new Connection(btDev);
-                                conn.start();
-                            }
-                            if (btDev.getName().equals(head)) {
-                                headset.start();
-                                headset.stop();
-                            }
-                        }
-                        startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
-                    }catch(NullPointerException e){
-                        Log.e("catch",e.getMessage());
-                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
-                    }
+                    startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -122,12 +92,7 @@ public class BluetoothActivity extends Activity {
         }); // end connect
     }
 
-    /**
-     * This is the method that gets called when the startactivityforresult find a result.
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
+    // This is the method that gets called when the startactivityforresult find a result.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == DISCOVERY_REQUEST) {
@@ -137,9 +102,7 @@ public class BluetoothActivity extends Activity {
         }
     }
 
-    /**
-     * Sets a reciever that reacts to all the devices found.
-     */
+    // Sets a reciever that reacts to all the devices found.
     public void findDevices() { //check for devices
 
             if (theAdapter.startDiscovery()) {
@@ -148,13 +111,12 @@ public class BluetoothActivity extends Activity {
     }
 
 
-    /**
-     * create a broadCast Receiver that gets called when new devices are found.
-     * If both car and headset appear in bonded list it goes to main screen.
-     * If a new device is found it checks if it is a new device or a paired device.
-     * If a paired device is found it checks if it is the car and starts a connection with it.
-     * if a new device is found it checks if it is the car or headset and if it is it starts a connection.
-     */
+
+        // create a broadCast Receiver that gets called when new devices are found.
+        // If both car and headset appear in bonded list it goes to main screen.
+        // If a new device is found it checks if it is a new device or a paired device.
+        // If a paired device is found it checks if it is the car and starts a connection with it.
+        // if a new device is found it checks if it is the car or headset and if it is it starts a connection.
         protected BroadcastReceiver bondedResult = new BroadcastReceiver() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
@@ -165,27 +127,7 @@ public class BluetoothActivity extends Activity {
                 Log.i("new", bondDevice.getName());
 
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    String message;
-                    try{
-                        Set<BluetoothDevice> devs = theAdapter.getBondedDevices();
-                        String car = "Group 2";
-                        String head = "MindWave Mobile";
-                        for (BluetoothDevice  btDev : devs){
-                            if (btDev.getName().equals(car)) {
-                                Connection conn = new Connection(btDev);
-                                conn.start();
-                            }
-                            if (btDev.getName().equals(head)) {
-                                headset.start();
-                                headset.stop();
-                            }
-                        }
-                        startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
-                    }catch(NullPointerException e){
-                        Log.e("catch",e.getMessage());
-                        text.setText("Cant connect to device, Make sure the car and the headset are on and nearby");
-                    }
-
+                    startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
                 } else {
                             String car = "Group 2";
                             String headset = "MindWave Mobile";
@@ -209,6 +151,4 @@ public class BluetoothActivity extends Activity {
                         }
                 }
     };
-
-
 }

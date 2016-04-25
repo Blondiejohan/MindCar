@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.UserActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.UserActivity"
+    tools:showIn="@layout/activity_user">
+
+    tools:context=".ui.DisplayProfile"
+    tools:showIn="@layout/activity_displayprofile">
 
 
     <ToggleButton
@@ -41,7 +46,7 @@
         android:layout_toLeftOf="@id/profile_image_view"
         android:layout_alignEnd="@+id/profile_image_view"
         android:layout_alignRight="@+id/profile_image_view"
-        android:layout_gravity=""/>
+        android:layout_gravity="" />
 
     <ImageView
         android:layout_width="150dp"
@@ -57,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/SpeedText"
+
         android:inputType="text"
         android:visibility="visible"
         android:text="Speed:"
@@ -97,8 +103,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/profile_image_view"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/toggleButton" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -110,25 +115,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save patterns"
-        android:id="@+id/patterns"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView4"
-        android:layout_above="@+id/profile_image_view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="307dp"
-        android:layout_marginStart="307dp" />
 
 </RelativeLayout>

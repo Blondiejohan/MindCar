@@ -13,7 +13,7 @@ import android.widget.Toast;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
-public class Login2 extends Activity implements View.OnClickListener {
+public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin;
     EditText ET_USER_NAME, ET_PASS;
@@ -51,7 +51,7 @@ public class Login2 extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.ET_REG_HERE:
-                startActivity(new Intent(this, Register.class));
+                startActivity(new Intent(this, RegistrationActivity.class));
                 break;
         }
 

@@ -13,7 +13,7 @@ public class SmartCar {
      * Constructs a basic SmarCar with speed set to zero (0) and the Command is STOP
      */
     public SmartCar(){
-        command = Command.s;
+        command = Command.STOP;
         speed = 0;
     }
 
@@ -32,15 +32,11 @@ public class SmartCar {
     }
 
     /**
-     * Set the Command of this instance according to the EEGObject
-     * @param eeg
+     * Assigns command to this command
+     * @param command
      */
-    public void setCommand(EEGObject eeg){
-        if(eeg.getAttention() >= 40) {
-            this.command = Command.f;
-        } else {
-            this.command = Command.s;
-        }
+    public void setCommand(Command command){
+        this.command = command;
     }
 
     /**

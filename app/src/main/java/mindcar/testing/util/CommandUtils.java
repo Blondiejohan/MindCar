@@ -10,10 +10,11 @@ public class CommandUtils {
 
     /**
      * Converts a Command into a byte[]
+     *
      * @param command
      * @return byte[] of a Command
      */
-    public static byte[] toByteArray(Command command){
+    public static byte[] toByteArray(Command command) {
         return command.name().getBytes();
     }
 
