@@ -86,6 +86,7 @@ public class UserActivity extends AppCompatActivity {
                     Connected.write("s");
                 }
             }
+
         }
     };
 
