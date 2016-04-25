@@ -8,13 +8,15 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 
 import com.neurosky.thinkgear.TGDevice;
+import com.neurosky.thinkgear.TGEegPower;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Command;
+import mindcar.testing.objects.ComparePatterns;
+import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.MessageParser;
 
 
 /**
@@ -39,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
         car = new SmartCar();
         x = car.getCommands();
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
+        tgDevice.connect(true);
         tgDevice.start();
     }
 
@@ -68,12 +71,20 @@ public class UserActivity extends AppCompatActivity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
+            ComparePatterns compare = new ComparePatterns((TGEegPower) msg.obj);
             if (msg.what == TGDevice.MSG_EEG_POWER) {
-                eeg = new Eeg();
-                MessageParser.parseMessage(msg, eeg);
-                pattern.add(eeg);
-                x = car.getCommands();
+                if(compare.compare("left")){
+                    Connected.write("l");
+                }
+                if(compare.compare("right")){
+                    Connected.write("r");
+                }
+                if(compare.compare("forward")){
+                    Connected.write("f");
+                }
+                if(compare.compare("stop")){
+                    Connected.write("s");
+                }
             }
         }
     };
