@@ -3,16 +3,12 @@ package mindcar.testing.util;
 import android.os.Message;
 
 import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGRawMulti;
 
-import mindcar.testing.objects.Command;
-import mindcar.testing.objects.Eeg;
-import mindcar.testing.objects.Pattern;
+import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.SmartCar;
 
 /**
- * this class parses msgs and updates the smart car object
- * Created by Mattias & Sarah on 3/7/16.
+ * Created by sid on 3/7/16.
  */
 public class MessageParser {
 
@@ -61,5 +57,4 @@ public class MessageParser {
             car.setCommand(Command.STOP);
         }
     }
-
 }
