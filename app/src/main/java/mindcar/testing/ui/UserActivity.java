@@ -14,7 +14,7 @@ import mindcar.testing.R;
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connected;
-import mindcar.testing.objects.Eeg;
+import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
 
@@ -26,9 +26,9 @@ import mindcar.testing.objects.SmartCar;
 public class UserActivity extends AppCompatActivity {
 
     private SmartCar car;
-    private Eeg eeg;
+    private EEGObject eeg;
     private TGDevice tgDevice;
-    private Pattern<Eeg> pattern;
+    private Pattern<EEGObject> pattern;
     private Command x;
 
 
