@@ -78,6 +78,15 @@ public class DatabaseAccess {
         return cursor;
     }
 
+    public Cursor getCursor(String table){
+        Cursor cursor = database.rawQuery("select * from " + table + ";",null);
+        return cursor;
+    }
+
+    public void insert(String table, ContentValues values){
+            database.insert(table,null,values);
+    }
+
     public void addRegistration(String userName, String password){
         ContentValues values = new ContentValues();
         values.put("username", userName);

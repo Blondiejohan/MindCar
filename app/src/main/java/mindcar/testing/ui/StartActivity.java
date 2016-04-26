@@ -10,8 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appdatasearch.RegisterSectionInfo;
-
+import mindcar.testing.ui.dev.DeveloperMainActivity;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
@@ -58,7 +57,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
             case R.id.startToDev:
-                startActivity(new Intent(this, DeveloperActivity.class));
+                startActivity(new Intent(this, DeveloperMainActivity.class));
                 break;
         }
 
