@@ -18,7 +18,7 @@ import mindcar.testing.util.DatabaseAccess;
 /**
  * Created by Mattias Landkvist on 4/25/16.
  */
-public class SimpleListCursorAdapter extends CursorAdapter implements  View.OnClickListener {
+public class SimpleListCursorAdapter extends CursorAdapter implements View.OnClickListener {
     private LayoutInflater cursorInflater;
     private Context context;
     private Cursor cursor;
@@ -34,39 +34,20 @@ public class SimpleListCursorAdapter extends CursorAdapter implements  View.OnCl
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return cursorInflater.inflate(R.layout.active_list_item,parent,false);
+        return cursorInflater.inflate(R.layout.active_list_item, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView text = (TextView) view.findViewById(R.id.text);
         text.setText(cursor.getString(cursor.getColumnIndexOrThrow(cursor.getColumnName(1))));
-
-        Button delete = (Button) view.findViewById(R.id.delete);
-        delete.setOnClickListener(this);
-
-        Button edit = (Button) view.findViewById(R.id.edit);
-        edit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case(R.id.delete):
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
-                databaseAccess.delete(table,1);
-                break;
-            case(R.id.edit):
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.edit_dialog);
-
-                TextView text1 = (TextView) dialog.findViewById(R.id.text1);
-                text1.setText(cursor.getString(view.getId()));
 
 
 
-                break;
-        }
     }
 
 }

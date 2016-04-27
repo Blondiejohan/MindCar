@@ -1,6 +1,7 @@
 package mindcar.testing.ui.dev;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -48,7 +49,11 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
         databaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+                final Dialog dialog = new Dialog(getApplicationContext());
+                dialog.setContentView(R.layout.edit_dialog);
+
+                TextView text1 = (TextView) dialog.findViewById(R.id.text1);
+                text1.setText(cursor.getString(view.getId()));
             }
         });
 
@@ -56,9 +61,6 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
 
     }
 
-    protected void editEntry(View view){
-        //Todo
-    }
 
     @Override
     public void onClick(View v) {
