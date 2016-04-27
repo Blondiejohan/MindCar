@@ -71,8 +71,9 @@ public class UserActivity extends AppCompatActivity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            ComparePatterns compare = new ComparePatterns((TGEegPower) msg.obj);
+
             if (msg.what == TGDevice.MSG_EEG_POWER) {
+                ComparePatterns compare = new ComparePatterns((TGEegPower) msg.obj);
                 if(compare.compare("left")){
                     Connected.write("l");
                 }
