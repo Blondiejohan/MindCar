@@ -93,4 +93,8 @@ public class DatabaseAccess {
         values.put("password", password);
         database.insert("USERS", null, values);
     }
+
+    public void delete(String table, int id) {
+        database.delete(table, "id == " + id, null);
+    }
 }

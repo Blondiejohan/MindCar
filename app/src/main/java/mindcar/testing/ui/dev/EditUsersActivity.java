@@ -41,7 +41,7 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
         addNewUser = (Button) findViewById(R.id.addNewUser);
 
         cursor = databaseAccess.getCursor("Users");
-        simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, 0);
+        simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, "Users", 0);
 
         databaseList.setAdapter(simpleListCursorAdapter);
         databaseList.setClickable(true);

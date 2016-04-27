@@ -42,7 +42,7 @@ public class EditCommandsActivity extends Activity implements View.OnClickListen
 
 
         //   Log.i("Columns: ", cursor.getColumnName(0) + " " + cursor.getColumnName(1) + " " + cursor.getColumnName(2));
-        simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, 0);
+        simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, "Commands", 0);
 
         commandList.setAdapter(simpleListCursorAdapter);
         commandList.setClickable(true);
@@ -57,7 +57,7 @@ public class EditCommandsActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case(R.id.addNewUser):
+            case(R.id.addNewCommand):
                 setContentView(R.layout.dev_add_users);
                 databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                 command = (EditText) findViewById(R.id.devTextCommand);
@@ -68,7 +68,7 @@ public class EditCommandsActivity extends Activity implements View.OnClickListen
 
                 break;
 
-            case(R.id.devAddUser):
+            case(R.id.devAddCommand):
                 ContentValues cv = new ContentValues();
                 cv.put("command", command.getText().toString());
                 cv.put("description", description.getText().toString());
