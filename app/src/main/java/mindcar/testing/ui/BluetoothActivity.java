@@ -41,9 +41,9 @@ public class BluetoothActivity extends Activity {
         setContentView(R.layout.activity_bluetooth);
         theAdapter = BluetoothAdapter.getDefaultAdapter();
         setupUI();
-            text.setText("Turn the car and the headset on and press connect");
-            connect.setVisibility(View.VISIBLE);
-            loading.setVisibility(View.GONE);
+        text.setText("Turn the car and the headset on and press connect");
+        connect.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
 
     }
 
@@ -64,6 +64,7 @@ public class BluetoothActivity extends Activity {
             public void onClick(View v) {
                 if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
                     startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
+
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), DISCOVERY_REQUEST);
                     registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -76,13 +77,13 @@ public class BluetoothActivity extends Activity {
                         public void run() {
                             connect.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
-                            if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47")){
+                            if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47")) {
                                 text.setText("Try restarting the headset");
 
-                            }else if(theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
+                            } else if (theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
                                 text.setText("Try restarting the car");
 
-                            }else{
+                            } else {
                                 text.setText("Try restarting the car and headset");
                             }
                         }
@@ -105,50 +106,51 @@ public class BluetoothActivity extends Activity {
     // Sets a reciever that reacts to all the devices found.
     public void findDevices() { //check for devices
 
-            if (theAdapter.startDiscovery()) {
-                registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-            }
+        if (theAdapter.startDiscovery()) {
+            registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        }
     }
 
 
 
-        // create a broadCast Receiver that gets called when new devices are found.
-        // If both car and headset appear in bonded list it goes to main screen.
-        // If a new device is found it checks if it is a new device or a paired device.
-        // If a paired device is found it checks if it is the car and starts a connection with it.
-        // if a new device is found it checks if it is the car or headset and if it is it starts a connection.
-        protected BroadcastReceiver bondedResult = new BroadcastReceiver() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onReceive(Context context, Intent intent) {
+    // create a broadCast Receiver that gets called when new devices are found.
+    // If both car and headset appear in bonded list it goes to main screen.
+    // If a new device is found it checks if it is a new device or a paired device.
+    // If a paired device is found it checks if it is the car and starts a connection with it.
+    // if a new device is found it checks if it is the car or headset and if it is it starts a connection.
+    protected BroadcastReceiver bondedResult = new BroadcastReceiver() {
+        @TargetApi(Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            BluetoothDevice bondDevice;
+            bondDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            Log.i("new", bondDevice.getName());
 
-                BluetoothDevice bondDevice;
-                bondDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.i("new", bondDevice.getName());
-
-                if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
-                    startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
+            if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
+                startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
+            } else {
+                String car = "Group 2";
+                String headset = "MindWave Mobile";
+                if (theAdapter.getBondedDevices().contains(bondDevice)) {
+                    if (bondDevice.getName().equals(car)) {
+                        Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
+                        Connection conn = new Connection(bondDevice);
+                        conn.start();
+                    }
+                    if (bondDevice.getName().equals(headset)) {
+                        Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                            String car = "Group 2";
-                            String headset = "MindWave Mobile";
-                            if (theAdapter.getBondedDevices().contains(bondDevice)) {
-                                if (bondDevice.getName().equals(car)) {
-                                    Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
-                                    Connection conn = new Connection(bondDevice);
-                                    conn.start();
-                                }
-                                if (bondDevice.getName().equals(headset)) {
-                                    Toast.makeText(getApplicationContext(), "Paired with car", Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                if (bondDevice.getName().equals(car) || bondDevice.getName().equals(headset)) {
-                                    Toast.makeText(getApplicationContext(), bondDevice.getName() + " found, trying to pair", Toast.LENGTH_LONG).show();
-                                        bondDevice.createBond();
-                                        registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
+                    if (bondDevice.getName().equals(car) || bondDevice.getName().equals(headset)) {
+                        Toast.makeText(getApplicationContext(), bondDevice.getName() + " found, trying to pair", Toast.LENGTH_LONG).show();
+                        bondDevice.createBond();
+                        registerReceiver(bondedResult, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
 
-                                }
-                            }
-                        }
+                    }
                 }
+
+            }
+        }
+
     };
 }

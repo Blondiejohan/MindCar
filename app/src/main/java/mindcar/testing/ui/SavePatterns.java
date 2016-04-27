@@ -62,6 +62,7 @@ public class SavePatterns extends AppCompatActivity {
         spAdapter = BluetoothAdapter.getDefaultAdapter();
         databaseAccess = DatabaseAccess.getInstance(this);
         tgDevice = new TGDevice(spAdapter, tgHandler);
+
         if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                 && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
             tgDevice.connect(true);

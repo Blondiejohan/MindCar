@@ -6,7 +6,6 @@ import android.util.Log;
 import com.neurosky.thinkgear.TGEegPower;
 
 import mindcar.testing.util.DatabaseAccess;
-
 /**
  * Created by Johan Laptop on 2016-04-18.
  */
@@ -61,11 +60,12 @@ public class ComparePatterns extends Activity {
      * @param in
      * @return
      */
-    public Boolean compare(String in) {
+    public Boolean compare(String in, DatabaseAccess databaseAccess) {
         Log.i("started comparing", in);
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
         String inDirection = databaseAccess.getDirection(in);
+        databaseAccess.close();
+
         Log.i("data ", inDirection);
         StringBuilder result = new StringBuilder("");
         this.bottomDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('a') + 1, inDirection.indexOf('b')));
@@ -147,6 +147,7 @@ public class ComparePatterns extends Activity {
         } else {
             result.append('n');
         }
+
         return result.toString().contains("n");
     }
 }
