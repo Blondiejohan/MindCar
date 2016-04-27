@@ -22,11 +22,12 @@ import mindcar.testing.util.DatabaseAccess;
  * Created by Mattias Landkvist on 4/27/16.
  */
 public class EditCommandsActivity extends Activity implements View.OnClickListener {
-    DatabaseAccess databaseAccess;
-    Cursor cursor;
-    SimpleListCursorAdapter simpleListCursorAdapter;
-    Button addNewCommand, addCommand;
-    EditText command, description;
+    private DatabaseAccess databaseAccess;
+    private Cursor cursor;
+    private SimpleListCursorAdapter simpleListCursorAdapter;
+    private Button addNewCommand, addCommand;
+    private EditText command, description;
+    private TextView text1,text2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,29 @@ public class EditCommandsActivity extends Activity implements View.OnClickListen
         commandList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Dialog dialog = new Dialog(getApplicationContext());
+                final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.edit_dialog);
 
-                TextView text1 = (TextView) dialog.findViewById(R.id.text1);
-                text1.setText(cursor.getString(view.getId()));
+                cursor.moveToPosition(position);
+
+                text1 = (TextView) dialog.findViewById(R.id.text1);
+                text1.setText(cursor.getString(cursor.getColumnIndexOrThrow("description")));
+
+                text2 = (TextView) dialog.findViewById(R.id.text2);
+                text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("command")));
+
+                Button update = (Button) dialog.findViewById(R.id.update);
+                update.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ContentValues cv = new ContentValues();
+                        cv.put("description",text1.getText().toString());
+                        cv.put("command",text2.getText().toString());
+                        databaseAccess.update("Commands", cv);
+                    }
+                });
+
+                dialog.show();
             }
         });
     }

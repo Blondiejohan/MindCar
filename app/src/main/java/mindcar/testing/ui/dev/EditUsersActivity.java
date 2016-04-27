@@ -26,9 +26,9 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
     Button addNewUser;
     Cursor cursor;
     SimpleListCursorAdapter simpleListCursorAdapter;
-    EditText username,password;
+    EditText username, password;
     Button addUser;
-
+    private TextView text1, text2;
 
 
     @Override
@@ -38,7 +38,7 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
         databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
 
-        ListView databaseList = (ListView) findViewById(R.id.databaseList);
+        final ListView databaseList = (ListView) findViewById(R.id.databaseList);
         addNewUser = (Button) findViewById(R.id.addNewUser);
 
         cursor = databaseAccess.getCursor("Users");
@@ -49,11 +49,29 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
         databaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Dialog dialog = new Dialog(getApplicationContext());
+                final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.edit_dialog);
 
-                TextView text1 = (TextView) dialog.findViewById(R.id.text1);
-                text1.setText(cursor.getString(view.getId()));
+                cursor.moveToPosition(position);
+
+                text1 = (TextView) dialog.findViewById(R.id.text1);
+                text1.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
+
+                text2 = (TextView) dialog.findViewById(R.id.text2);
+                text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
+
+                Button update = (Button) dialog.findViewById(R.id.update);
+                update.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ContentValues cv = new ContentValues();
+                        cv.put("description", text1.getText().toString());
+                        cv.put("command", text2.getText().toString());
+                        databaseAccess.update("Commands", cv);
+                    }
+                });
+
+                dialog.show();
             }
         });
 
@@ -64,8 +82,8 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case(R.id.addNewUser):
+        switch (v.getId()) {
+            case (R.id.addNewUser):
                 setContentView(R.layout.dev_add_users);
                 databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                 username = (EditText) findViewById(R.id.devAddName);
@@ -75,7 +93,7 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
 
                 break;
 
-            case(R.id.devAddUser):
+            case (R.id.devAddUser):
                 ContentValues cv = new ContentValues();
                 cv.put("username", username.getText().toString());
                 cv.put("password", password.getText().toString());

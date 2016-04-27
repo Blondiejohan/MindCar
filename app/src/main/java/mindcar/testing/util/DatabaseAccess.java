@@ -97,4 +97,8 @@ public class DatabaseAccess {
     public void delete(String table, int id) {
         database.delete(table, "id == " + id, null);
     }
+
+    public void update(String table, ContentValues values) {
+        database.update(table,values,null,null);
+    }
 }
