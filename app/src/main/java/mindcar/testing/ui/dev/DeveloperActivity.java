@@ -10,12 +10,17 @@ import mindcar.testing.R;
 import mindcar.testing.ui.StartActivity;
 
 /**
+ * Basic class starting new activities corresponding to the button pressed.
  * Created by Mattias Landkvist on 4/25/16.
  */
-public class DeveloperMainActivity extends Activity implements View.OnClickListener {
+public class DeveloperActivity extends Activity implements View.OnClickListener {
 
     Button devAddCommand, devEditDatabase, devBackToStart;
 
+    /**
+     * This method assigns listeners to buttons on create.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,10 @@ public class DeveloperMainActivity extends Activity implements View.OnClickListe
         devBackToStart.setOnClickListener(this);
     }
 
+    /**
+     * Start a new activity corresponding to the button pressed.
+     * @param v
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.devEditCommand:

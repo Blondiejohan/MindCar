@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,14 +23,14 @@ import mindcar.testing.util.DatabaseAccess;
 /**
  * Created by Mattias Landkvist on 4/27/16.
  */
-public class EditUsersActivity extends Activity implements View.OnClickListener {
-    DatabaseAccess databaseAccess;
-    Button addNewUser;
-    Cursor cursor;
-    SimpleListCursorAdapter simpleListCursorAdapter;
-    EditText username, password;
-    Button addUser;
-    private TextView text1, text2;
+public class EditUsersActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+    private DatabaseAccess databaseAccess;
+    private Button addNewUser,addUser;
+    private Cursor cursor;
+    private SimpleListCursorAdapter simpleListCursorAdapter;
+    private EditText username, password,text1, text2;
+    private TextView textView1, textView2;
+    private ListView databaseList;
 
 
     @Override
@@ -38,7 +40,7 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
         databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
 
-        final ListView databaseList = (ListView) findViewById(R.id.databaseList);
+        databaseList = (ListView) findViewById(R.id.databaseList);
         addNewUser = (Button) findViewById(R.id.addNewUser);
 
         cursor = databaseAccess.getCursor("Users");
@@ -46,34 +48,7 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
 
         databaseList.setAdapter(simpleListCursorAdapter);
         databaseList.setClickable(true);
-        databaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.edit_dialog);
-
-                cursor.moveToPosition(position);
-
-                text1 = (TextView) dialog.findViewById(R.id.text1);
-                text1.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
-
-                text2 = (TextView) dialog.findViewById(R.id.text2);
-                text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
-
-                Button update = (Button) dialog.findViewById(R.id.update);
-                update.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ContentValues cv = new ContentValues();
-                        cv.put("description", text1.getText().toString());
-                        cv.put("command", text2.getText().toString());
-                        databaseAccess.update("Commands", cv);
-                    }
-                });
-
-                dialog.show();
-            }
-        });
+        databaseList.setOnItemClickListener(this);
 
         addNewUser.setOnClickListener(this);
 
@@ -104,5 +79,56 @@ public class EditUsersActivity extends Activity implements View.OnClickListener 
 
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, final int position, final long id) {
+        final Dialog dialog = new Dialog(view.getContext());
+        dialog.setContentView(R.layout.edit_dialog);
+        dialog.setTitle("Edit user");
+        cursor.moveToPosition(position);
+
+        textView1 = (TextView) dialog.findViewById(R.id.textView1);
+        textView1.setText("Username");
+
+        textView2 = (TextView) dialog.findViewById(R.id.textView2);
+        textView2.setText("Password");
+
+        text1 = (EditText) dialog.findViewById(R.id.text1);
+        text1.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
+
+        text2 = (EditText) dialog.findViewById(R.id.text2);
+        text2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        text2.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
+
+        final Button update = (Button) dialog.findViewById(R.id.update);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues cv = new ContentValues();
+                cv.put("username", text1.getText().toString());
+                cv.put("password", text2.getText().toString());
+                databaseAccess.update("Users", cv, position+1);
+            }
+        });
+
+        final Button delete = (Button) dialog.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseAccess.delete("Users", ((int) id));
+                update();
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void update(){
+        cursor = databaseAccess.getCursor("Users");
+        simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, "Users", 0);
+        databaseList.setAdapter(simpleListCursorAdapter);
     }
 }

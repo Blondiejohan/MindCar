@@ -87,18 +87,18 @@ public class DatabaseAccess {
             database.insert(table,null,values);
     }
 
-    public void addRegistration(String userName, String password){
+    public void addRegistration(String username, String password){
         ContentValues values = new ContentValues();
-        values.put("username", userName);
+        values.put("username", username);
         values.put("password", password);
         database.insert("USERS", null, values);
     }
 
     public void delete(String table, int id) {
-        database.delete(table, "id == " + id, null);
+        database.delete(table, "_id = ?" , new String[]{id + ""});
     }
 
-    public void update(String table, ContentValues values) {
-        database.update(table,values,null,null);
+    public void update(String table, ContentValues values, int id) {
+        database.update(table,values,"id = " + id,null);
     }
 }

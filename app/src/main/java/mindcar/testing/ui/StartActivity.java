@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import mindcar.testing.ui.dev.DeveloperMainActivity;
+import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
@@ -46,9 +46,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 databaseAccess.open();
                 if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(this, BluetoothActivity.class));
-
+                        startActivity(new Intent(this, BluetoothActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                 }
@@ -57,7 +55,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
             case R.id.startToDev:
-                startActivity(new Intent(this, DeveloperMainActivity.class));
+                startActivity(new Intent(this, DeveloperActivity.class));
                 break;
         }
 
