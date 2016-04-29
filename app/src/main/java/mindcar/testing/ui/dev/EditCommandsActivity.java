@@ -105,7 +105,7 @@ public class EditCommandsActivity extends Activity implements View.OnClickListen
                 String t2 = text2.getText().toString();
                 cv.put("description", t1);
                 cv.put("command", t2);
-                databaseAccess.update("Commands", cv,position);
+                databaseAccess.update("Commands", cv,((int) id));
             }
         });
 

@@ -19,16 +19,17 @@ import android.widget.Toast;
 import mindcar.testing.R;
 import mindcar.testing.objects.SimpleListCursorAdapter;
 import mindcar.testing.util.DatabaseAccess;
+import mindcar.testing.util.EditActivityInterFace;
 
 /**
  * Created by Mattias Landkvist on 4/27/16.
  */
-public class EditUsersActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class EditUsersActivity extends Activity implements EditActivityInterFace {
     private DatabaseAccess databaseAccess;
-    private Button addNewUser,addUser;
+    private Button addNewUser, addUser;
     private Cursor cursor;
     private SimpleListCursorAdapter simpleListCursorAdapter;
-    private EditText username, password,text1, text2;
+    private EditText username, password, text1, text2;
     private TextView textView1, textView2;
     private ListView databaseList;
 
@@ -109,7 +110,9 @@ public class EditUsersActivity extends Activity implements View.OnClickListener,
                 ContentValues cv = new ContentValues();
                 cv.put("username", text1.getText().toString());
                 cv.put("password", text2.getText().toString());
-                databaseAccess.update("Users", cv, position+1);
+                databaseAccess.update("Users", cv, ((int) id));
+                update();
+                dialog.cancel();
             }
         });
 
@@ -126,9 +129,11 @@ public class EditUsersActivity extends Activity implements View.OnClickListener,
         dialog.show();
     }
 
-    public void update(){
+    public void update() {
         cursor = databaseAccess.getCursor("Users");
         simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, "Users", 0);
         databaseList.setAdapter(simpleListCursorAdapter);
     }
+
+
 }

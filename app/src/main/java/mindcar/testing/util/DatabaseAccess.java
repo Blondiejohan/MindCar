@@ -99,6 +99,6 @@ public class DatabaseAccess {
     }
 
     public void update(String table, ContentValues values, int id) {
-        database.update(table,values,"id = " + id,null);
+        database.update(table,values,"_id = " + id,null);
     }
 }
