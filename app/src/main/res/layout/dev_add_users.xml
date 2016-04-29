@@ -42,9 +42,9 @@
         android:text="Add image"
         android:id="@+id/devAddImage"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/devAddPassword"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/swichDeveloper"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="match_parent"
@@ -52,8 +52,8 @@
         android:text="Add user to database"
         android:id="@+id/devAddUser"
         android:layout_below="@+id/devAddImage"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,11 +61,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Password"
         android:id="@+id/textPassword"
-        android:layout_below="@+id/devAddName"
         android:layout_toLeftOf="@+id/devAddPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/devAddPassword" />
+        android:layout_alignBottom="@+id/devAddPassword"
+        android:layout_below="@+id/devAddName" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,9 +73,22 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username"
         android:id="@+id/textUsername"
-        android:layout_alignTop="@+id/devAddName"
         android:layout_toLeftOf="@+id/devAddName"
-        android:layout_above="@+id/devAddPassword"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/devAddPassword"
+        android:layout_alignTop="@+id/devAddName" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developer"
+        android:id="@+id/swichDeveloper"
+        android:checked="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/devAddPassword"
+        android:layout_alignRight="@+id/devAddPassword"
+        android:layout_alignEnd="@+id/devAddPassword"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 </RelativeLayout>

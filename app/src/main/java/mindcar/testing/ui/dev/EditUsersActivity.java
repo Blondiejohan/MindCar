@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
     private SimpleListCursorAdapter simpleListCursorAdapter;
     private EditText username, password, text1, text2;
     private TextView textView1, textView2;
+    private Switch aSwitch;
     private ListView databaseList;
 
 
@@ -64,15 +66,23 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
                 databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                 username = (EditText) findViewById(R.id.devAddName);
                 password = (EditText) findViewById(R.id.devAddPassword);
+                aSwitch = (Switch) findViewById(R.id.swichDeveloper);
                 addUser = (Button) findViewById(R.id.devAddUser);
+
                 addUser.setOnClickListener(this);
 
                 break;
 
             case (R.id.devAddUser):
+                int devBoolean = 0;
+                if(aSwitch.isChecked()){
+                    devBoolean = 1;
+                }
+
                 ContentValues cv = new ContentValues();
                 cv.put("username", username.getText().toString());
                 cv.put("password", password.getText().toString());
+                cv.put("developer", devBoolean);
                 databaseAccess.insert("Users", cv);
                 Toast.makeText(getApplicationContext(), "New user added to database", Toast.LENGTH_SHORT).show();
                 this.finish();
