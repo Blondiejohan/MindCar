@@ -95,10 +95,15 @@ public class DatabaseAccess {
     }
 
     public void delete(String table, int id) {
-        database.delete(table, "_id = ?" , new String[]{id + ""});
+        database.delete(table, "_id = ?", new String[]{id + ""});
     }
 
     public void update(String table, ContentValues values, int id) {
-        database.update(table,values,"_id = " + id,null);
+        database.update(table, values, "_id = " + id, null);
+    }
+
+    public boolean isDeveloper(String username, String password) {
+        Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
+        return cursor.getCount() == 1;
     }
 }

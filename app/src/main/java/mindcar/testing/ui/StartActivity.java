@@ -44,9 +44,11 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                if (databaseAccess.isDeveloper(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                    startActivity(new Intent(this, DeveloperActivity.class));
+                } else if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, BluetoothActivity.class));
+                    startActivity(new Intent(this, BluetoothActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                 }
