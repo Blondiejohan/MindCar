@@ -20,12 +20,10 @@
         android:id="@+id/ET_PASSWORD"
         android:contentDescription="Input password"
         android:elegantTextHeight="false"
-        android:inputType="textPassword|text"
         android:background="#fdfcfc"
-        android:textColor="#f7729af6"
-        android:textStyle="bold|italic"
+        android:textColor="#f7000000"
         android:textIsSelectable="false"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:gravity="fill"
         android:visibility="visible"
         android:password="false"
@@ -33,21 +31,8 @@
         android:layout_below="@+id/ET_USER_NAME"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:hint="Password" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:text = "Register Here"
-        android:id="@+id/ET_REG_HERE"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="1869dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="47dp" />
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <EditText
         android:layout_width="270dp"
@@ -58,43 +43,46 @@
         android:elegantTextHeight="false"
         android:inputType="text"
         android:background="#fdfcfc"
-        android:textColor="#f7729af6"
+        android:textColor="#f7000000"
         android:textStyle="bold|italic"
         android:textIsSelectable="false"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:gravity="fill"
         android:visibility="visible"
         android:editable="true"
         android:layout_alignLeft="@+id/ET_PASSWORD"
         android:layout_alignStart="@+id/ET_PASSWORD"
         android:layout_marginTop="80dp"
-        android:hint="Username" />
+        android:hint="Username"
+        />
 
     <Button
         android:layout_width="130dp"
         android:layout_height="40dp"
         android:text="LOGIN"
         android:id="@+id/bLogin"
-        android:background="#fe0072dc"
+        android:background="#fe1a4b79"
         android:clickable="true"
-        android:textStyle="bold|italic"
         android:layout_below="@+id/ET_PASSWORD"
         android:layout_alignLeft="@+id/ET_PASSWORD"
         android:layout_alignStart="@+id/ET_PASSWORD"
         android:layout_marginTop="40dp"
-        android:textColor="#fefefe" />
+        android:textColor="#fefefe"
+        android:textSize="10dp"
+        android:textStyle="normal" />
 
     <Button
         android:layout_width="130dp"
         android:layout_height="40dp"
         android:text="SIGN UP"
         android:id="@+id/bSIGNUP"
-        android:background="#fe0072dc"
-        android:textStyle="bold|italic"
+        android:background="#fe1a4b79"
+        android:textStyle="normal"
         android:layout_alignTop="@+id/bLogin"
         android:layout_alignRight="@+id/ET_PASSWORD"
         android:layout_alignEnd="@+id/ET_PASSWORD"
-        android:textColor="#fefdfd" />
+        android:textColor="#fefdfd"
+        android:textSize="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -105,10 +93,10 @@
         android:layout_below="@id/bSIGNUP"
         android:layout_centerHorizontal="true"
         android:textStyle="italic"
-        android:textSize="20dp"
+        android:textSize="10dp"
         android:textColor="#fefdfd"
         android:clickable="false"
-        android:layout_marginTop="200dp" />
+        android:layout_marginTop="250dp" />
 
 
 </RelativeLayout>
