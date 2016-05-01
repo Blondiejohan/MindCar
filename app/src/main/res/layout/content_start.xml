@@ -8,35 +8,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/silverlogin"
+    android:background="@drawable/blue_brain"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="package mindcar.testing.Login2"
     tools:showIn="@layout/activity_start">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="MindCar"
-        android:id="@+id/textView"
-        android:layout_alignTop="@+id/ET_REG_HERE"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textColor="#828282"
-        android:singleLine="true"
-        android:textSize="@dimen/design_navigation_icon_size" />
-
-    <TextView
+    <EditText
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Password"
-        android:id="@+id/TV_PASSWORD"
+        android:id="@+id/ET_PASSWORD"
         android:contentDescription="Input password"
         android:elegantTextHeight="false"
         android:inputType="textPassword|text"
         android:background="#fdfcfc"
-        android:textColor="#818181"
+        android:textColor="#f7729af6"
         android:textStyle="bold|italic"
         android:textIsSelectable="false"
         android:textSize="20dp"
@@ -44,9 +30,10 @@
         android:visibility="visible"
         android:password="false"
         android:editable="true"
-        android:layout_below="@+id/TV_USER_NAME"
+        android:layout_below="@+id/ET_USER_NAME"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:hint="Password" />
 
 
     <TextView
@@ -62,50 +49,66 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="47dp" />
 
-    <TextView
+    <EditText
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Username"
-        android:id="@+id/TV_USER_NAME"
+        android:id="@+id/ET_USER_NAME"
         android:contentDescription="Input username"
         android:elegantTextHeight="false"
         android:inputType="text"
         android:background="#fdfcfc"
-        android:textColor="#818181"
+        android:textColor="#f7729af6"
         android:textStyle="bold|italic"
         android:textIsSelectable="false"
         android:textSize="20dp"
         android:gravity="fill"
         android:visibility="visible"
         android:editable="true"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/TV_PASSWORD"
-        android:layout_alignStart="@+id/TV_PASSWORD"
-        android:layout_marginTop="80dp" />
+        android:layout_alignLeft="@+id/ET_PASSWORD"
+        android:layout_alignStart="@+id/ET_PASSWORD"
+        android:layout_marginTop="80dp"
+        android:hint="Username" />
 
     <Button
         android:layout_width="130dp"
         android:layout_height="40dp"
         android:text="LOGIN"
         android:id="@+id/bLogin"
-        android:background="#d8d8d8"
+        android:background="#fe0072dc"
         android:clickable="true"
-        android:textStyle="bold"
-        android:layout_below="@+id/TV_PASSWORD"
-        android:layout_alignLeft="@+id/TV_PASSWORD"
-        android:layout_alignStart="@+id/TV_PASSWORD" />
+        android:textStyle="bold|italic"
+        android:layout_below="@+id/ET_PASSWORD"
+        android:layout_alignLeft="@+id/ET_PASSWORD"
+        android:layout_alignStart="@+id/ET_PASSWORD"
+        android:layout_marginTop="40dp"
+        android:textColor="#fefefe" />
 
     <Button
         android:layout_width="130dp"
         android:layout_height="40dp"
         android:text="SIGN UP"
         android:id="@+id/bSIGNUP"
-        android:background="#d8d8d8"
-        android:textStyle="bold"
+        android:background="#fe0072dc"
+        android:textStyle="bold|italic"
         android:layout_alignTop="@+id/bLogin"
-        android:layout_alignRight="@+id/TV_PASSWORD"
-        android:layout_alignEnd="@+id/TV_PASSWORD" />
+        android:layout_alignRight="@+id/ET_PASSWORD"
+        android:layout_alignEnd="@+id/ET_PASSWORD"
+        android:textColor="#fefdfd" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Login as Developer"
+        android:id="@+id/devView"
+        android:layout_below="@id/bSIGNUP"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic"
+        android:textSize="20dp"
+        android:textColor="#fefdfd"
+        android:clickable="true"
+        android:layout_marginTop="200dp" />
 
 
 </RelativeLayout>

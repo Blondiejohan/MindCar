@@ -16,19 +16,19 @@ import mindcar.testing.R;
 public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin, bSINGUP;
-    TextView TV_USER_NAME, TV_PASSWORD;
-
+    EditText ET_USER_NAME, ET_PASSWORD;
+    TextView devView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        TV_USER_NAME = (TextView) findViewById(R.id.TV_USER_NAME);
-        TV_PASSWORD = (TextView) findViewById(R.id.TV_PASSWORD);
+        ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
+        ET_PASSWORD = (EditText) findViewById(R.id.ET_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
         bSINGUP = (Button) findViewById(R.id.bSIGNUP);
-
+        devView=(TextView) findViewById(R.id.devView);
 
         bLogin.setOnClickListener(this);
         bSINGUP.setOnClickListener(this);
@@ -40,7 +40,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(TV_USER_NAME.getText().toString(), TV_PASSWORD.getText().toString())) {
+                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
                     startActivity(new Intent(this, BluetoothActivity.class));
@@ -52,6 +52,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
             case R.id.bSIGNUP:
                 startActivity(new Intent(this, RegistrationActivity.class));
+                break;
+
+            case R.id.devView:
+                startActivity(new Intent(this, DeveloperActivity.class));
                 break;
         }
 
