@@ -107,7 +107,7 @@
         android:textStyle="italic"
         android:textSize="20dp"
         android:textColor="#fefdfd"
-        android:clickable="true"
+        android:clickable="false"
         android:layout_marginTop="200dp" />
 
 

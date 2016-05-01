@@ -32,6 +32,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
         bLogin.setOnClickListener(this);
         bSINGUP.setOnClickListener(this);
+        devView.setOnClickListener(this);
     }
 
     @Override
