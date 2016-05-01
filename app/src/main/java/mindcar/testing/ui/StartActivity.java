@@ -15,23 +15,23 @@ import mindcar.testing.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 
-    Button bLogin;
-    EditText ET_USER_NAME, ET_PASS;
-    TextView registerLink;
+    Button bLogin, bSINGUP;
+    TextView TV_USER_NAME, TV_PASSWORD;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
-        ET_PASS = (EditText) findViewById(R.id.ET_PASS);
+        TV_USER_NAME = (TextView) findViewById(R.id.TV_USER_NAME);
+        TV_PASSWORD = (TextView) findViewById(R.id.TV_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
-        registerLink = (TextView) findViewById(R.id.ET_REG_HERE);
+        bSINGUP = (Button) findViewById(R.id.bSIGNUP);
 
 
         bLogin.setOnClickListener(this);
-        registerLink.setOnClickListener(this);
+        bSINGUP.setOnClickListener(this);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                if (databaseAccess.checkUser(TV_USER_NAME.getText().toString(), TV_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
                     startActivity(new Intent(this, BluetoothActivity.class));
@@ -50,7 +50,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                 break;
 
-            case R.id.ET_REG_HERE:
+            case R.id.bSIGNUP:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
         }

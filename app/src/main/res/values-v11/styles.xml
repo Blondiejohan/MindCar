@@ -5,4 +5,6 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="MindCarTheme" parent="android:Theme.Light" />
 </resources>
