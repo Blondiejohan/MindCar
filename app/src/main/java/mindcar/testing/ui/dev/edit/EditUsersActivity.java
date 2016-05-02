@@ -1,4 +1,4 @@
-package mindcar.testing.ui.dev;
+package mindcar.testing.ui.dev.edit;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,12 +20,12 @@ import android.widget.Toast;
 import mindcar.testing.R;
 import mindcar.testing.objects.SimpleListCursorAdapter;
 import mindcar.testing.util.DatabaseAccess;
-import mindcar.testing.util.EditActivityInterFace;
 
 /**
+ * This class creates the activity for editing the commands table within the database.
  * Created by Mattias Landkvist on 4/27/16.
  */
-public class EditUsersActivity extends Activity implements EditActivityInterFace {
+public class EditUsersActivity extends Activity implements EditActivity{
     private DatabaseAccess databaseAccess;
     private Button addNewUser, addUser;
     private Cursor cursor;
@@ -35,7 +35,10 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
     private Switch aSwitch;
     private ListView databaseList;
 
-
+    /**
+     * Creates the activity for editing the Users table.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,10 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
 
     }
 
-
+    /**
+     * Handles button clicks
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -92,6 +98,13 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
         }
     }
 
+    /**
+     * Handles clicks on the list items within the ListView.
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, final long id) {
         final Dialog dialog = new Dialog(view.getContext());
@@ -139,6 +152,9 @@ public class EditUsersActivity extends Activity implements EditActivityInterFace
         dialog.show();
     }
 
+    /**
+     * Updates the ListView with the latest information from the database.
+     */
     public void update() {
         cursor = databaseAccess.getCursor("Users");
         simpleListCursorAdapter = new SimpleListCursorAdapter(this, cursor, "Users", 0);

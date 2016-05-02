@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import mindcar.testing.R;
 import mindcar.testing.ui.StartActivity;
+import mindcar.testing.ui.dev.edit.EditCommandsActivity;
+import mindcar.testing.ui.dev.edit.EditUsersActivity;
 
 /**
  * Basic class starting new activities corresponding to the button pressed.
