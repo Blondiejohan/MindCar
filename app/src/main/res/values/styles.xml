@@ -3,16 +3,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary" >@color/colorPrimary</item>
-        <item name="colorPrimaryDark" >@color/colorPrimaryDark</item>
-        <item name="colorAccent" >@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="GenericProgressBackground" parent="android:Theme">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:background">#DD111111</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Large">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -20,7 +22,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar" >false</item>
+        <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 

@@ -20,7 +20,7 @@ public class DatabaseAccess {
      *
      * @param context
      */
-    private DatabaseAccess(Context context) {
+    public DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -62,16 +62,42 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "' AND password = '" + password + "'", null);
         return cursor.getCount() == 1;
     }
-
     public boolean checkAvailability(String userName) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
         return cursor.getCount() == 0;
     }
 
-    public void addRegistration(String userName, String password){
+    public int getNumberOfRows(String table){
+        Cursor cursor = database.rawQuery("select id from " + table + ";",null);
+        return cursor.getCount();
+    }
+
+    public Cursor getRow(String table, int i) {
+        Cursor cursor = database.rawQuery("select * from " + table + " where id = " + i + ";", null);
+        return cursor;
+    }
+
+    public String getDirection(String direction) {
+        Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
+        String str = "";
+        if (cursor.moveToFirst()) {
+            str = cursor.getString(cursor.getColumnIndex(direction) + 3);
+        }
+        return str;
+    }
+
+    public void addRegistration(String userName, String password) {
         ContentValues values = new ContentValues();
         values.put("username", userName);
         values.put("password", password);
         database.insert("USERS", null, values);
+    }
+
+
+    public void addDirection(String direction, String pattern) {
+        ContentValues direc = new ContentValues();
+        direc.put("direction", direction);
+        direc.put("pattern", pattern);
+        database.insert("PATTERNS", null, direc);
     }
 }

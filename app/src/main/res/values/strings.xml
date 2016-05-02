@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Nemesis MindCar</string>
+    <string name="title_activity_make_pattern">MakePattern</string>
 </resources>
