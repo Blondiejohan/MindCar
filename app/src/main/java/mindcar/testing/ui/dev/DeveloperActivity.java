@@ -49,6 +49,7 @@ public class DeveloperActivity extends Activity implements View.OnClickListener 
                 break;
             case R.id.devBackToStart:
                 startActivity(new Intent(this, StartActivity.class));
+                this.finish();
                 break;
         }
     }

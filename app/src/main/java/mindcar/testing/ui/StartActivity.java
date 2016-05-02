@@ -30,12 +30,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
         ET_PASS = (EditText) findViewById(R.id.ET_PASS);
         bLogin = (Button) findViewById(R.id.bLogin);
         registerLink = (TextView) findViewById(R.id.ET_REG_HERE);
-        develperViewLink = (TextView) findViewById((R.id.startToDev));
 
 
         bLogin.setOnClickListener(this);
         registerLink.setOnClickListener(this);
-        develperViewLink.setOnClickListener(this);
     }
 
     @Override
@@ -46,6 +44,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 databaseAccess.open();
                 if (databaseAccess.isDeveloper(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     startActivity(new Intent(this, DeveloperActivity.class));
+                    this.finish();
                 } else if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(this, BluetoothActivity.class));
@@ -56,10 +55,11 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.ET_REG_HERE:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
-            case R.id.startToDev:
-                startActivity(new Intent(this, DeveloperActivity.class));
-                break;
         }
 
+    }
+
+    public void onResume(){
+        super.onResume();
     }
 }
