@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="mindcar.testing.ui.DeveloperActivity">
+    tools:context=".ui.dev.DeveloperActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,8 +37,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit database"
-        android:id="@+id/devEditDatabase"
+        android:text="Edit users"
+        android:id="@+id/devEditUsers"
         android:layout_marginTop="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Back to start"
         android:id="@+id/devBackToStart"
-        android:layout_below="@+id/devEditDatabase"
+        android:layout_below="@+id/devEditUsers"
         android:layout_marginTop="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

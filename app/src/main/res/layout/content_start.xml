@@ -14,12 +14,9 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Username"
+        android:text = "Username"
         android:layout_marginBottom="30dp"
         android:layout_height="wrap_content" />
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,27 +64,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/ET_REG_HERE"
-        android:layout_alignEnd="@+id/ET_REG_HERE" />
-
     <TextView
         android:layout_width="wrap_content"
-        android:text="Register Here"
+        android:text = "Register Here"
         android:id="@+id/ET_REG_HERE"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp" />
+        android:layout_marginBottom="80dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Developer View"
-        android:id="@+id/startToDev"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
+
 
 </RelativeLayout>

@@ -28,11 +28,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ui.DisplayProfile"/>
-
-        <activity android:name=".ui.Register"/>
-
-        <activity android:name=".ui.Bluetooth"/>
+        <activity android:name=".ui.UserActivity" />
+        <activity android:name=".ui.RegistrationActivity" />
+        <activity android:name=".ui.BluetoothActivity" />
+        <activity android:name=".ui.dev.DeveloperActivity"/>
+        <activity android:name=".ui.dev.edit.EditCommandsActivity"/>
+        <activity android:name=".ui.dev.edit.EditUsersActivity"/>
         <activity android:name=".ui.SavePatterns"></activity>
 
     </application>

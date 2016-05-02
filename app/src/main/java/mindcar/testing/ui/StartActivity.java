@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
@@ -18,6 +19,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button bLogin;
     EditText ET_USER_NAME, ET_PASS;
     TextView registerLink;
+    TextView develperViewLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +38,28 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                if (databaseAccess.isDeveloper(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                    startActivity(new Intent(this, DeveloperActivity.class));
+                    this.finish();
+                } else if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                    //databaseAccess.close();
                     startActivity(new Intent(this, BluetoothActivity.class));
-                    //startActivity(new Intent(this, Connection.class));
-                }
-                else
+                } else {
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                }
                 break;
-
             case R.id.ET_REG_HERE:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
         }
 
+    }
+
+    public void onResume(){
+        super.onResume();
     }
 }
