@@ -2,6 +2,8 @@ package mindcar.testing.util;
 
 import android.os.Message;
 
+import com.neurosky.thinkgear.TGDevice;
+
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.Pattern;
@@ -20,14 +22,6 @@ public class MessageParser {
      * @param eeg
      */
     public static void parseMessage(Message msg, EEGObject eeg) {
-
-       // TGRawMulti rawMulti = (TGRawMulti) msg.obj;
-       // eeg.setDelta(rawMulti.ch1);
-       // eeg.setTheta(rawMulti.ch2);
-        //eeg.setAlpha((rawMulti.ch3 + rawMulti.ch4) / 2);
-       // eeg.setBeta((rawMulti.ch5 + rawMulti.ch6) / 2);
-       // eeg.setGamma((rawMulti.ch7 + rawMulti.ch8) / 2);
-
 
     }
 
@@ -56,6 +50,37 @@ public class MessageParser {
             car.setCommand(Command.s);
         } else if (pattern.equals(stopPattern)) {
             car.setCommand(Command.STOP);
+        }
+    }
+
+
+    /**
+     * Assign values from raw data to the correct eeg frequency
+     * @param msg
+     * @param eeg
+     */
+    public static void parseRawData(Message msg, EEGObject eeg){
+        if(msg.what == TGDevice.MSG_RAW_DATA) {
+            int value = msg.arg1;
+            if (value >= 0 && value <= 3) {
+                eeg.setDelta(value);
+            } else if (value >= 4 && value <= 7) {
+                eeg.setTheta(value);
+            } else if (value >= 8 && value <= 9) {
+                eeg.setLowAlpha(value);
+            } else if (value >= 10 && value <= 12) {
+                eeg.setHighAlpha(value);
+            } else if (value >= 13 && value <= 17) {
+                eeg.setLowBeta(value);
+            } else if (value >= 18 && value <= 30) {
+                eeg.setHighBeta(value);
+            } else if (value >= 31 && value <= 40) {
+                eeg.setLowGamma(value);
+            } else if (value >= 41 && value <= 50) {
+                eeg.setHighGamma(value);
+            } else {
+                ;
+            }
         }
     }
 

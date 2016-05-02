@@ -12,11 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.neurosky.thinkgear.TGDevice;
-import com.neurosky.thinkgear.TGEegPower;
 
 import mindcar.testing.R;
+import mindcar.testing.objects.EEGObject;
 import mindcar.testing.objects.FindPattern;
 import mindcar.testing.util.DatabaseAccess;
+import mindcar.testing.util.MessageParser;
 
 /**
  * Created by johan
@@ -43,13 +44,15 @@ public class SavePatterns extends AppCompatActivity {
     FindPattern stop;
     boolean stopBool = true;
 
-    int nrOfTimes = 5;
-    int updateNr = 5;
+    int nrOfTimes = 20;
+    int updateNr = 20;
     TextView direction;
     TextView text;
     Button test;
     DatabaseAccess databaseAccess;
     int start = 1;
+    public boolean isConnected;
+    EEGObject eeg;
 
 
     @Override
@@ -60,8 +63,10 @@ public class SavePatterns extends AppCompatActivity {
         text = (TextView) findViewById(R.id.text);
         test = (Button) findViewById(R.id.test);
         spAdapter = BluetoothAdapter.getDefaultAdapter();
+        isConnected = false;
         databaseAccess = DatabaseAccess.getInstance(this);
         tgDevice = new TGDevice(spAdapter, tgHandler);
+        eeg = new EEGObject();
 
         if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                 && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
@@ -83,84 +88,83 @@ public class SavePatterns extends AppCompatActivity {
     }
 
 
-    public void saveLeft(Message msg) {
-        TGEegPower waves = (TGEegPower) msg.obj;
+    public void saveLeft(EEGObject eeg) {
         if (leftBool) {
-            left = new FindPattern(waves);
+            left = new FindPattern(eeg);
             leftBool = false;
         }
         if (updateNr >= 0) {
-            left.updateProfile(waves);
+            left.updateProfile(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", left.getPattern());
-            Log.i("leftpattern", left.getPattern());
+            databaseAccess.addDirection("left", left.getPattern(nrOfTimes));
+            Log.i("test","Left "+left.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 2;
         }
 
     }
 
-    public void saveRight(Message msg) {
-        TGEegPower waves = (TGEegPower) msg.obj;
-        if (leftBool) {
-            left = new FindPattern(waves);
-            leftBool = false;
+    public void saveRight(EEGObject eeg) {
+        if (rightBool) {
+            right = new FindPattern(eeg);
+            rightBool = false;
         }
         if (updateNr > 0) {
-            left.updateProfile(waves);
+            right.updateProfile(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", left.getPattern());
+            databaseAccess.addDirection("right", right.getPattern(nrOfTimes));
+            Log.i("test","Right "+right.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 3;
         }
 
     }
 
-    public void saveForward(Message msg) {
-        TGEegPower waves = (TGEegPower) msg.obj;
-        if (leftBool) {
-            left = new FindPattern(waves);
-            leftBool = false;
+    public void saveForward(EEGObject eeg) {
+        if (forwardBool) {
+            forward = new FindPattern(eeg);
+            forwardBool = false;
         }
         if (updateNr > 0) {
-            left.updateProfile(waves);
+            forward.updateProfile(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", left.getPattern());
+            databaseAccess.addDirection("forward", forward.getPattern(nrOfTimes));
+            Log.i("test", "Forward " + forward.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 4;
         }
 
     }
 
-    public void saveStop(Message msg) {
-        TGEegPower waves = (TGEegPower) msg.obj;
-        if (leftBool) {
-            left = new FindPattern(waves);
-            leftBool = false;
+    public void saveStop(EEGObject eeg) {
+        if (stopBool) {
+            stop = new FindPattern(eeg);
+            stopBool = false;
         }
         if (updateNr > 0) {
-            left.updateProfile(waves);
+            stop.updateProfile(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", left.getPattern());
+            databaseAccess.addDirection("stop", stop.getPattern(nrOfTimes));
+            Log.i("test", "Stop " + stop.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 5;
-            tgDevice.stop();
+            tgDevice.close();
             startActivity(new Intent(SavePatterns.this, UserActivity.class));
         }
 
@@ -172,25 +176,43 @@ public class SavePatterns extends AppCompatActivity {
      */
     public final Handler tgHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
+            public void handleMessage (Message msg){
+                switch (msg.what) {
+                    case TGDevice.MSG_STATE_CHANGE:
+                        switch (msg.arg1) {
+                            case TGDevice.STATE_CONNECTED:
+                                isConnected = true;
+                                tgDevice.start();
+                                Log.i("wave", "Connecting");
+                                break;
+                        }
+                        break;
 
-                case TGDevice.MSG_EEG_POWER:
-                    if (start == 1) {
-                        direction.setText("Think Left");
-                        saveLeft(msg);
-                    } else if (start == 2) {
-                        direction.setText("Think Right");
-                        saveRight(msg);
-                    } else if (start == 3) {
-                        direction.setText("Think Forward");
-                        saveForward(msg);
-                    } else if (start == 4) {
-                        direction.setText("Think Stop");
-                        saveStop(msg);
-                    }
-                    break;
+                    case TGDevice.MSG_RAW_DATA:
+                        if (eeg.isFull()) {
+                            if (start == 1){
+                                direction.setText("Think Left");
+                                saveLeft(eeg);
+                            }
+                            if (start == 2){
+                                direction.setText("Think Right");
+                                saveRight(eeg);
+                            }
+                            if (start == 3){
+                                direction.setText("Think Forward");
+                                saveForward(eeg);
+                            }
+                            if (start == 4){
+                                direction.setText("Think Stop");
+                                saveStop(eeg);
+                            }
+                            eeg = new EEGObject();
+                            break;
+                        } else {
+                            MessageParser.parseRawData(msg, eeg);
+                            break;
+                        }
+                }
             }
-        }
     };
 }

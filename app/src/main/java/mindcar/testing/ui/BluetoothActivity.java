@@ -27,6 +27,7 @@ import mindcar.testing.objects.Connection;
 public class BluetoothActivity extends Activity {
 
     private static final int DISCOVERY_REQUEST = 1;
+    public static Connection conn;
     public Button connect;
     public ProgressBar loading;
     public TextView text;
@@ -124,7 +125,8 @@ public class BluetoothActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             BluetoothDevice bondDevice;
             bondDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            Log.i("new", bondDevice.getName());
+            Log.i("checkthing", bondDevice.getBondState()+ bondDevice.getName());
+
 
             if (theAdapter.getBondedDevices().toString().contains("20:15:10:20:03:47") && theAdapter.getBondedDevices().toString().contains("20:68:9D:91:D7:EF")) {
                 startActivity(new Intent(BluetoothActivity.this, UserActivity.class));
