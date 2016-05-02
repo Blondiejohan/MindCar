@@ -36,13 +36,6 @@
         android:layout_marginBottom="20dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ET_USER_NAME"/>
-        android:text="Password"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/ET_USER_NAME"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,10 +62,9 @@
         android:text = "Register Here"
         android:id="@+id/ET_REG_HERE"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp" />
-
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

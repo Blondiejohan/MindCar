@@ -20,7 +20,7 @@ public class DatabaseAccess {
      *
      * @param context
      */
-    public DatabaseAccess(Context context) {
+    private DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -62,6 +62,7 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "' AND password = '" + password + "'", null);
         return cursor.getCount() == 1;
     }
+
     public boolean checkAvailability(String userName) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
         return cursor.getCount() == 0;
@@ -72,32 +73,37 @@ public class DatabaseAccess {
         return cursor.getCount();
     }
 
-    public Cursor getRow(String table, int i) {
-        Cursor cursor = database.rawQuery("select * from " + table + " where id = " + i + ";", null);
+    public Cursor getRow(String table, int i){
+        Cursor cursor = database.rawQuery("select * from " + table + " where id = " + i + ";",null);
         return cursor;
     }
 
-    public String getDirection(String direction) {
-        Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
-        String str = "";
-        if (cursor.moveToFirst()) {
-            str = cursor.getString(cursor.getColumnIndex(direction) + 3);
-        }
-        return str;
+    public Cursor getCursor(String table){
+        Cursor cursor = database.rawQuery("select * from " + table + ";",null);
+        return cursor;
     }
 
-    public void addRegistration(String userName, String password) {
+    public void insert(String table, ContentValues values){
+            database.insert(table,null,values);
+    }
+
+    public void addRegistration(String username, String password){
         ContentValues values = new ContentValues();
-        values.put("username", userName);
+        values.put("username", username);
         values.put("password", password);
         database.insert("USERS", null, values);
     }
 
+    public void delete(String table, int id) {
+        database.delete(table, "_id = ?", new String[]{id + ""});
+    }
 
-    public void addDirection(String direction, String pattern) {
-        ContentValues direc = new ContentValues();
-        direc.put("direction", direction);
-        direc.put("pattern", pattern);
-        database.insert("PATTERNS", null, direc);
+    public void update(String table, ContentValues values, int id) {
+        database.update(table, values, "_id = " + id, null);
+    }
+
+    public boolean isDeveloper(String username, String password) {
+        Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
+        return cursor.getCount() == 1;
     }
 }

@@ -34,9 +34,6 @@
         <activity android:name=".ui.dev.DeveloperActivity"/>
         <activity android:name=".ui.dev.edit.EditCommandsActivity"/>
         <activity android:name=".ui.dev.edit.EditUsersActivity"/>
-        <activity android:name=".ui.SavePatterns"></activity>
-
     </application>
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
 </manifest>

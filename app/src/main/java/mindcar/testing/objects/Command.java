@@ -5,10 +5,10 @@ package mindcar.testing.objects;
  * Created by Mattias Landkvist & Nikos Sasopoulos on 3/2/16.
  */
 public enum Command {
-    f,
-    s,
-    l,
-    r,
+    FORWARD,
+    BACKWARD,
+    LEFT,
+    RIGHT,
     INCREASE_SPEED,
     DECREASE_SPEED,
     STOP

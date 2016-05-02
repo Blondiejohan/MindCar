@@ -17,11 +17,6 @@ public class Connected extends Thread {
 
 
     // Constructor for creating a new connected object.
-    /**
-     * Constructor for creating a new connected object.
-     *
-     * @param socket
-     */
     public Connected(BluetoothSocket socket) {
         mmSocket = socket;
         InputStream tmpIn = null;
@@ -29,8 +24,7 @@ public class Connected extends Thread {
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
     }
@@ -44,11 +38,11 @@ public class Connected extends Thread {
         while (true) {
             try {
                 bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-                for (int i = begin; i < bytes; i++) {
-                    if (buffer[i] == "#".getBytes()[0]) {
-                        // mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
+                for(int i = begin; i < bytes; i++) {
+                    if(buffer[i] == "#".getBytes()[0]) {
+                       // mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                         begin = i + 1;
-                        if (i == bytes - 1) {
+                        if(i == bytes - 1) {
                             bytes = 0;
                             begin = 0;
                         }
@@ -61,26 +55,17 @@ public class Connected extends Thread {
     }
 
 
-
-
-    /**
-     * Sends an array of bytes through the outstream to the chosen device.
-     *
-     * @param message
-     */
-    public static void write(String message) {
+    // Sends an array of bytes through the outstream to the chosen device.
+    public static void write(byte[] bytes) {
         try {
-            byte[] bytes = message.getBytes();
             mmOutStream.write(bytes);
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 
     // Closes the socket.
     public void cancel() {
         try {
             mmSocket.close();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 }

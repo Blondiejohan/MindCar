@@ -2,7 +2,7 @@ package mindcar.testing.objects;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-
+import mindcar.testing.objects.Connected;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -14,19 +14,14 @@ import java.util.UUID;
  * This class takes a BluetoothActivity Device as input and creates a connection between the phone and the
  * chosen device.
  */
-public class Connection extends Thread {
+public class Connection  extends Thread{
 
-    private final BluetoothSocket aSocket;
+private final BluetoothSocket aSocket;
     private final BluetoothDevice aDevice;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 
-    /**
-     * Constructor for creating a new connection.
-     *
-     * @param device
-     */
-
+    // Constructor for creating a new connection.
     public Connection(BluetoothDevice device) {
         BluetoothSocket tmp = null;
         aDevice = device;
@@ -34,8 +29,7 @@ public class Connection extends Thread {
 
         try {
             tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
         aSocket = tmp;
     }
 
@@ -50,8 +44,7 @@ public class Connection extends Thread {
         } catch (IOException connectException) {
             try {
                 aSocket.close();
-            } catch (IOException closeException) {
-            }
+            } catch (IOException closeException) { }
             return;
         }
     }
@@ -60,8 +53,7 @@ public class Connection extends Thread {
     public void cancel() {
         try {
             aSocket.close();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 }
 

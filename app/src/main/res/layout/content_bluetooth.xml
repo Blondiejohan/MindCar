@@ -14,12 +14,8 @@
         android:layout_width="106dp"
         android:layout_height="106dp"
         android:id="@+id/progressBar"
-
         android:layout_gravity="center_horizontal|bottom"
         style="@style/GenericProgressIndicator"/>
-
-        android:layout_gravity="center_horizontal|center"
-        style="@style/GenericProgressIndicator" />
 
     <Button
         android:layout_width="wrap_content"
