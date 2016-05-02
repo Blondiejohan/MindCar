@@ -16,8 +16,10 @@ public class Connected extends Thread {
     static OutputStream mmOutStream;
 
 
+    // Constructor for creating a new connected object.
     /**
      * Constructor for creating a new connected object.
+     *
      * @param socket
      */
     public Connected(BluetoothSocket socket) {
@@ -27,15 +29,14 @@ public class Connected extends Thread {
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
     }
 
-    /**
-     * Dont know how mutch of this method is needed. Might need to clean it up.
-     * Right now it seems to read answers from the device.
-     */
+    // Dont know how mutch of this method is needed. Might need to clean it up.
+    // Right now it seems to read answers from the device.
     public void run() {
         byte[] buffer = new byte[1024];
         int begin = 0;
@@ -43,11 +44,11 @@ public class Connected extends Thread {
         while (true) {
             try {
                 bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-                for(int i = begin; i < bytes; i++) {
-                    if(buffer[i] == "#".getBytes()[0]) {
-                       // mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
+                for (int i = begin; i < bytes; i++) {
+                    if (buffer[i] == "#".getBytes()[0]) {
+                        // mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                         begin = i + 1;
-                        if(i == bytes - 1) {
+                        if (i == bytes - 1) {
                             bytes = 0;
                             begin = 0;
                         }
@@ -60,23 +61,26 @@ public class Connected extends Thread {
     }
 
 
+
+
     /**
      * Sends an array of bytes through the outstream to the chosen device.
+     *
      * @param message
      */
     public static void write(String message) {
         try {
             byte[] bytes = message.getBytes();
             mmOutStream.write(bytes);
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 
-    /**
-     * Closes the socket.
-     */
+    // Closes the socket.
     public void cancel() {
         try {
             mmSocket.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 }

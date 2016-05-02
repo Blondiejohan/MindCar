@@ -14,17 +14,19 @@ import java.util.UUID;
  * This class takes a BluetoothActivity Device as input and creates a connection between the phone and the
  * chosen device.
  */
-public class Connection  extends Thread{
+public class Connection extends Thread {
 
-private final BluetoothSocket aSocket;
+    private final BluetoothSocket aSocket;
     private final BluetoothDevice aDevice;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 
     /**
      * Constructor for creating a new connection.
+     *
      * @param device
      */
+
     public Connection(BluetoothDevice device) {
         BluetoothSocket tmp = null;
         aDevice = device;
@@ -32,13 +34,12 @@ private final BluetoothSocket aSocket;
 
         try {
             tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
         aSocket = tmp;
     }
 
-    /**
-     * run method that creates a new connected and starts the connection to the socket.
-     */
+    // run method that creates a new connected and starts the connection to the socket.
     public void run() {
 
         Connected aConnected = new Connected(aSocket);
@@ -49,18 +50,18 @@ private final BluetoothSocket aSocket;
         } catch (IOException connectException) {
             try {
                 aSocket.close();
-            } catch (IOException closeException) { }
+            } catch (IOException closeException) {
+            }
             return;
         }
     }
 
-    /**
-     * Closes the connection to the socket.
-     */
+    // Closes the connection to the socket.
     public void cancel() {
         try {
             aSocket.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 }
 

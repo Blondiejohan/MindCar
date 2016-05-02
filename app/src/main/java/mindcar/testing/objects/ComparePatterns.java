@@ -3,8 +3,6 @@ package mindcar.testing.objects;
 import android.app.Activity;
 import android.util.Log;
 
-import com.neurosky.thinkgear.TGEegPower;
-
 import mindcar.testing.util.DatabaseAccess;
 
 /**
@@ -19,28 +17,19 @@ public class ComparePatterns extends Activity {
     int highBeta;
     int lowGamma;
     int midGamma;
-    int bottomDelta;
-    int bottomTheta;
-    int bottomLowAlpha;
-    int bottomHighAlpha;
-    int bottomLowBeta;
-    int bottomHighBeta;
-    int bottomLowGamma;
-    int bottomMidGamma;
-    int topDelta;
-    int topTheta;
-    int topLowAlpha;
-    int topHighAlpha;
-    int topLowBeta;
-    int topHighBeta;
-    int topLowGamma;
-    int topMidGamma;
+    int left;
+    int right;
+    int forward;
+    int stop;
+
+    String comp2="";
 
     /**
      * This is the constructor to start comparing.
+     *
      * @param input
      */
-    public ComparePatterns(TGEegPower input){
+    public ComparePatterns(EEGObject input) {
         this.delta = input.delta;
         this.theta = input.theta;
         this.lowAlpha = input.lowAlpha;
@@ -48,103 +37,88 @@ public class ComparePatterns extends Activity {
         this.lowBeta = input.lowBeta;
         this.highBeta = input.highBeta;
         this.lowGamma = input.lowGamma;
-        this.midGamma = input.midGamma;
+        this.midGamma = input.highGamma;
+
+        comp2 = "Delta:" + this.delta + " Theta:" + this.theta + " LowAlpha:" + this.lowAlpha + " HighAlpha" +
+                this.highAlpha + " LowBeta:" + this.lowBeta + " HighBeta:" + this.highBeta + " lowGamma:" +
+                this.lowGamma + " MidGamma:" + this.midGamma + " End";
     }
 
+
+    public int levenshteinDistance (CharSequence lhs, CharSequence rhs) {
+        int len0 = lhs.length() + 1;
+        int len1 = rhs.length() + 1;
+
+        // the array of distances
+        int[] cost = new int[len0];
+        int[] newcost = new int[len0];
+
+        // initial cost of skipping prefix in String s0
+        for (int i = 0; i < len0; i++) cost[i] = i;
+
+        // dynamically computing the array of distances
+
+        // transformation cost for each letter in s1
+        for (int j = 1; j < len1; j++) {
+            // initial cost of skipping prefix in String s1
+            newcost[0] = j;
+
+            // transformation cost for each letter in s0
+            for(int i = 1; i < len0; i++) {
+                // matching current letters in both strings
+                int match = (lhs.charAt(i - 1) == rhs.charAt(j - 1)) ? 0 : 1;
+
+                // computing cost for each transformation
+                int cost_replace = cost[i - 1] + match;
+                int cost_insert  = cost[i] + 1;
+                int cost_delete  = newcost[i - 1] + 1;
+
+                // keep minimum cost
+                newcost[i] = Math.min(Math.min(cost_insert, cost_delete), cost_replace);
+            }
+
+            // swap cost/newcost arrays
+            int[] swap = cost; cost = newcost; newcost = swap;
+        }
+
+        // the distance is the cost for transforming all letters in both strings
+        return cost[len0 - 1];
+    }
 
     /**
      * Takes all the variables of the current raw package and compares it to the
      * specified saved pattern from the database. It checks if a wave is within the boundries
      * of the low and high variables of that wave.
-     * @param in
-     * @return
      */
-    public Boolean compare(String in){
-        Log.i("started comparing", in);
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+    public String compare(DatabaseAccess databaseAccess) {
         databaseAccess.open();
-        String inDirection = databaseAccess.getDirection(in);
-        Log.i("data ",inDirection);
-        StringBuilder result = new StringBuilder("");
-        this.bottomDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('a')+1,inDirection.indexOf('b')));
-        this.topDelta = Integer.parseInt(inDirection.substring(inDirection.indexOf('b')+1,inDirection.indexOf('c')));
-
-        this.bottomTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('c')+1,inDirection.indexOf('d')));
-        this.topTheta = Integer.parseInt(inDirection.substring(inDirection.indexOf('d')+1,inDirection.indexOf('e')));
-
-        this.bottomLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('e')+1,inDirection.indexOf('f')));
-        this.topLowAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('f')+1,inDirection.indexOf('g')));
-
-        this.bottomHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('g')+1,inDirection.indexOf('h')));
-        this.topHighAlpha = Integer.parseInt(inDirection.substring(inDirection.indexOf('h')+1,inDirection.indexOf('i')));
-
-        this.bottomLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('i')+1,inDirection.indexOf('j')));
-        this.topLowBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('j')+1,inDirection.indexOf('k')));
-
-        this.bottomHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('k')+1,inDirection.indexOf('l')));
-        this.topHighBeta = Integer.parseInt(inDirection.substring(inDirection.indexOf('l')+1,inDirection.indexOf('m')));
-
-        this.bottomLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('m')+1,inDirection.indexOf('n')));
-        this.topLowGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('n')+1,inDirection.indexOf('o')));
-
-        this.bottomMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('o')+1,inDirection.indexOf('p')));
-        this.topMidGamma = Integer.parseInt(inDirection.substring(inDirection.indexOf('p')+1,inDirection.indexOf('q')));
-
-        //delta
-        if (delta>bottomDelta && delta<topDelta){
-            result.append('y');
-        }else{
-            result.append('n');
+        String sLeft = databaseAccess.getDirection("left");
+        String sRight = databaseAccess.getDirection("right");
+        String sForward = databaseAccess.getDirection("forward");
+        String sStop = databaseAccess.getDirection("stop");
+        databaseAccess.close();
+        left = levenshteinDistance(sLeft, comp2);
+        right = levenshteinDistance(sRight, comp2);
+        forward = levenshteinDistance(sForward, comp2);
+        stop = levenshteinDistance(sStop, comp2);
+        String result = "";
+        if (left < right && left < forward && left < stop) {
+            result = "Left";
+            Log.i("test", ( left)+" Left");
+        }
+        if (right < left && right < forward && right < stop) {
+            result = "Right";
+            Log.i("test", ( right)+" Right");
+        }
+        if (forward < left && forward < right && forward < stop) {
+            result = "Forward";
+            Log.i("test", ( forward)+" Forward");
+        }
+        if (stop < left && stop < right && stop < forward) {
+            result = "Stop";
+            Log.i("test", ( stop)+" Stop");
         }
 
-        //theta
-        if (theta>bottomTheta && theta<topTheta){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //lowAlpha
-        if (lowAlpha>bottomLowAlpha && lowAlpha<topLowAlpha){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //highAlpha
-        if (highAlpha>bottomHighAlpha && highAlpha<topHighAlpha){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //lowBeta
-        if (lowBeta>bottomLowBeta && lowBeta<topLowBeta){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //highBeta
-        if (highBeta>bottomHighBeta && highBeta<topHighBeta){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //lowGamma
-        if (lowGamma>bottomLowGamma && lowGamma<topLowGamma){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-
-        //midGamma
-        if (midGamma>bottomMidGamma && midGamma<topMidGamma){
-            result.append('y');
-        }else{
-            result.append('n');
-        }
-        return result.toString().contains("n");
+        return result;
     }
 }

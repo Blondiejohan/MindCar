@@ -6,10 +6,10 @@ package mindcar.testing.objects;
  */
 public enum Command {
     f,
-    BACKWARD,
+    s,
     l,
     r,
     INCREASE_SPEED,
     DECREASE_SPEED,
-    s
+    STOP
 }

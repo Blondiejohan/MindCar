@@ -7,34 +7,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.BluetoothActivity">
+    tools:context="mindcar.testing.ui.SavePatterns">
 
 
-    <ProgressBar
-        android:layout_width="106dp"
-        android:layout_height="106dp"
-        android:id="@+id/progressBar"
-
-        android:layout_gravity="center_horizontal|bottom"
-        style="@style/GenericProgressIndicator"/>
-
-        android:layout_gravity="center_horizontal|center"
-        style="@style/GenericProgressIndicator" />
+    <TextView
+        android:layout_width="166dp"
+        android:layout_height="94dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Direction"
+        android:id="@+id/direction"
+        android:layout_gravity="center_horizontal|top" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        android:id="@+id/connect"
+        android:text="test"
+        android:id="@+id/test"
         android:layout_gravity="center_horizontal|bottom" />
 
     <TextView
-        android:layout_width="300dp"
-        android:textAlignment="center"
-        android:layout_height="150dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text"
         android:id="@+id/text"
         android:layout_gravity="center" />
-
-
 </FrameLayout>
