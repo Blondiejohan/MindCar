@@ -12,7 +12,7 @@ import mindcar.testing.R;
 
 
 /**
- * An Adapter to ease populating ListViews with Cursors.
+ * An Adapter to ease populating ListViews with Cursors
  * Created by Mattias Landkvist on 4/25/16.
  */
 public class SimpleListCursorAdapter extends CursorAdapter {
