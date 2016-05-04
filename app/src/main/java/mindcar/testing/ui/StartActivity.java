@@ -2,8 +2,10 @@ package mindcar.testing.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +18,10 @@ import mindcar.testing.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 
-    Button bLogin;
-    EditText ET_USER_NAME, ET_PASS;
-    TextView registerLink;
-    TextView develperViewLink;
+    Button bLogin, bSINGUP;
+    EditText ET_USER_NAME, ET_PASSWORD;
+    TextView devView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,39 +29,47 @@ public class StartActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_start);
 
         ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
-        ET_PASS = (EditText) findViewById(R.id.ET_PASS);
+        ET_PASSWORD = (EditText) findViewById(R.id.ET_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
-        registerLink = (TextView) findViewById(R.id.ET_REG_HERE);
+        bSINGUP = (Button) findViewById(R.id.bSIGNUP);
+        devView=(TextView) findViewById(R.id.devView);
 
 
         bLogin.setOnClickListener(this);
-        registerLink.setOnClickListener(this);
+        bSINGUP.setOnClickListener(this);
+        devView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.isDeveloper(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
-                    startActivity(new Intent(this, DeveloperActivity.class));
-                    this.finish();
-                } else if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                    //databaseAccess.close();
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
+                    mp.start();
                     startActivity(new Intent(this, BluetoothActivity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                    //startActivity(new Intent(this, Connection.class));
                 }
-                break;
-            case R.id.ET_REG_HERE:
+                else {
+
+                    Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                    MediaPlayer mp2 = MediaPlayer.create(this, R.raw.no);
+                    mp2.start();
+                    break;
+                }
+
+            case R.id.bSIGNUP:
                 startActivity(new Intent(this, RegistrationActivity.class));
+                break;
+
+            case R.id.devView:
+                startActivity(new Intent(this, DeveloperActivity.class));
                 break;
         }
 
-    }
-
-    public void onResume(){
-        super.onResume();
     }
 }

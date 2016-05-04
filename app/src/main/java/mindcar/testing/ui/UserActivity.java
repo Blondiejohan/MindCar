@@ -1,15 +1,10 @@
 package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.neurosky.thinkgear.TGDevice;
 
@@ -24,14 +19,14 @@ import mindcar.testing.util.MessageParser;
 
 
 /**
- * Created by madiseniman and johan
+ * Created by madiseniman on 07/04/16.
  */
-
 public class UserActivity extends AppCompatActivity {
 
     private SmartCar car;
+    private Eeg eeg;
     private TGDevice tgDevice;
-    private Pattern<EEGObject> pattern;
+    private Pattern<Eeg> pattern;
     private Command x;
     public Button save;
     public Button restart;
@@ -44,16 +39,16 @@ public class UserActivity extends AppCompatActivity {
     public TextView highBeta;
     public TextView lowGamma;
     public TextView highGamma;
-    EEGObject eeg;
-    DatabaseAccess base;
+    Eeg eeg;
+    DatabaseAccess databaseAccess;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isConnected = false;
-        eeg = new EEGObject();
-        base = new DatabaseAccess(this);
+        eeg = new Eeg();
+        databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
         save = (Button) findViewById(R.id.pattern);
         restart = (Button) findViewById(R.id.restart);
@@ -65,6 +60,8 @@ public class UserActivity extends AppCompatActivity {
         highBeta = (TextView) findViewById(R.id.highBeta);
         lowGamma = (TextView) findViewById(R.id.lowGamma);
         highGamma = (TextView) findViewById(R.id.highGamma);
+
+        double[] testDoubles = {2,5,8,11,15,25,36,46};
 
 
         pattern = new Pattern<>();
@@ -96,6 +93,12 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
         }); // end patterns
+
+
+
+
+
+
     }
 
 
@@ -104,8 +107,6 @@ public class UserActivity extends AppCompatActivity {
         //code for retrieving the username from the database
         return username;
     }
-
-
 
     public int getBatteryLevel() {
         int batterylvl = 0;
@@ -140,7 +141,7 @@ public class UserActivity extends AppCompatActivity {
                 case TGDevice.MSG_RAW_DATA:
                     if (eeg.isFull()) {
                         ComparePatterns compPatt = new ComparePatterns(eeg);
-                        String send = compPatt.compare(base);
+                        String send = compPatt.compare(databaseAccess);
                         restart.setText(send);
                         delta.setText(eeg.delta + "");
                         theta.setText(eeg.theta+"");
@@ -150,20 +151,16 @@ public class UserActivity extends AppCompatActivity {
                         highBeta.setText(eeg.highBeta+"");
                         lowGamma.setText(eeg.lowGamma+"");
                         highGamma.setText(eeg.highGamma+"");
-                        eeg = new EEGObject();
+                        eeg = new Eeg();
                         break;
                     }else{
                         MessageParser.parseRawData(msg, eeg);
                         break;
                     }
             }
-            if (msg.what == TGDevice.MSG_RAW_MULTI) {
-                eeg = new Eeg();
-                MessageParser.parseMessage(msg, eeg);
-                pattern.add(eeg);
-                x = car.getCommands();
-            }
         }
+
+
     };
 
 }

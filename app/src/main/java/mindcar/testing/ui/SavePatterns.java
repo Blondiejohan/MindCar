@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
-import mindcar.testing.objects.EEGObject;
+import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.FindPattern;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
@@ -52,7 +52,7 @@ public class SavePatterns extends AppCompatActivity {
     DatabaseAccess databaseAccess;
     int start = 1;
     public boolean isConnected;
-    EEGObject eeg;
+    Eeg eeg;
 
 
     @Override
@@ -66,7 +66,7 @@ public class SavePatterns extends AppCompatActivity {
         isConnected = false;
         databaseAccess = DatabaseAccess.getInstance(this);
         tgDevice = new TGDevice(spAdapter, tgHandler);
-        eeg = new EEGObject();
+        eeg = new Eeg();
 
         if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                 && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
@@ -88,7 +88,7 @@ public class SavePatterns extends AppCompatActivity {
     }
 
 
-    public void saveLeft(EEGObject eeg) {
+    public void saveLeft(Eeg eeg) {
         if (leftBool) {
             left = new FindPattern(eeg);
             leftBool = false;
@@ -108,7 +108,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveRight(EEGObject eeg) {
+    public void saveRight(Eeg eeg) {
         if (rightBool) {
             right = new FindPattern(eeg);
             rightBool = false;
@@ -128,7 +128,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveForward(EEGObject eeg) {
+    public void saveForward(Eeg eeg) {
         if (forwardBool) {
             forward = new FindPattern(eeg);
             forwardBool = false;
@@ -148,7 +148,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveStop(EEGObject eeg) {
+    public void saveStop(Eeg eeg) {
         if (stopBool) {
             stop = new FindPattern(eeg);
             stopBool = false;
@@ -206,7 +206,7 @@ public class SavePatterns extends AppCompatActivity {
                                 direction.setText("Think Stop");
                                 saveStop(eeg);
                             }
-                            eeg = new EEGObject();
+                            eeg = new Eeg();
                             break;
                         } else {
                             MessageParser.parseRawData(msg, eeg);

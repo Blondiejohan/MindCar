@@ -29,7 +29,7 @@ public class ComparePatterns extends Activity {
      *
      * @param input
      */
-    public ComparePatterns(EEGObject input) {
+    public ComparePatterns(Eeg input) {
         this.delta = input.delta;
         this.theta = input.theta;
         this.lowAlpha = input.lowAlpha;

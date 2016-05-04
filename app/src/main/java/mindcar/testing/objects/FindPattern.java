@@ -28,7 +28,7 @@ public class FindPattern {
      *
      * @param wave
      */
-    public FindPattern(EEGObject wave) {
+    public FindPattern(Eeg wave) {
         this.delta = wave.delta;
         this.theta = wave.theta;
         this.lowAlpha = wave.lowAlpha;
@@ -46,7 +46,7 @@ public class FindPattern {
      *
      * @param eeg
      */
-    public void updateProfile(EEGObject eeg) {
+    public void updateProfile(Eeg eeg) {
         //delta
         this.delta = this.delta+eeg.delta;
 
