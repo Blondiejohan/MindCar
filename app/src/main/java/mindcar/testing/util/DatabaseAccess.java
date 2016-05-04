@@ -103,6 +103,8 @@ public class DatabaseAccess {
         database.insert("USERS", null, values);
     }
 
+
+
     public void delete(String table, int id) {
         database.delete(table, "_id = ?", new String[]{id + ""});
     }
@@ -114,5 +116,12 @@ public class DatabaseAccess {
     public boolean isDeveloper(String username, String password) {
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
         return cursor.getCount() == 1;
+    }
+
+    public void addDirection(String direction, String pattern) {
+        ContentValues direc = new ContentValues();
+        direc.put("direction", direction);
+        direc.put("pattern", pattern);
+        database.insert("PATTERNS", null, direc);
     }
 }

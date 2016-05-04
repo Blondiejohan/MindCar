@@ -12,6 +12,9 @@
     tools:context=".ui.UserActivity"
     tools:showIn="@layout/activity_user">
 
+    tools:context=".ui.DisplayProfile"
+    tools:showIn="@layout/activity_displayprofile">
+
 
     <ToggleButton
         android:layout_width="250dp"
@@ -23,8 +26,9 @@
         android:textOn="Pause"
         android:visibility="visible"
         android:text="start_pause_toggle_button"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/attention"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -43,7 +47,7 @@
         android:layout_toLeftOf="@id/profile_image_view"
         android:layout_alignEnd="@+id/profile_image_view"
         android:layout_alignRight="@+id/profile_image_view"
-        android:layout_gravity=""/>
+        android:layout_gravity="" />
 
     <ImageView
         android:layout_width="150dp"
@@ -111,6 +115,96 @@
         android:layout_above="@+id/attentionBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save patterns"
+        android:id="@+id/pattern"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/toggleButton"
+        android:layout_alignStart="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delta"
+        android:id="@+id/delta"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="theta"
+        android:id="@+id/theta"
+        android:layout_below="@+id/delta"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lowAlpha"
+        android:id="@+id/lowAlha"
+        android:layout_below="@+id/theta"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="highAlpha"
+        android:id="@+id/highAlpha"
+        android:layout_below="@+id/lowAlha"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lowBeta"
+        android:id="@+id/lowBeta"
+        android:layout_below="@+id/highAlpha"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="highBeta"
+        android:id="@+id/highBeta"
+        android:layout_below="@+id/lowBeta"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:layout_toEndOf="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lowGamma"
+        android:id="@+id/lowGamma"
+        android:layout_below="@+id/highBeta"
+        android:layout_alignLeft="@+id/highBeta"
+        android:layout_alignStart="@+id/highBeta" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="highGamma"
+        android:id="@+id/highGamma"
+        android:layout_below="@+id/lowGamma"
+        android:layout_alignLeft="@+id/lowGamma"
+        android:layout_alignStart="@+id/lowGamma" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="restart"
+        android:id="@+id/restart"
+        android:layout_below="@+id/highBeta"
+        android:layout_toLeftOf="@+id/button"
+        android:layout_toStartOf="@+id/button" />
 
 
 </RelativeLayout>

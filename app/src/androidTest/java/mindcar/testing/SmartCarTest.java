@@ -35,8 +35,8 @@ public class SmartCarTest extends TestCase {
     public void testSetCommand() throws Exception {
         Eeg eeg = new Eeg();
         eeg.setAttention(70);
-        car.setCommand(Command.BACKWARD);
-        assertEquals(car.getCommands(), Command.FORWARD);
+        car.setCommand(Command.s);
+        assertEquals(car.getCommands(), Command.f);
     }
 
     /**
