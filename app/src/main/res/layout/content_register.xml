@@ -42,14 +42,41 @@
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="REGISTER"
         android:id="@+id/bRegister"
+        android:onClick="userReg"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imgPicture"
         android:layout_below="@+id/ET_PASS"
+        android:layout_above="@+id/takePhoto"
+        android:clickable="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take New Photo"
+        android:id="@+id/takePhoto"
+        android:layout_above="@+id/bRegister"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="userReg" />
+        android:clickable="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Existing Image"
+        android:id="@+id/chooseImage"
+        android:layout_above="@+id/bRegister"
+        android:layout_alignRight="@+id/imgPicture"
+        android:layout_alignEnd="@+id/imgPicture" />
 </RelativeLayout>

@@ -74,4 +74,9 @@ public class DatabaseAccess {
         values.put("password", password);
         database.insert("USERS", null, values);
     }
+    //madisen's method
+    public String findName(String userName, String password){
+        Cursor cursor = database.rawQuery("SELECT username FROM USERS WHERE username = '" + userName + "' AND password = '" + password + "'", null);
+        return userName;
+    }
 }
