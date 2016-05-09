@@ -10,7 +10,7 @@ import android.view.Menu;
 import mindcar.testing.R;
 import mindcar.testing.ui.StartActivity;
 
-public class Intro extends AppCompatActivity {
+public class Intro extends Activity {
 
     private final int SPLASH_DISPLAY_DURATION = 2000;
 
