@@ -31,7 +31,9 @@
         <activity android:name=".ui.UserActivity" />
         <activity android:name=".ui.RegistrationActivity" />
         <activity android:name=".ui.BluetoothActivity" />
-        <activity android:name=".ui.DeveloperActivity"></activity>
+        <activity android:name=".ui.dev.DeveloperActivity" />
+        <activity android:name=".ui.dev.edit.EditCommandsActivity" />
+        <activity android:name=".ui.dev.edit.EditUsersActivity" />
     </application>
 
 </manifest>
