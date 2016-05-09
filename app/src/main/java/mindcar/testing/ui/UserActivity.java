@@ -16,7 +16,7 @@ import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Command;
-import mindcar.testing.objects.Connected;
+import mindcar.testing.objects.oldConnected;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
