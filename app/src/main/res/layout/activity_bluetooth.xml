@@ -44,4 +44,12 @@
         android:layout_row="3"
         android:layout_column="0" />
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_row="6"
+        android:layout_column="0" />
+
+
 </GridLayout>
