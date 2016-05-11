@@ -9,18 +9,7 @@ import mindcar.testing.util.DatabaseAccess;
  * Created by Johan Laptop on 2016-04-18.
  */
 public class ComparePatterns extends Activity {
-    int delta;
-    int theta;
-    int lowAlpha;
-    int highAlpha;
-    int lowBeta;
-    int highBeta;
-    int lowGamma;
-    int midGamma;
-    int left;
-    int right;
-    int forward;
-    int stop;
+    public double[] compare1;
 
     String comp2="";
 
@@ -30,60 +19,12 @@ public class ComparePatterns extends Activity {
      * @param input
      */
     public ComparePatterns(Eeg input) {
-        this.delta = input.delta;
-        this.theta = input.theta;
-        this.lowAlpha = input.lowAlpha;
-        this.highAlpha = input.highAlpha;
-        this.lowBeta = input.lowBeta;
-        this.highBeta = input.highBeta;
-        this.lowGamma = input.lowGamma;
-        this.midGamma = input.highGamma;
+       this.compare1 = input.arr;
 
-        comp2 = "Delta:" + this.delta + " Theta:" + this.theta + " LowAlpha:" + this.lowAlpha + " HighAlpha" +
-                this.highAlpha + " LowBeta:" + this.lowBeta + " HighBeta:" + this.highBeta + " lowGamma:" +
-                this.lowGamma + " MidGamma:" + this.midGamma + " End";
     }
 
 
-    public int levenshteinDistance (CharSequence lhs, CharSequence rhs) {
-        int len0 = lhs.length() + 1;
-        int len1 = rhs.length() + 1;
 
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++) cost[i] = i;
-
-        // dynamically computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j;
-
-            // transformation cost for each letter in s0
-            for(int i = 1; i < len0; i++) {
-                // matching current letters in both strings
-                int match = (lhs.charAt(i - 1) == rhs.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert  = cost[i] + 1;
-                int cost_delete  = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete), cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost; cost = newcost; newcost = swap;
-        }
-
-        // the distance is the cost for transforming all letters in both strings
-        return cost[len0 - 1];
-    }
 
     /**
      * Takes all the variables of the current raw package and compares it to the
@@ -92,15 +33,19 @@ public class ComparePatterns extends Activity {
      */
     public String compare(DatabaseAccess databaseAccess) {
         databaseAccess.open();
-        String sLeft = databaseAccess.getDirection("left");
-        String sRight = databaseAccess.getDirection("right");
-        String sForward = databaseAccess.getDirection("forward");
-        String sStop = databaseAccess.getDirection("stop");
+        double[] sLeft = databaseAccess.getDirection("left");
+        double[] sRight = databaseAccess.getDirection("right");
+        double[] sForward = databaseAccess.getDirection("forward");
+        double[] sStop = databaseAccess.getDirection("stop");
         databaseAccess.close();
-        left = levenshteinDistance(sLeft, comp2);
-        right = levenshteinDistance(sRight, comp2);
-        forward = levenshteinDistance(sForward, comp2);
-        stop = levenshteinDistance(sStop, comp2);
+        LinearRegression linearRegressionLeft = new LinearRegression(compare1,sLeft);
+        LinearRegression linearRegressionRight = new LinearRegression(compare1,sRight);
+        LinearRegression linearRegressionForward = new LinearRegression(compare1,sForward);
+        LinearRegression linearRegressionStop = new LinearRegression(compare1,sStop);
+        double left = linearRegressionLeft.R2();
+        double right = linearRegressionRight.R2();
+        double forward = linearRegressionForward.R2();
+        double stop = linearRegressionStop.R2();
         String result = "";
         if (left < right && left < forward && left < stop) {
             result = "Left";
