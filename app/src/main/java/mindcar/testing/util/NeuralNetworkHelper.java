@@ -5,6 +5,7 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
+import org.neuroph.util.TransferFunctionType;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class NeuralNetworkHelper {
 
     public NeuralNetwork createNetwork(DataSet dataSet, int inputSize, int outputSize){
-        MultiLayerPerceptron network = new MultiLayerPerceptron(inputSize, 1, outputSize);
+        MultiLayerPerceptron network = new MultiLayerPerceptron(TransferFunctionType.TANH, inputSize, 1, outputSize);
         network.setLearningRule(new MomentumBackpropagation());
         network.learnInNewThread(dataSet);
         return network;
@@ -28,7 +29,6 @@ public class NeuralNetworkHelper {
             i++;
         }
         return dataSet;
-
     }
 
     public void saveNetwork(NeuralNetwork neuralNetwork, String name){

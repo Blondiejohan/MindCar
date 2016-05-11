@@ -1,5 +1,7 @@
 package mindcar.testing.objects;
 
+import mindcar.testing.util.DatabaseAccess;
+
 /**
  * Object storing values from a Neurosky Mindwave Mobile
  * Created by Mattias Landkvist & Nikos Sasopoulos on 3/2/16.
@@ -120,5 +122,11 @@ public class Eeg {
         } else {
             return false;
         }
+    }
+
+    public Double[] toDoubleArray(){
+        return new Double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
+                    Double.valueOf(highAlpha), Double.valueOf(lowBeta), Double.valueOf(highBeta),
+                    Double.valueOf(lowGamma), Double.valueOf(highGamma)};
     }
 }
