@@ -11,14 +11,7 @@ package mindcar.testing.objects;
  */
 public class FindPattern {
 
-    int delta;
-    int theta;
-    int lowAlpha;
-    int highAlpha;
-    int lowBeta;
-    int highBeta;
-    int lowGamma;
-    int midGamma;
+    public double[] pattern;
 
 
 
@@ -29,14 +22,14 @@ public class FindPattern {
      * @param wave
      */
     public FindPattern(Eeg wave) {
-        this.delta = wave.delta;
-        this.theta = wave.theta;
-        this.lowAlpha = wave.lowAlpha;
-        this.highAlpha = wave.highAlpha;
-        this.lowBeta = wave.lowBeta;
-        this.highBeta = wave.highBeta;
-        this.lowGamma = wave.lowGamma;
-        this.midGamma = wave.highGamma;
+        this.pattern[0] = wave.delta;
+        this.pattern[1] = wave.theta;
+        this.pattern[2] = wave.lowAlpha;
+        this.pattern[3] = wave.highAlpha;
+        this.pattern[4] = wave.lowBeta;
+        this.pattern[5] = wave.highBeta;
+        this.pattern[6] = wave.lowGamma;
+        this.pattern[7] = wave.highGamma;
     }
 
 
@@ -48,28 +41,28 @@ public class FindPattern {
      */
     public void updateProfile(Eeg eeg) {
         //delta
-        this.delta = this.delta+eeg.delta;
+        this.pattern[0] = this.pattern[0]+eeg.delta;
 
         //theta
-        this.theta = this.theta+eeg.theta;
+        this.pattern[1] = this.pattern[1]+eeg.theta;
 
         //lowAlpha
-        this.lowAlpha = this.lowAlpha+eeg.lowAlpha;
+        this.pattern[2] = this.pattern[2]+eeg.lowAlpha;
 
         //highAlpha
-        this.highAlpha = this.highAlpha+eeg.highAlpha;
+        this.pattern[3] = this.pattern[3]+eeg.highAlpha;
 
         //lowBeta
-        this.lowBeta = this.lowBeta+eeg.lowBeta;
+        this.pattern[4] = this.pattern[4]+eeg.lowBeta;
 
         //highBeta
-        this.highBeta = this.highBeta+eeg.highBeta;
+        this.pattern[5] = this.pattern[5]+eeg.highBeta;
 
         //lowGamma
-        this.lowGamma = this.lowGamma+eeg.lowGamma;
+        this.pattern[6] = this.pattern[6]+eeg.lowGamma;
 
         //midgamma
-        this.midGamma = this.midGamma+eeg.highGamma;
+        this.pattern[7] = this.pattern[7]+eeg.highGamma;
     }
 
 
@@ -90,11 +83,37 @@ public class FindPattern {
      *
      * @return
      */
-    public String getPattern(int amount) {
+    public double[] getPattern(int amount) {
+        //delta
+        this.pattern[0] = this.pattern[0]/amount;
 
-        String result = "Delta:" + this.delta/amount + " Theta:" + this.theta/amount + " LowAlpha:" + this.lowAlpha/amount + " HighAlpha" +
-                this.highAlpha/amount + " LowBeta:" + this.lowBeta/amount + " HighBeta:" + this.highBeta/amount + " lowGamma:" +
-                this.lowGamma/amount + " MidGamma:" + this.midGamma/amount + " End";
-        return result;
+        //theta
+        this.pattern[1] = this.pattern[1]/amount;
+
+        //lowAlpha
+        this.pattern[2] = this.pattern[2]/amount;
+
+        //highAlpha
+        this.pattern[3] = this.pattern[3]/amount;
+
+        //lowBeta
+        this.pattern[4] = this.pattern[4]/amount;
+
+        //highBeta
+        this.pattern[5] = this.pattern[5]/amount;
+
+        //lowGamma
+        this.pattern[6] = this.pattern[6]/amount;
+
+        //midgamma
+        this.pattern[7] = this.pattern[7]/amount;
+
+        return pattern;
+    }
+
+    public String getString(int amount) {
+        return "a"+pattern[0]/amount+"b"+pattern[1]/amount+"c"+pattern[2]/amount+"d"+pattern[3]/amount
+                +"e"+pattern[4]/amount+"f"+pattern[5]/amount+"g"+pattern[5]/amount
+                +"h"+pattern[6]/amount+"i"+pattern[7]/amount+"j";
     }
 }

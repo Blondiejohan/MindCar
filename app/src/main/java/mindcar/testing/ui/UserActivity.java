@@ -2,12 +2,16 @@ package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -16,7 +20,7 @@ import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Command;
-import mindcar.testing.objects.oldConnected;
+import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
@@ -48,6 +52,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private TGDevice tgDevice;
     private Pattern pattern;
     private Command x;
+  
+    Eeg eeg;
+    DatabaseAccess databaseAccess;
 
     String name = StartActivity.un;
     String pw = StartActivity.pw;
@@ -59,23 +66,31 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     View v;
     TextView username;
     Button logout;
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
 
 
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isConnected = false;
+        eeg = new Eeg();
+        databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
-        /*pattern = new Pattern<>();
+
+
+        double[] testDoubles = {2, 5, 8, 11, 15, 25, 36, 46};
+
+
+        pattern = new Pattern<>();
         car = new SmartCar();
         x = car.getCommands();
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
-        tgDevice.start();*/
+        tgDevice.start();
 
         logout = (Button) findViewById(R.id.logout);
         displayName(v);
@@ -89,11 +104,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //public void printUserName(){
-    //String x = StartActivity.un;
-    //getUserName();
-    //username.append(name);
-    //}
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tgDevice.close();
+                if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                        && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+                    tgDevice.connect(true);
+                    tgDevice.start();
+                }
+            }
+        }); // end patterns
+    }
 
     //public void getUserName() {
     //code for retrieving the username from the database
@@ -133,15 +155,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v){
+        switch (v.getId()){
             case R.id.logout:
                 startActivity(new Intent(this, StartActivity.class));
         }
     }
 
 
-   /* public int getBatteryLevel() {
+    public int getBatteryLevel() {
         int batterylvl = 0;
         //code for getting and displaying the SmartCar's battery level
         return batterylvl;
@@ -151,7 +173,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         int speed = 0;
         //code for getting and displaying a live reading of SmartCar's speed while driving.
         return speed;
-    }*/
+    }
 
 
     /**
@@ -160,61 +182,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case TGDevice.MSG_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case TGDevice.STATE_CONNECTED:
+                            isConnected = true;
+                            tgDevice.start();
+                            Log.i("wave", "Connecting");
+                            break;
+                    }
+                    break;
 
-            if (car.getCommands() != x) {
-                oldConnected.write(car.getCommands().name());
-            }
-            if (msg.what == TGDevice.MSG_RAW_DATA) {
-                eeg = new Eeg();
-                MessageParser.parseMessage(msg, eeg);
-                pattern.add(eeg);
-
-                x = car.getCommands();
+                case TGDevice.MSG_RAW_DATA:
+                    if (eeg.isFull()) {
+                        ComparePatterns compPatt = new ComparePatterns(eeg);
+                        String send = compPatt.compare(databaseAccess);
+                        restart.setText(send);
+                        delta.setText(eeg.delta + "");
+                        theta.setText(eeg.theta+"");
+                        lowAlpha.setText(eeg.lowAlpha+"");
+                        highAlpha.setText(eeg.highAlpha+"");
+                        lowBeta.setText(eeg.lowBeta+"");
+                        highBeta.setText(eeg.highBeta+"");
+                        lowGamma.setText(eeg.lowGamma+"");
+                        highGamma.setText(eeg.highGamma+"");
+                        eeg = new Eeg();
+                        break;
+                    }else{
+                        MessageParser.parseRawData(msg, eeg);
+                        break;
+                    }
             }
         }
-
-
     };
-
-    //@Override
-    //public void onStart() {
-    //  super.onStart();
-
-    // ATTENTION: This was auto-generated to implement the App Indexing API.
-    // See https://g.co/AppIndexing/AndroidStudio for more information.
-    //  client.connect();
-    //  Action viewAction = Action.newAction(
-    //        Action.TYPE_VIEW, // TODO: choose an action type.
-    //      "User Page", // TODO: Define a title for the content shown.
-    // TODO: If you have web page content that matches this app activity's content,
-    // make sure this auto-generated web page URL is correct.
-    // Otherwise, set the URL to null.
-    //    Uri.parse("http://host/path"),
-    // TODO: Make sure this auto-generated app URL is correct.
-    //  Uri.parse("android-app://mindcar.testing.ui/http/host/path")
-    // );
-    // AppIndex.AppIndexApi.start(client, viewAction);
-    //}
-
-    // @Override
-    // public void onStop() {
-    //    super.onStop();
-
-    // ATTENTION: This was auto-generated to implement the App Indexing API.
-    // See https://g.co/AppIndexing/AndroidStudio for more information.
-    //      Action viewAction = Action.newAction(
-    //             Action.TYPE_VIEW, // TODO: choose an action type.
-    //             "User Page", // TODO: Define a title for the content shown.
-    // TODO: If you have web page content that matches this app activity's content,
-    // make sure this auto-generated web page URL is correct.
-    // Otherwise, set the URL to null.
-    //             Uri.parse("http://host/path"),
-    // TODO: Make sure this auto-generated app URL is correct.
-    //           Uri.parse("android-app://mindcar.testing.ui/http/host/path")
-    // );
-    // AppIndex.AppIndexApi.end(client, viewAction);
-    //client.disconnect();
-    // }
-
-
 }

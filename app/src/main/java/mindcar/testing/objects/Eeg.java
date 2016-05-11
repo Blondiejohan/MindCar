@@ -18,6 +18,7 @@ public class Eeg {
     public int highBeta;
     public int lowGamma;
     public int highGamma;
+    public double[] arr;
     //TODO - integrate patterns?
 
     /**
@@ -34,6 +35,10 @@ public class Eeg {
      */
     public int getAttention() {
         return attention;
+    }
+
+    public double[] getArray() {
+        return arr;
     }
 
     /**
@@ -78,35 +83,35 @@ public class Eeg {
     }
 
     public void setDelta(int delta) {
-        this.delta = delta;
+        this.arr[0] = delta;
     }
 
     public void setTheta(int theta) {
-        this.theta = theta;
+        this.arr[1] = theta;
     }
 
     public void setLowAlpha(int lowAlpha) {
-        this.lowAlpha = lowAlpha;
+        this.arr[2] = lowAlpha;
     }
 
     public void setHighAlpha(int highAlpha) {
-        this.highAlpha = highAlpha;
+        this.arr[3] = highAlpha;
     }
 
     public void setLowBeta(int lowBeta) {
-        this.lowBeta = lowBeta;
+        this.arr[4] = lowBeta;
     }
 
     public void setHighBeta(int highBeta) {
-        this.highBeta = highBeta;
+        this.arr[5] = highBeta;
     }
 
     public void setLowGamma(int lowGamma) {
-        this.lowGamma = lowGamma;
+        this.arr[6] = lowGamma;
     }
 
     public void setHighGamma(int highGamma) {
-        this.highGamma = highGamma;
+        this.arr[7] = highGamma;
     }
 
 
