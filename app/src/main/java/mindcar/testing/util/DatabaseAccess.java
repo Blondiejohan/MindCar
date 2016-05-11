@@ -78,13 +78,22 @@ public class DatabaseAccess {
         return cursor;
     }
 
-    public String getDirection(String direction) {
+    public double[] getDirection(String direction) {
         Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
-        String str = "";
+        String str= "";
+        double[] arr = new double[0];
         if (cursor.moveToFirst()) {
             str = cursor.getString(cursor.getColumnIndex(direction) + 3);
         }
-        return str;
+        arr[0]= Double.parseDouble(str.substring(str.indexOf("a"), str.indexOf("b")));
+        arr[1]= Double.parseDouble( str.substring(str.indexOf("b"), str.indexOf("c")));
+        arr[2]= Double.parseDouble( str.substring(str.indexOf("c"), str.indexOf("d")));
+        arr[3]= Double.parseDouble( str.substring(str.indexOf("d"), str.indexOf("e")));
+        arr[4]= Double.parseDouble( str.substring(str.indexOf("e"), str.indexOf("f")));
+        arr[5]= Double.parseDouble( str.substring(str.indexOf("f"), str.indexOf("g")));
+        arr[6]= Double.parseDouble( str.substring(str.indexOf("g"), str.indexOf("h")));
+        arr[7]= Double.parseDouble( str.substring(str.indexOf("h"), str.indexOf("i")));
+        return arr;
     }
 
     public Cursor getCursor(String table){

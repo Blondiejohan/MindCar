@@ -1,5 +1,6 @@
 package mindcar.testing.objects;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -7,9 +8,9 @@ import java.util.LinkedList;
  * Created by sarahaldelame and Mattias Landkvist on 19/04/16.
  */
 
-public class Pattern <T> {
+public class Pattern {
     // the list to contain the eeg values
-    private LinkedList<T>list ;
+    private LinkedList<Eeg>list ;
 
     private final int capacity;
     // constructor of the list and a capacity limit to the list
@@ -24,11 +25,11 @@ public class Pattern <T> {
     }
 
     // values are added to the pattern list and are limited to the size of the list
-    public void add(T t) {
+    public void add(Eeg eeg) {
         if(isFull()) {
             list.removeFirst();
         }
-        list.add(t);
+        list.add(eeg);
     }
     // checking if the size of the list is full
     private boolean isFull() {
@@ -38,24 +39,17 @@ public class Pattern <T> {
         return true;
     }
 
-    /**
-     * Complexity: O(N), the following method compares two patterns
-     * @param p
-     * @return
-     */
-    public boolean equals(Pattern<T> p){
-        int i = 0;
-        for(T t : list){
-            if(!t.equals(p.get(i))){
-                return false;
-            }
-            i++;
-        }
-        return true;
 
+
+    public Eeg get(int i) {
+        return list.get(i);
     }
 
-    public T get(int i) {
-        return list.get(i);
+    public Double[] toDoubleArray(){
+        ArrayList<Double[]> doubles = new ArrayList<>();
+        for(Eeg eeg : list){
+            doubles.add(eeg.toDoubleArray());
+        }
+        return (Double[]) doubles.toArray();
     }
 }

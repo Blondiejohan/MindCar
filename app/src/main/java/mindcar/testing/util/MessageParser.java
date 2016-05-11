@@ -31,14 +31,14 @@ public class MessageParser {
      * @param pattern
      * @param car
      */
-    public static void assignCommand(Pattern<Eeg> pattern, SmartCar car) {
+    public static void assignCommand(Pattern pattern, SmartCar car) {
 
         //TODO - Connect with saved patterns
-        Pattern<Eeg> rightPattern = null;
-        Pattern<Eeg> leftPattern = null;
-        Pattern<Eeg> forwardPattern = null;
-        Pattern<Eeg> backwardPattern = null;
-        Pattern<Eeg> stopPattern = null;
+        Pattern rightPattern = null;
+        Pattern leftPattern = null;
+        Pattern forwardPattern = null;
+        Pattern backwardPattern = null;
+        Pattern stopPattern = null;
 
         if (pattern.equals(rightPattern)) {
             car.setCommand(Command.r);

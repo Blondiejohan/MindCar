@@ -100,7 +100,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", left.getPattern(nrOfTimes));
+            databaseAccess.addDirection("left", left.getString(nrOfTimes));
             Log.i("test","Left "+left.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 2;
@@ -120,7 +120,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", right.getPattern(nrOfTimes));
+            databaseAccess.addDirection("right", right.getString(nrOfTimes));
             Log.i("test","Right "+right.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 3;
@@ -140,7 +140,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", forward.getPattern(nrOfTimes));
+            databaseAccess.addDirection("forward", forward.getString(nrOfTimes));
             Log.i("test", "Forward " + forward.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 4;
@@ -160,7 +160,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", stop.getPattern(nrOfTimes));
+            databaseAccess.addDirection("stop", stop.getString(nrOfTimes));
             Log.i("test", "Stop " + stop.getPattern(nrOfTimes));
             databaseAccess.close();
             start = 5;
