@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.StartActivity"
+            android:name=".ui.SavePatterns"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,12 @@
         <activity android:name=".ui.UserActivity" />
         <activity android:name=".ui.RegistrationActivity" />
         <activity android:name=".ui.BluetoothActivity" />
-        <activity android:name=".ui.UserImageActivity"></activity>
+        <activity android:name=".ui.UserImageActivity"/>
+        <activity android:name=".ui.dev.edit.EditCommandsActivity"/>
+        <activity android:name=".ui.dev.DeveloperActivity"/>
+        <activity android:name=".ui.dev.edit.EditUsersActivity"/>
+        <activity android:name=".ui.Intro"/>
+        <activity android:name=".ui.UserTakeImage"/>
     </application>
 
 </manifest>

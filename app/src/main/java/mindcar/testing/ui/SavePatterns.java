@@ -100,7 +100,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", left.toDoubleArray().toString());
+            databaseAccess.addDirection("left", left.toArray().toString());
 
             databaseAccess.close();
             start = 2;
@@ -120,7 +120,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", right.toDoubleArray().toString());
+            databaseAccess.addDirection("right", right.toArray().toString());
 
             databaseAccess.close();
             start = 3;
@@ -140,7 +140,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", forward.toDoubleArray().toString());
+            databaseAccess.addDirection("forward", forward.toArray().toString());
 
             databaseAccess.close();
             start = 4;
@@ -160,7 +160,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", stop.toDoubleArray().toString());
+            databaseAccess.addDirection("stop", stop.toArray().toString());
 
             databaseAccess.close();
             start = 5;
@@ -177,7 +177,8 @@ public class SavePatterns extends AppCompatActivity {
     public final Handler tgHandler = new Handler() {
         @Override
             public void handleMessage (Message msg){
-                switch (msg.what) {
+            int times = 20;
+            switch (msg.what) {
                     case TGDevice.MSG_STATE_CHANGE:
                         switch (msg.arg1) {
                             case TGDevice.STATE_CONNECTED:
@@ -189,10 +190,11 @@ public class SavePatterns extends AppCompatActivity {
                         break;
 
                     case TGDevice.MSG_RAW_DATA:
-                        if (eeg.isFull()) {
+                        if (times == 0){
                             if (start == 1){
                                 direction.setText("Think Left");
                                 saveLeft(eeg);
+
                             }
                             if (start == 2){
                                 direction.setText("Think Right");
@@ -207,9 +209,11 @@ public class SavePatterns extends AppCompatActivity {
                                 saveStop(eeg);
                             }
                             eeg = new Eeg();
+                            times = 20;
                             break;
                         } else {
                             MessageParser.parseRawData(msg, eeg);
+                            times--;
                             break;
                         }
                 }
