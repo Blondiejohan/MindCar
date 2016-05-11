@@ -170,6 +170,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.i("Time start ", System.currentTimeMillis() + "");
+            int times = 20;
+
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -184,12 +187,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 case TGDevice.MSG_RAW_DATA:
 
                         MessageParser.parseRawData(msg, eeg);
-                        pattern.add(eeg);
 
-                        ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
-                        String send = compPatt.compare(databaseAccess);
-                        Log.i("Send message " , send);
-                        eeg = new Eeg();
+                        if (times == 0){
+                            pattern.add(eeg);
+
+                            ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
+                            String send = compPatt.compare(databaseAccess);
+                            Log.i("Send message " , send);
+                            eeg = new Eeg();
+                            times = 20;
+                            Log.i("Time stop ", System.currentTimeMillis() + "");
+                        }else{
+                            times--;
+                        }
+
                         break;
 
             }

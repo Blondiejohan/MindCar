@@ -115,19 +115,6 @@ public class Eeg {
     }
 
 
-    /**
-     * @return true if every eeg value is assignd its correct frequenzy span
-     */
-    public boolean isFull() {
-        if (delta >= 0 && delta <= 3 && theta >= 4 && theta <= 7 && lowAlpha >= 8 && lowAlpha <= 9
-                && highAlpha >= 10 && highAlpha <= 12 && lowBeta >= 13 && lowBeta <= 17
-                && highBeta >= 18 && highBeta <= 30 && lowGamma >= 31 && lowGamma <= 40
-                && highGamma >= 41 && highGamma <= 50) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public double[] toDoubleArray(){
         return new double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
