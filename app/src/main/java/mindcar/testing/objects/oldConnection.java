@@ -14,7 +14,7 @@ import java.util.UUID;
  * This class takes a BluetoothActivity Device as input and creates a connection between the phone and the
  * chosen device.
  */
-public class Connection extends Thread {
+public class oldConnection extends Thread {
 
     private final BluetoothSocket aSocket;
     private final BluetoothDevice aDevice;
@@ -27,7 +27,7 @@ public class Connection extends Thread {
      * @param device
      */
 
-    public Connection(BluetoothDevice device) {
+    public oldConnection(BluetoothDevice device) {
         BluetoothSocket tmp = null;
         aDevice = device;
 
@@ -42,7 +42,7 @@ public class Connection extends Thread {
     // run method that creates a new connected and starts the connection to the socket.
     public void run() {
 
-        Connected aConnected = new Connected(aSocket);
+        oldConnected aConnected = new oldConnected(aSocket);
         aConnected.start();
 
         try {

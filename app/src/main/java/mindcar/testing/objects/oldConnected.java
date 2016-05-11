@@ -10,7 +10,7 @@ import java.io.OutputStream;
  * Created by Johan Laptop on 2016-02-29.
  */
 
-public class Connected extends Thread {
+public class oldConnected extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     static OutputStream mmOutStream;
@@ -22,7 +22,7 @@ public class Connected extends Thread {
      *
      * @param socket
      */
-    public Connected(BluetoothSocket socket) {
+    public oldConnected(BluetoothSocket socket) {
         mmSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
