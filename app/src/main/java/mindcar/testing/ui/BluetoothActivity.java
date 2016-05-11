@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,8 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,15 +20,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 import mindcar.testing.R;
-
+import mindcar.testing.objects.ConnectThread;
 
 
 /**
@@ -41,15 +34,15 @@ import mindcar.testing.R;
 
 public class BluetoothActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-    protected static final int SUCCESS_CONNECT = 0;//Handler for situation of connection status
-    protected static final int MESSAGE_READ = 1;//Handler for situation of connection status
+    //public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+    //protected static final int SUCCESS_CONNECT = 0;//Handler for situation of connection status
+    //protected static final int MESSAGE_READ = 1;//Handler for situation of connection status
     private Button exit; // terminates the application
     private Button activate;// turns Bluetooth on and initiates methods
     private ListView listView;//shows paired items
     private ProgressDialog mProgressDlg;//for discovery progress
     private ProgressBar bar;// waiting indicator for pairing and connecting
-    private BluetoothAdapter theAdapter = BluetoothAdapter.getDefaultAdapter(); //the bluetooth adapter
+    public BluetoothAdapter theAdapter = BluetoothAdapter.getDefaultAdapter(); //the bluetooth adapter
     private Set<BluetoothDevice> paired_devices; //a set of bonded devices
     private ArrayAdapter<String> mylist; //viewed in the list view, the paired devices
     private ArrayList<BluetoothDevice> mDeviceList;// discovery list for adding requiered devices
@@ -59,26 +52,26 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private ArrayList<String> connectedDevices;
 
     // Below starts the connection handler:
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SUCCESS_CONNECT:
-                    ConnectedThread connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
-                    toastMaker("YOU ARE NOW CONNECTED");
-                    bar.setVisibility(View.GONE);
-                    String s = "Successfully connected";
-                    connectedThread.write(s.getBytes());
-                    break;
-                case MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    String st = new String(readBuf);
-                    toastMaker(st);
-                    break;
-            }
-        }
-    };
+//   public Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case SUCCESS_CONNECT:
+//                    ConnectedThread connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
+//                    toastMaker("YOU ARE NOW CONNECTED");
+//                    bar.setVisibility(View.GONE);
+//                    String s = "Successfully connected";
+//                    connectedThread.write(s.getBytes());
+//                    break;
+//                case MESSAGE_READ:
+//                    byte[] readBuf = (byte[]) msg.obj;
+//                    String st = new String(readBuf);
+//                    toastMaker(st);
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,7 +122,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         });
 
 
-        bar = (ProgressBar) findViewById(R.id.progressBar);// bar indicator of pairing and connection status
+        bar = (ProgressBar) findViewById(R.id.progressBar2);// bar indicator of pairing and connection status
         bar.setVisibility(View.GONE);
         activate = (Button) findViewById(R.id.button);
         activate.setVisibility(View.VISIBLE);
@@ -149,17 +142,18 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         });
 
 
-
         // ArrayList for connecting to a bluetooth device through the ListView. This ArrayList will
         // keep device items in the same position as the ListView. For example, position 1 is clicked
         // on the ListView, position 1 in the ArrayList mDeviceList holds this specific item shown
         // on the UI via the ListView.
         mDeviceList = new ArrayList<BluetoothDevice>();
     }
+
     //goes to next activity
-    private void next(){
-        startActivity(new Intent(this, UserActivity.class));
+    private void next() {
+        startActivity(new Intent(this, StartActivity.class));
     }
+
     private void back() {
         startActivity(new Intent(this, BluetoothActivity.class));
     }
@@ -189,8 +183,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     }
 
     // this method terminates the application and exits back to the androids main view
-    public void AppExit()
-    {
+    public void AppExit() {
 
         this.finish();
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -198,9 +191,9 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
     /**
      * this method, pairs, and adds items to the list, also starts and ends discovery.
-     *
      */
     private void checkItems() {
 
@@ -213,7 +206,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                     if (!mDeviceList.contains(device)) {
                         //String s = "(Paired)";
-                        mylist.add("Click To Connect: "+device.getName() + " " + " " + "\n" + "Address: "+device.getAddress());
+                        mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
                         deviceOne = true;
                     }
@@ -222,7 +215,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 } else if (device.getName().equals("MindWave Mobile")) {
                     if (!mDeviceList.contains(device)) {
                         String s = "(Paired)";
-                        mylist.add("Click To Connect: "+device.getName() + " " + " " + "\n" + "Address: "+device.getAddress());
+                        mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
 
                         deviceTwo = true;
@@ -240,6 +233,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             theAdapter.startDiscovery();
         }
     }
+
     //this method simply prints toasts anywhere in the code as needed
     private void toastMaker(String input) {
         Toast.makeText(BluetoothActivity.this, input, Toast.LENGTH_LONG).show();
@@ -270,17 +264,20 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 mProgressDlg.dismiss();
             }
 
-            if(BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)){
-                if(device.getName().equals("Group 2") || device.getName().equals("MindWave Mobile")){
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                if (device.getName().equals("Group 2") || device.getName().equals("MindWave Mobile")) {
                     connectedDevices.add(device.getName());
-                }if(connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")){
+                    bar.setVisibility(View.GONE);
+                }
+                if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
                     next();
+
                 }
             }
 
-            if(BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)){
+            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 connectedDevices.remove(device.getName());
-                if(connectedDevices.size() == 1) {
+                if (connectedDevices.size() == 1) {
                     back();
                 }
             }
@@ -288,7 +285,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getName() != null) {
-                    if (device.getName().equals("Group 2") ) {
+                    if (device.getName().equals("Group 2")) {
                         device.createBond();
 
                     } else if (device.getName().equals("MindWave Mobile")) {
@@ -306,109 +303,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         }
 
     };
+
     //this method cancels discovery and is called in the onClickListener of the ListView
     private void cancelDisc() {
         if (theAdapter.getState() == BluetoothAdapter.STATE_ON) {
             theAdapter.cancelDiscovery();
         }
     }
-
-    /*
-     * this class is the connecting class.
-     */
-    private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {}
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            theAdapter.cancelDiscovery();
-
-            try {
-                mmSocket.connect();
-
-            } catch (IOException connectException) {
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {}
-                return;
-            }
-
-            // Do work to manage the connection (in a separate thread)
-            mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
-        }
-
-
-        // Will cancel the connection, and close the socket
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {}
-        }
-    }
-
-    //this class is for the in-coming and out-coming data
-    private class ConnectedThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
-
-        public ConnectedThread(BluetoothSocket socket) {
-            mmSocket = socket;
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
-
-            // Get the input and output streams, using temp objects because
-            // member streams are final
-            try {
-                tmpIn = socket.getInputStream();
-                tmpOut = socket.getOutputStream();
-            } catch (IOException e) {}
-
-            mmInStream = tmpIn;
-            mmOutStream = tmpOut;
-        }
-
-        public void run() {
-            byte[] buffer;  // buffer store for the stream
-            int bytes; // bytes returned from read()
-
-            // Keep listening to the InputStream until an exception occurs
-            while (true) {
-                try {
-                    // Read from the InputStream
-                    buffer = new byte[1024];
-                    bytes = mmInStream.read(buffer);
-                    // Send the obtained bytes to the ui activity
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
-                } catch (IOException e) {
-                    break;
-                }
-            }
-        }
-
-        // Call this from the main activity to send data to the remote device
-        public void write(byte[] bytes) {
-            try {
-                mmOutStream.write(bytes);
-            } catch (IOException e) {}
-        }
-
-        // Call this from the main activity to shutdown the connection
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {}
-        }
-    }
 }
+
+
