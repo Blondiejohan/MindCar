@@ -129,8 +129,8 @@ public class Eeg {
         }
     }
 
-    public Double[] toDoubleArray(){
-        return new Double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
+    public double[] toDoubleArray(){
+        return new double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
                     Double.valueOf(highAlpha), Double.valueOf(lowBeta), Double.valueOf(highBeta),
                     Double.valueOf(lowGamma), Double.valueOf(highGamma)};
     }

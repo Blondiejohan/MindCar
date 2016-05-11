@@ -15,7 +15,7 @@ import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Eeg;
-import mindcar.testing.objects.FindPattern;
+import mindcar.testing.objects.Pattern;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 
@@ -32,16 +32,16 @@ public class SavePatterns extends AppCompatActivity {
     TGDevice tgDevice;
 
     private BluetoothAdapter spAdapter;// this class intitilizes bt hardware on a device
-    FindPattern right;
+    Pattern right;
     boolean rightBool = true;
 
-    FindPattern forward;
+    Pattern forward;
     boolean forwardBool = true;
 
-    FindPattern left;
+    Pattern left;
     boolean leftBool = true;
 
-    FindPattern stop;
+    Pattern stop;
     boolean stopBool = true;
 
     int nrOfTimes = 20;
@@ -90,18 +90,18 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveLeft(Eeg eeg) {
         if (leftBool) {
-            left = new FindPattern(eeg);
+            left = new Pattern(eeg);
             leftBool = false;
         }
         if (updateNr >= 0) {
-            left.updateProfile(eeg);
+            left.add(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", left.getString(nrOfTimes));
-            Log.i("test","Left "+left.getPattern(nrOfTimes));
+            databaseAccess.addDirection("left", left.toDoubleArray().toString());
+
             databaseAccess.close();
             start = 2;
         }
@@ -110,18 +110,18 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveRight(Eeg eeg) {
         if (rightBool) {
-            right = new FindPattern(eeg);
+            right = new Pattern(eeg);
             rightBool = false;
         }
         if (updateNr > 0) {
-            right.updateProfile(eeg);
+            right.add(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", right.getString(nrOfTimes));
-            Log.i("test","Right "+right.getPattern(nrOfTimes));
+            databaseAccess.addDirection("right", right.toDoubleArray().toString());
+
             databaseAccess.close();
             start = 3;
         }
@@ -130,18 +130,18 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveForward(Eeg eeg) {
         if (forwardBool) {
-            forward = new FindPattern(eeg);
+            forward = new Pattern(eeg);
             forwardBool = false;
         }
         if (updateNr > 0) {
-            forward.updateProfile(eeg);
+            forward.add(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", forward.getString(nrOfTimes));
-            Log.i("test", "Forward " + forward.getPattern(nrOfTimes));
+            databaseAccess.addDirection("forward", forward.toDoubleArray().toString());
+
             databaseAccess.close();
             start = 4;
         }
@@ -150,18 +150,18 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveStop(Eeg eeg) {
         if (stopBool) {
-            stop = new FindPattern(eeg);
+            stop = new Pattern(eeg);
             stopBool = false;
         }
         if (updateNr > 0) {
-            stop.updateProfile(eeg);
+            stop.add(eeg);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", stop.getString(nrOfTimes));
-            Log.i("test", "Stop " + stop.getPattern(nrOfTimes));
+            databaseAccess.addDirection("stop", stop.toDoubleArray().toString());
+
             databaseAccess.close();
             start = 5;
             tgDevice.close();
@@ -171,7 +171,7 @@ public class SavePatterns extends AppCompatActivity {
     }
 
     /**
-     * Handler that creates the pattern for left, it first creates a findpattern, then updates it several times
+     * Handler that creates the pattern for left, it first creates a Pattern, then updates it several times
      * to get the low and high for each wave. It then sends the result to the database.
      */
     public final Handler tgHandler = new Handler() {
