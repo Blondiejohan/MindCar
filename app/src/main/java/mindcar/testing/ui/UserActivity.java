@@ -48,10 +48,11 @@ import android.view.View;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SmartCar car;
-    private Eeg eeg;
     private TGDevice tgDevice;
     private Pattern pattern;
     private Command x;
+    boolean isConnected = false;
+    Button restart;
   
     Eeg eeg;
     DatabaseAccess databaseAccess;
@@ -86,7 +87,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         double[] testDoubles = {2, 5, 8, 11, 15, 25, 36, 46};
 
 
-        pattern = new Pattern<>();
+        pattern = new Pattern();
         car = new SmartCar();
         x = car.getCommands();
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
@@ -101,9 +102,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +114,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
         }); // end patterns
     }
+
+
+
 
     //public void getUserName() {
     //code for retrieving the username from the database
@@ -197,15 +198,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     if (eeg.isFull()) {
                         ComparePatterns compPatt = new ComparePatterns(eeg);
                         String send = compPatt.compare(databaseAccess);
-                        restart.setText(send);
-                        delta.setText(eeg.delta + "");
-                        theta.setText(eeg.theta+"");
-                        lowAlpha.setText(eeg.lowAlpha+"");
-                        highAlpha.setText(eeg.highAlpha+"");
-                        lowBeta.setText(eeg.lowBeta+"");
-                        highBeta.setText(eeg.highBeta+"");
-                        lowGamma.setText(eeg.lowGamma+"");
-                        highGamma.setText(eeg.highGamma+"");
+
                         eeg = new Eeg();
                         break;
                     }else{
