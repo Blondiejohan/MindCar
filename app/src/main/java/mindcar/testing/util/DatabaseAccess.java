@@ -122,10 +122,9 @@ public class DatabaseAccess {
         database.update(table, values, "_id = " + id, null);
     }
 
-    public void update(String username) {
-        ContentValues usernameChange = new ContentValues();
-        usernameChange.put("username", username);
-        database.update("Users", usernameChange, " username = "+ username, null );
+    public void update(String username, String newUsername) {
+        String sql = "UPDATE Users SET username = '" +newUsername+ "' where username = " + "'"+username+"'" + ";";
+        database.execSQL(sql);
     }
 
     public boolean isDeveloper(String username, String password) {
