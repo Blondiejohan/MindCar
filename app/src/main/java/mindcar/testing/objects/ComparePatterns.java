@@ -3,6 +3,8 @@ package mindcar.testing.objects;
 import android.app.Activity;
 import android.util.Log;
 
+import org.neuroph.core.NeuralNetwork;
+
 import mindcar.testing.util.DatabaseAccess;
 
 /**
@@ -10,6 +12,7 @@ import mindcar.testing.util.DatabaseAccess;
  */
 public class ComparePatterns extends Activity {
     public double[] compare1;
+    private NeuralNetwork neuralNetwork;
 
     String comp2="";
 
@@ -18,8 +21,9 @@ public class ComparePatterns extends Activity {
      *
      * @param input
      */
-    public ComparePatterns(Eeg input) {
-       this.compare1 = input.arr;
+    public ComparePatterns(double[] input, NeuralNetwork neuralNetwork) {
+       this.compare1 = input;
+        this.neuralNetwork = neuralNetwork;
 
     }
 
@@ -42,27 +46,46 @@ public class ComparePatterns extends Activity {
         LinearRegression linearRegressionRight = new LinearRegression(compare1,sRight);
         LinearRegression linearRegressionForward = new LinearRegression(compare1,sForward);
         LinearRegression linearRegressionStop = new LinearRegression(compare1,sStop);
-        double left = linearRegressionLeft.R2();
-        double right = linearRegressionRight.R2();
-        double forward = linearRegressionForward.R2();
-        double stop = linearRegressionStop.R2();
+
+        neuralNetwork.setInput(compare1);
+        neuralNetwork.calculate();
+        double[] res = neuralNetwork.getOutput();
         String result = "";
-        if (left < right && left < forward && left < stop) {
-            result = "Left";
-            Log.i("test", ( left)+" Left");
+        double line = 0;
+        if(res[0] < 1.5){
+            line = linearRegressionLeft.R2();
+            Log.i("Linear ", line + "");
+            if(line > 0.9) {
+                result = "Left";
+            } else {
+                result = "";
+            }
+        } else if (res[0] > 1.5 && res[0] < 2.5){
+            line = linearRegressionRight.R2();
+            Log.i("Linear ", line + "");
+            if(line > 0.9) {
+                result = "Right";
+            } else {
+                result = "";
+            }
+        } else if (res[0] > 2.5 && res[0] < 3.5){
+            line = linearRegressionForward.R2();
+            Log.i("Linear ", line + "");
+            if(line > 0.9) {
+                result = "Forward";
+            } else {
+                result = "";
+            }
+        } else {
+            line = linearRegressionStop.R2();
+            Log.i("Linear ", line + "");
+            if(line > 0.9) {
+                result = "Stop";
+            } else {
+                result = "";
+            }
         }
-        if (right < left && right < forward && right < stop) {
-            result = "Right";
-            Log.i("test", ( right)+" Right");
-        }
-        if (forward < left && forward < right && forward < stop) {
-            result = "Forward";
-            Log.i("test", ( forward)+" Forward");
-        }
-        if (stop < left && stop < right && stop < forward) {
-            result = "Stop";
-            Log.i("test", ( stop)+" Stop");
-        }
+
 
         return result;
     }

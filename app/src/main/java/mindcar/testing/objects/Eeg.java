@@ -83,54 +83,39 @@ public class Eeg {
     }
 
     public void setDelta(int delta) {
-        this.arr[0] = delta;
+        this.delta = delta;
     }
 
     public void setTheta(int theta) {
-        this.arr[1] = theta;
+        this.theta = theta;
     }
 
     public void setLowAlpha(int lowAlpha) {
-        this.arr[2] = lowAlpha;
+        this.lowAlpha = lowAlpha;
     }
 
     public void setHighAlpha(int highAlpha) {
-        this.arr[3] = highAlpha;
+        this.highAlpha = highAlpha;
     }
 
     public void setLowBeta(int lowBeta) {
-        this.arr[4] = lowBeta;
+        this.lowBeta = lowBeta;
     }
 
-    public void setHighBeta(int highBeta) {
-        this.arr[5] = highBeta;
-    }
+    public void setHighBeta(int highBeta) { this.highBeta = highBeta; }
 
     public void setLowGamma(int lowGamma) {
-        this.arr[6] = lowGamma;
+        this.lowGamma = lowGamma;
     }
 
     public void setHighGamma(int highGamma) {
-        this.arr[7] = highGamma;
+        this.highGamma = highGamma;
     }
 
 
-    /**
-     * @return true if every eeg value is assignd its correct frequenzy span
-     */
-    public boolean isFull() {
-        if (delta >= 0 && delta <= 3 && theta >= 4 && theta <= 7 && lowAlpha >= 8 && lowAlpha <= 9
-                && highAlpha >= 10 && highAlpha <= 12 && lowBeta >= 13 && lowBeta <= 17
-                && highBeta >= 18 && highBeta <= 30 && lowGamma >= 31 && lowGamma <= 40
-                && highGamma >= 41 && highGamma <= 50) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    public Double[] toDoubleArray(){
-        return new Double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
+    public double[] toDoubleArray(){
+        return new double[]{Double.valueOf(delta), Double.valueOf(theta), Double.valueOf(lowAlpha),
                     Double.valueOf(highAlpha), Double.valueOf(lowBeta), Double.valueOf(highBeta),
                     Double.valueOf(lowGamma), Double.valueOf(highGamma)};
     }

@@ -1,6 +1,7 @@
 package mindcar.testing.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
@@ -31,7 +35,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_start);
 
         ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
-        ET_PASSWORD = (EditText) findViewById(R.id.ET_PASS);
+        ET_PASSWORD = (EditText) findViewById(R.id.ET_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
         bSIGNUP = (Button) findViewById(R.id.bSIGNUP);
         devView = (TextView) findViewById(R.id.devView);
@@ -55,8 +59,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     mp.start();
                     startActivity(new Intent(this, BluetoothActivity.class));
                     //startActivity(new Intent(this, oldConnection.class));
-                }
-                else {
+                } else {
 
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                     MediaPlayer mp2 = MediaPlayer.create(this, R.raw.no);

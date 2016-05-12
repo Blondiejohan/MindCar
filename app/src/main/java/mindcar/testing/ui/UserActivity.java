@@ -24,9 +24,11 @@ import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
+import mindcar.testing.objects.oldConnected;
 import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
+import mindcar.testing.util.NeuralNetworkHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -41,6 +43,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.view.View;
 
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.data.DataSet;
+
+import java.util.LinkedList;
+
 
 /**
  * Created by madiseniman on 07/04/16.
@@ -53,7 +60,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private Command x;
     boolean isConnected = false;
     Button restart;
-  
+    NeuralNetwork neuralNetwork;
     Eeg eeg;
     DatabaseAccess databaseAccess;
 
@@ -83,8 +90,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
 
+        LinkedList<double[]> patternList = new LinkedList<>();
+        patternList.add(databaseAccess.getDirection("left"));
+        patternList.add(databaseAccess.getDirection("right"));
+        patternList.add(databaseAccess.getDirection("forward"));
+        patternList.add(databaseAccess.getDirection("stop"));
 
-        double[] testDoubles = {2, 5, 8, 11, 15, 25, 36, 46};
+        DataSet dataSet = NeuralNetworkHelper.createDataSet(patternList, 160, 1);
+        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
+
 
 
         pattern = new Pattern();
@@ -118,33 +132,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    //public void getUserName() {
-    //code for retrieving the username from the database
-
-    //String name = null;
-    //String query = "SELECT userName FROM USERS WHERE username = '" +
-    //un + "' AND password = '" + pw + "'";
-    //if (name != null && pw != null) {
-    // DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-    //databaseAccess.open();
-    //Cursor resultSet = database.rawQuery(query, null);
-    //resultSet.moveToFirst();
-    //name = resultSet.getString(0);
-
-
-    //SharedPreferences sharedpreferences = getSharedPreferences("username", Context.MODE_PRIVATE);
-
-    //Editor editor = sharedpreferences.edit();
-    // editor.putString("username", name);
-    //editor.commit();
-
-    //username.append(name);
-    //databaseAccess.close();}
-    //return username;}
-    //else
-    //System.out.println("Name not printing");
-    //return null;
-    // }
 
 
     public void displayName(View view) {
@@ -183,6 +170,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.i("Time start ", System.currentTimeMillis() + "");
+            int times = 20;
+
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -195,16 +185,24 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
                 case TGDevice.MSG_RAW_DATA:
-                    if (eeg.isFull()) {
-                        ComparePatterns compPatt = new ComparePatterns(eeg);
-                        String send = compPatt.compare(databaseAccess);
 
-                        eeg = new Eeg();
-                        break;
-                    }else{
                         MessageParser.parseRawData(msg, eeg);
+
+                        if (times == 0){
+                            pattern.add(eeg);
+
+                            ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
+                            String send = compPatt.compare(databaseAccess);
+                            Log.i("Send message " , send);
+                            eeg = new Eeg();
+                            times = 20;
+                            Log.i("Time stop ", System.currentTimeMillis() + "");
+                        }else{
+                            times--;
+                        }
+
                         break;
-                    }
+
             }
         }
     };

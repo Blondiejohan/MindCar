@@ -11,12 +11,18 @@ import java.util.LinkedList;
 public class Pattern {
     // the list to contain the eeg values
     private LinkedList<Eeg>list ;
-
     private final int capacity;
+
     // constructor of the list and a capacity limit to the list
     public Pattern(){
         this.list = new LinkedList<>();
-        this.capacity = 100;
+        this.capacity = 20;
+    }
+
+    public Pattern(Eeg eeg){
+        this.list = new LinkedList<>();
+        this.capacity = 20;
+        add(eeg);
     }
     // another constructor with the capacity set to the limit
     public Pattern(int capacity){
@@ -45,11 +51,16 @@ public class Pattern {
         return list.get(i);
     }
 
-    public Double[] toDoubleArray(){
-        ArrayList<Double[]> doubles = new ArrayList<>();
+    public double[] toArray(){
+        double[] doubles = new double[capacity * 8];
+        int i = 0;
         for(Eeg eeg : list){
-            doubles.add(eeg.toDoubleArray());
+            double[] tmp = eeg.toDoubleArray();
+            for(double d: tmp){
+                doubles[i] = d;
+                i++;
+            };
         }
-        return (Double[]) doubles.toArray();
+        return doubles;
     }
 }

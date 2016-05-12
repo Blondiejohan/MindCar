@@ -73,7 +73,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     Toast.makeText(getApplicationContext(), "Welcome " + ET_USER_NAME.getText().toString() + " " + ET_PASS.getText().toString(), Toast.LENGTH_SHORT).show();
                     databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString());
                     //databaseAccess.close();
-                    startActivity(new Intent(this, StartActivity.class));
+                    startActivity(new Intent(this, SavePatterns.class));
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;
