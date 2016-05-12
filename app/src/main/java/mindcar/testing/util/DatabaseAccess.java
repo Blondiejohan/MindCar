@@ -122,8 +122,13 @@ public class DatabaseAccess {
         database.update(table, values, "_id = " + id, null);
     }
 
-    public void update(String username, String newUsername) {
-        String sql = "UPDATE Users SET username = '" +newUsername+ "' where username = " + "'"+username+"'" + ";";
+    public void updateUsername (String oldUsername, String newUsername) {
+        String sql = "UPDATE Users SET username = '" +newUsername+ "' where username = '"+oldUsername+"'" + ";";
+        database.execSQL(sql);
+    }
+
+    public void updatePassword (String oldPassword, String newPassword){
+        String sql = "Update Users SET password = '" +newPassword+ "' where password = '"+oldPassword+"'"+";";
         database.execSQL(sql);
     }
 
