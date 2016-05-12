@@ -57,7 +57,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     //databaseAccess.close();
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
-                    startActivity(new Intent(this, BluetoothActivity.class));
+                    startActivity(new Intent(this, UserActivity.class));
                     //startActivity(new Intent(this, oldConnection.class));
                 } else {
 

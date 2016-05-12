@@ -24,7 +24,6 @@ import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.objects.oldConnected;
 import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
@@ -91,10 +90,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_user);
 
         LinkedList<double[]> patternList = new LinkedList<>();
-        patternList.add(databaseAccess.getDirection("left"));
-        patternList.add(databaseAccess.getDirection("right"));
-        patternList.add(databaseAccess.getDirection("forward"));
-        patternList.add(databaseAccess.getDirection("stop"));
+    //    patternList.add(databaseAccess.getDirection("left"));
+    //    patternList.add(databaseAccess.getDirection("right"));
+    //    patternList.add(databaseAccess.getDirection("forward"));
+    //    patternList.add(databaseAccess.getDirection("stop"));
+
+        patternList.add(new double[160]);
+        patternList.add(new double[160]);
+        patternList.add(new double[160]);
+        patternList.add(new double[160]);
 
         DataSet dataSet = NeuralNetworkHelper.createDataSet(patternList, 160, 1);
         neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);

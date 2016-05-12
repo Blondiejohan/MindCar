@@ -15,7 +15,7 @@ import java.util.List;
 public class NeuralNetworkHelper {
 
     public static NeuralNetwork createNetwork(DataSet dataSet, int inputSize, int outputSize){
-        MultiLayerPerceptron network = new MultiLayerPerceptron(TransferFunctionType.TANH, inputSize, 1, outputSize);
+        MultiLayerPerceptron network = new MultiLayerPerceptron(TransferFunctionType.TANH, inputSize, 3, outputSize);
         network.setLearningRule(new MomentumBackpropagation());
         network.learnInNewThread(dataSet);
         testNeuralNetwork(network,dataSet);
