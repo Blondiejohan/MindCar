@@ -32,13 +32,13 @@ public class NeuralNetworkHelper {
         return dataSet;
     }
 
-    public static void saveNetwork(NeuralNetwork neuralNetwork, String name){
-        neuralNetwork.save(name + ".nnet");
-    }
-
-    public static NeuralNetwork loadNetwork(String name){
-        return NeuralNetwork.createFromFile(name);
-    }
+//    public static void saveNetwork(NeuralNetwork neuralNetwork, String name){
+//        neuralNetwork.save(name + ".nnet");
+//    }
+//
+//    public static NeuralNetwork loadNetwork(String name){
+//        return NeuralNetwork.createFromFile(name);
+//    }
 
     /**
      * Calculates the scenario with a NeuralNetwork and a DataSet as input parameters.
