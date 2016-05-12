@@ -26,6 +26,9 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button bSIGNUP;
     TextView devView;
 
+    //nikos
+    Button userSettings;
+
     public static String un, pw;
 
 
@@ -40,6 +43,9 @@ public class StartActivity extends Activity implements View.OnClickListener {
         bSIGNUP = (Button) findViewById(R.id.bSIGNUP);
         devView = (TextView) findViewById(R.id.devView);
 
+        //nikos
+        userSettings = (Button) findViewById(R.id.userSettings);
+        userSettings.setOnClickListener(this);
 
         bLogin.setOnClickListener(this);
         bSIGNUP.setOnClickListener(this);
@@ -74,6 +80,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
             case R.id.devView:
                 startActivity(new Intent(this, DeveloperActivity.class));
+                break;
+
+            case R.id.userSettings:
+                startActivity(new Intent(this, UserSettings.class));
                 break;
         }
 

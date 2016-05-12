@@ -33,7 +33,9 @@
         <activity android:name=".ui.UserActivity" />
         <activity android:name=".ui.RegistrationActivity" />
         <activity android:name=".ui.BluetoothActivity" />
-        <activity android:name=".ui.UserImageActivity"></activity>
+        <activity android:name=".ui.UserImageActivity"/>
+            <activity android:name=".ui.UserSettings">
+        </activity>
     </application>
 
 </manifest>

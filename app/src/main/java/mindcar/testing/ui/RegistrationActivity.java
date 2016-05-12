@@ -26,6 +26,9 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     Button bRegister;
     EditText ET_USER_NAME, ET_PASS;
     String user_name, user_pass;
+    //nikos
+    Button userSettings;
+
 
     //Madisen's
         //Choosing and taking the Image
@@ -41,6 +44,10 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
         ET_PASS = (EditText) findViewById(R.id.ET_PASS);
         bRegister = (Button) findViewById(R.id.bRegister);
+
+        //nikos
+        userSettings = (Button) findViewById(R.id.userSettings);
+
         bRegister.setOnClickListener(this);
 
         //Madisen's shit for choosing a photo
@@ -88,6 +95,10 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 break;
+
+            //nikos
+            case R.id.userSettings:
+
 
         }
 

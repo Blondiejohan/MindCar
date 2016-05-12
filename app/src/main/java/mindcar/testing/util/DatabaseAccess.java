@@ -122,6 +122,12 @@ public class DatabaseAccess {
         database.update(table, values, "_id = " + id, null);
     }
 
+    public void update(String username) {
+        ContentValues usernameChange = new ContentValues();
+        usernameChange.put("username", username);
+        database.update("Users", usernameChange, " username = "+ username, null );
+    }
+
     public boolean isDeveloper(String username, String password) {
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
         return cursor.getCount() == 1;
