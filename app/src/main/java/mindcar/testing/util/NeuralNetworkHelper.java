@@ -1,8 +1,8 @@
 package mindcar.testing.util;
 
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.data.DataSet;
-import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.TrainingElement;
+import org.neuroph.core.learning.TrainingSet;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
@@ -14,19 +14,19 @@ import java.util.List;
  */
 public class NeuralNetworkHelper {
 
-    public static NeuralNetwork createNetwork(DataSet dataSet, int inputSize, int outputSize){
+    public static NeuralNetwork createNetwork(TrainingSet dataSet, int inputSize, int outputSize){
         MultiLayerPerceptron network = new MultiLayerPerceptron(TransferFunctionType.TANH, inputSize, 3, outputSize);
         network.setLearningRule(new MomentumBackpropagation());
-        network.learnInNewThread(dataSet);
-        testNeuralNetwork(network,dataSet);
+        //network.learnInNewThread(dataSet);
+    //    testNeuralNetwork(network,dataSet);
         return network;
     }
 
-    public static DataSet createDataSet(List<double[]> input, int inputSize, int outputSize){
-        DataSet dataSet = new DataSet(inputSize,outputSize);
+    public static TrainingSet createDataSet(List<double[]> input, int inputSize, int outputSize){
+        TrainingSet dataSet = new TrainingSet(inputSize,outputSize);
         int i = 1;
         for(double[] d : input){
-            dataSet.addRow(new DataSetRow(d,new double[]{i}));
+            dataSet.addElement(new TrainingElement(d));
             i++;
         }
         return dataSet;
@@ -45,12 +45,12 @@ public class NeuralNetworkHelper {
      * @param neuralNetwork
      * @param trainingSet
      */
-    public static void testNeuralNetwork(NeuralNetwork neuralNetwork, DataSet trainingSet) {
-        for(DataSetRow dataSetRow:trainingSet.getRows()){
-            neuralNetwork.setInput(dataSetRow.getInput());
-            neuralNetwork.calculate();
-        }
-    }
+//    public static void testNeuralNetwork(NeuralNetwork neuralNetwork, TrainingSet trainingSet) {
+//        for(DataSetRow dataSetRow:trainingSet.getRows()){
+//            neuralNetwork.setInput(dataSetRow.getInput());
+//            neuralNetwork.calculate();
+//        }
+//    }
 
 
 }

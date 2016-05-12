@@ -43,7 +43,7 @@ import android.content.SharedPreferences.Editor;
 import android.view.View;
 
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.data.DataSet;
+import org.neuroph.core.learning.TrainingSet;
 
 import java.util.LinkedList;
 
@@ -100,7 +100,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         patternList.add(new double[160]);
         patternList.add(new double[160]);
 
-        DataSet dataSet = NeuralNetworkHelper.createDataSet(patternList, 160, 1);
+        TrainingSet dataSet = null;
+               // NeuralNetworkHelper.createDataSet(patternList, 160, 1);
         neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
 
 
@@ -120,17 +121,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        restart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tgDevice.close();
-                if (tgDevice.getState() != TGDevice.STATE_CONNECTING
-                        && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
-                    tgDevice.connect(true);
-                    tgDevice.start();
-                }
-            }
-        }); // end patterns
+//        restart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                tgDevice.close();
+//                if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+//                        && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+//                    tgDevice.connect(true);
+//                    tgDevice.start();
+//                }
+//            }
+//        }); // end patterns
     }
 
 
