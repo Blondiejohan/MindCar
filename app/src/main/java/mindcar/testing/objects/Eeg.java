@@ -83,35 +83,33 @@ public class Eeg {
     }
 
     public void setDelta(int delta) {
-        this.arr[0] = delta;
+        this.delta = delta;
     }
 
     public void setTheta(int theta) {
-        this.arr[1] = theta;
+        this.theta = theta;
     }
 
     public void setLowAlpha(int lowAlpha) {
-        this.arr[2] = lowAlpha;
+        this.lowAlpha = lowAlpha;
     }
 
     public void setHighAlpha(int highAlpha) {
-        this.arr[3] = highAlpha;
+        this.highAlpha = highAlpha;
     }
 
     public void setLowBeta(int lowBeta) {
-        this.arr[4] = lowBeta;
+        this.lowBeta = lowBeta;
     }
 
-    public void setHighBeta(int highBeta) {
-        this.arr[5] = highBeta;
-    }
+    public void setHighBeta(int highBeta) { this.highBeta = highBeta; }
 
     public void setLowGamma(int lowGamma) {
-        this.arr[6] = lowGamma;
+        this.lowGamma = lowGamma;
     }
 
     public void setHighGamma(int highGamma) {
-        this.arr[7] = highGamma;
+        this.highGamma = highGamma;
     }
 
 

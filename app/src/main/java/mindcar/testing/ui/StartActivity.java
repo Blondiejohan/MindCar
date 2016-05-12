@@ -22,7 +22,7 @@ import mindcar.testing.R;
 public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin;
-    EditText ET_USER_NAME, ET_PASS;
+    EditText ET_USER_NAME, ET_PASSWORD;
     Button bSIGNUP;
     TextView devView;
 
@@ -35,7 +35,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_start);
 
         ET_USER_NAME = (EditText) findViewById(R.id.ET_USER_NAME);
-        ET_PASS = (EditText) findViewById(R.id.ET_PASS);
+        ET_PASSWORD = (EditText) findViewById(R.id.ET_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
         bSIGNUP = (Button) findViewById(R.id.bSIGNUP);
         devView = (TextView) findViewById(R.id.devView);
@@ -52,15 +52,14 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString())) {
+                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
                     startActivity(new Intent(this, BluetoothActivity.class));
                     //startActivity(new Intent(this, oldConnection.class));
-                }
-                else {
+                } else {
 
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                     MediaPlayer mp2 = MediaPlayer.create(this, R.raw.no);

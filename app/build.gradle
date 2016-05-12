@@ -10,7 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+        multiDexEnabled false
     }
     buildTypes {
         release {
@@ -20,7 +20,7 @@ android {
     }
     dexOptions{
         javaMaxHeapSize"4g"
-        preDexLibraries = false
+        preDexLibraries = true
     }
 }
 
@@ -32,4 +32,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/ThinkGear.jar')
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile files('libs/neuroph-core-2.92-java-1.7.jar')
+    compile files('libs/neuroph-core-2.8.jar')
 }
