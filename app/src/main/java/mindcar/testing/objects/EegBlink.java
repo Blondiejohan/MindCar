@@ -7,8 +7,8 @@ import com.neurosky.thinkgear.TGDevice;
  */
 public class EegBlink {
 
-    public int blink;
-    public int attention;
+    private int blink;
+    private int attention;
 
     public EegBlink(int blink, int attention) {
         this.blink = blink;
@@ -31,8 +31,13 @@ public class EegBlink {
         this.attention = attention;
     }
 
+    public EegBlink(){
+        blink = 0;
+        attention = 0;
+    }
+
     public boolean leftBlink(){
-        if (blink == 2 && attention>10){
+        if (blink < 100 && blink > 60){
             return true;
         }
         else
@@ -40,7 +45,7 @@ public class EegBlink {
     }
 
     public boolean rightBlink() {
-        if (blink == 3 && attention > 10){
+        if (blink <60 && blink > 30){
             return true;}
         else
         {return false;}

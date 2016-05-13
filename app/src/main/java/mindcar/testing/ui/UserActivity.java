@@ -179,7 +179,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
                 case TGDevice.MSG_BLINK:
-                    EegBlink eegBlink = new EegBlink(0,0);
+                    EegBlink eegBlink = new EegBlink();
                     //SmartCar smartCar = new SmartCar();
                     eegBlink.setBlink(msg.arg1);
                     eegBlink.setAttention(5);
