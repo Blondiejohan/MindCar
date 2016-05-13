@@ -31,7 +31,7 @@ public class EegBlink {
         this.attention = attention;
     }
 
-    public boolean test1(){
+    public boolean leftBlink(){
         if (blink == 2 && attention>10){
             return true;
         }
@@ -39,7 +39,7 @@ public class EegBlink {
         {return false;}
     }
 
-    public boolean test2() {
+    public boolean rightBlink() {
         if (blink == 3 && attention > 10){
             return true;}
         else

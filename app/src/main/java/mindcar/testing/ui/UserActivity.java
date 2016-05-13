@@ -13,9 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
@@ -25,22 +22,8 @@ import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.view.View;
 
 
 /**
@@ -199,8 +182,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     EegBlink eegBlink = new EegBlink(0,0);
                     //SmartCar smartCar = new SmartCar();
                     eegBlink.setBlink(msg.arg1);
-                    if (eegBlink.test1()){
+                    if (eegBlink.leftBlink()){
+                        x = Command.l;
+                        car.getCommands();
+                    }
 
+                    if (eegBlink.rightBlink()){
+                        x = Command.r;
+                        car.getCommands();
                     }
 
 
