@@ -205,6 +205,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         MessageParser.parseRawData(msg, eeg);
                         break;
                     }
+
+                    case TGDevice.MSG_BLINK:
+
+
+
+                        }
             }
         }
     };

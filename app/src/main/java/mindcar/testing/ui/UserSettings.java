@@ -12,7 +12,7 @@ import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.UserData;
 
 /**
- * Created by Darkthronen on 12/05/2016.
+ * Created by Nikolaos-Machairiotis Sasopoulos on 12/05/2016.
  */
 public class UserSettings  extends Activity implements View.OnClickListener {
 

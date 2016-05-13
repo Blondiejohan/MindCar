@@ -3,12 +3,12 @@ package mindcar.testing.objects;
 import com.neurosky.thinkgear.TGDevice;
 
 /**
- * Created by Darkthronen on 13/05/2016.
+ * Created by Nikolaos-Machairiotis Sasopoulos on 13/05/2016.
  */
 public class EegBlink {
 
-    private int blink;
-    private int attention;
+    public int blink;
+    public int attention;
 
     public EegBlink(int blink, int attention) {
         this.blink = blink;
@@ -36,13 +36,13 @@ public class EegBlink {
             return true;
         }
         else
-            return false;
+        {return false;}
     }
 
     public boolean test2() {
         if (blink == 3 && attention > 10){
             return true;}
         else
-            return false;
+        {return false;}
     }
 }
