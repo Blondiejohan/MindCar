@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,11 +24,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.neurosky.thinkgear.TGDevice;
+
 import java.util.ArrayList;
 import java.util.Set;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.ConnectThread;
+import mindcar.testing.objects.ConnectedThread;
 
 
 /**
@@ -35,8 +42,8 @@ import mindcar.testing.objects.ConnectThread;
 public class BluetoothActivity extends Activity implements AdapterView.OnItemClickListener {
 
     //public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-    //protected static final int SUCCESS_CONNECT = 0;//Handler for situation of connection status
-    //protected static final int MESSAGE_READ = 1;//Handler for situation of connection status
+    protected static final int SUCCESS_CONNECT = 0;//Handler for situation of connection status
+    protected static final int MESSAGE_READ = 1;//Handler for situation of connection status
     private Button exit; // terminates the application
     private Button activate;// turns Bluetooth on and initiates methods
     private ListView listView;//shows paired items
@@ -50,28 +57,28 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private boolean deviceOne = false;//booleans for stopping discovery
     private boolean deviceTwo = false;//booleans for stopping discovery
     private ArrayList<String> connectedDevices;
+    public static TGDevice tgDevice;
+    boolean isConnected = false;
+
 
     // Below starts the connection handler:
-//   public Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case SUCCESS_CONNECT:
-//                    ConnectedThread connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
-//                    toastMaker("YOU ARE NOW CONNECTED");
-//                    bar.setVisibility(View.GONE);
-//                    String s = "Successfully connected";
-//                    connectedThread.write(s.getBytes());
-//                    break;
-//                case MESSAGE_READ:
-//                    byte[] readBuf = (byte[]) msg.obj;
-//                    String st = new String(readBuf);
-//                    toastMaker(st);
-//                    break;
-//            }
-//        }
-//    };
+   public Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TGDevice.MSG_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case TGDevice.STATE_CONNECTED:
+                            isConnected = true;
+                            tgDevice.start();
+                            Log.i("wave", "Connecting");
+                            break;
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,9 +172,22 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         }
 
         BluetoothDevice selectedDevice = mDeviceList.get(position); //getting the position in mDeviceList
-        ConnectThread connect = new ConnectThread(selectedDevice); //passing in the selectedDevice and connecting it
-        connect.start();
-        bar.setVisibility(View.VISIBLE);
+        if(selectedDevice.getName().equals("Group 2")){
+
+            ConnectThread connect = new ConnectThread(selectedDevice); //passing in the selectedDevice and connecting it
+            connect.start();
+            bar.setVisibility(View.VISIBLE);
+
+        } else if (selectedDevice.getName().equals("MindWave Mobile")){
+            tgDevice = new TGDevice(theAdapter,mHandler);
+            if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                    && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+                tgDevice.connect(true);
+                bar.setVisibility(View.VISIBLE);
+            }
+        }
+
+
     }
 
     // this method turn on and off bluetooth device
@@ -270,15 +290,18 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     bar.setVisibility(View.GONE);
                 }
                 if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
-                    next();
-
+                    tgDevice.stop();
+                    tgDevice.close();
+                   next();
                 }
             }
 
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 connectedDevices.remove(device.getName());
-                if (connectedDevices.size() == 1) {
-                    back();
+                toastMaker("Disconnected device is : " + device.getName());
+                if (device.getName().equals("MindWave Mobile")){
+                    //back();
+
                 }
             }
 
