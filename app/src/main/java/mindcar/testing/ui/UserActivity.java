@@ -22,6 +22,7 @@ import mindcar.testing.R;
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
+import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
 import mindcar.testing.util.CommandUtils;
@@ -194,6 +195,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
 
+                case TGDevice.MSG_BLINK:
+                    EegBlink eegBlink = new EegBlink(0,0);
+                    //SmartCar smartCar = new SmartCar();
+                    eegBlink.setBlink(msg.arg1);
+                    if (eegBlink.test1()){
+
+                    }
+
+
                 case TGDevice.MSG_RAW_DATA:
                     if (eeg.isFull()) {
                         ComparePatterns compPatt = new ComparePatterns(eeg);
@@ -205,12 +215,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         MessageParser.parseRawData(msg, eeg);
                         break;
                     }
-
-                    case TGDevice.MSG_BLINK:
-
-
-
-                        }
             }
         }
     };
