@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import mindcar.testing.R;
 import mindcar.testing.util.DatabaseAccess;
+import mindcar.testing.util.UserData;
 
 /**
  * Created by Darkthronen on 12/05/2016.
@@ -22,6 +23,8 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
     Button usernameOK;
     Button passwordOK;
+
+    //UserData newCredentials = new UserData();
 
 
     @Override
@@ -47,6 +50,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
         String Username = changeUsername.getText().toString();
         String UsernameConf = changeUsernameConf.getText().toString();
+        //newCredentials.setUsername(Username);
 
         switch (v.getId()) {
             case R.id.usernameOK:
@@ -56,7 +60,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
                 if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)){
 
-                    databaseAccess.updateUsername("nikos",Username);
+                    databaseAccess.updateUsername("nikos", Username);
                     Toast.makeText(getApplicationContext(), "new Changed to " + "" + Username, Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
                 }
@@ -71,6 +75,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
                 String Password = changePassword.getText().toString();
                 String PasswordConf = changePassordConf.getText().toString();
+                //newCredentials.setPassword(Password);
 
                 if (Password.equals(PasswordConf))
                     //databaseAccess.updatePassword(oldPassword,Password);
