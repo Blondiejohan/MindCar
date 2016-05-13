@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,17 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/devTextCommand"
-        android:text="Add new command" />
+        android:hint="Add new command"
+        android:backgroundTint="@android:color/holo_blue_light"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/devTextDescription"
-        android:text="Add description" />
+        android:hint="Add description"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_below= "@id/devTextCommand"
+        android:layout_marginTop="30dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button"
+        android:layout_width="230dp"
+        android:layout_height="45dp"
         android:text="Add command to database"
-        android:id="@+id/devAddCommand" />
+        android:id="@+id/devAddCommand"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"/>
 </LinearLayout>

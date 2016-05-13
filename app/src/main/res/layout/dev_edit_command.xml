@@ -11,6 +11,7 @@
     android:weightSum="1">
 
     <TextView
+        style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -20,21 +21,22 @@
         android:layout_marginTop="50dp" />
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
         android:id="@+id/commandList"
         android:layout_marginTop="50dp"
         tools:listitem="@android:layout/simple_list_item_2"
         android:choiceMode="singleChoice"
         android:layout_weight="0"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        />
 
     <Button
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Add new command"
         android:id="@+id/addNewCommand"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="20dp"
+        style="@style/button"/>
 
 </LinearLayout>

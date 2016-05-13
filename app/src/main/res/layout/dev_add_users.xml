@@ -14,12 +14,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Name"
         android:ems="10"
         android:id="@+id/devAddName"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColorHint="#3efafa"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -29,55 +34,15 @@
         android:id="@+id/devAddPassword"
         android:layout_gravity="center_horizontal"
         android:password="false"
-        android:text="Password"
+        android:hint="Password"
         android:layout_below="@+id/devAddName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
         android:layout_alignLeft="@+id/devAddName"
-        android:layout_alignStart="@+id/devAddName" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add image"
-        android:id="@+id/devAddImage"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/swichDeveloper"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add user to database"
-        android:id="@+id/devAddUser"
-        android:layout_below="@+id/devAddImage"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Password"
-        android:id="@+id/textPassword"
-        android:layout_toLeftOf="@+id/devAddPassword"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/devAddPassword"
-        android:layout_below="@+id/devAddName" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Username"
-        android:id="@+id/textUsername"
-        android:layout_toLeftOf="@+id/devAddName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/devAddPassword"
-        android:layout_alignTop="@+id/devAddName" />
+        android:layout_alignStart="@+id/devAddName"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColorHint="#3efafa"/>
 
     <Switch
         android:layout_width="wrap_content"
@@ -85,10 +50,39 @@
         android:text="Developer"
         android:id="@+id/swichDeveloper"
         android:checked="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/devAddPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/devAddPassword"
-        android:layout_alignRight="@+id/devAddPassword"
-        android:layout_alignEnd="@+id/devAddPassword"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:text="Add image"
+        android:id="@+id/devAddImage"
+        android:background="@drawable/buttonshape"
+        android:layout_gravity="center_horizontal"
+        style="@style/button"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:text="Add user to database"
+        android:id="@+id/devAddUser"
+        android:background="@drawable/buttonshape"
+        style="@style/button"
+        android:layout_below="@+id/devAddImage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="58dp" />
+
+
 </RelativeLayout>

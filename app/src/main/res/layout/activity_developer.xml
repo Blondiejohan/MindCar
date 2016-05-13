@@ -20,11 +20,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        style="@style/TextView"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Edit Commands"
         android:id="@+id/devEditCommand"
         android:layout_below="@+id/devTitle"
@@ -32,11 +33,12 @@
         android:layout_alignRight="@+id/devTitle"
         android:layout_alignEnd="@+id/devTitle"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        style="@style/button"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Edit users"
         android:id="@+id/devEditUsers"
         android:layout_marginTop="50dp"
@@ -44,11 +46,12 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/devEditCommand"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        style="@style/button"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Back to start"
         android:id="@+id/devBackToStart"
         android:layout_below="@+id/devEditUsers"
@@ -56,5 +59,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        style="@style/button"/>
 </RelativeLayout>

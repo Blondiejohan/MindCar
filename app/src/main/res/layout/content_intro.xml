@@ -4,18 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blue_brain"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="mindcar.testing.ui.Intro"
     >
 
     <ImageView
         android:id="@+id/imageView"
-        android:src="@drawable/logo"
-
-        android:layout_width="500dp"
-        android:layout_height="270dp"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/mclogo"
 
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"

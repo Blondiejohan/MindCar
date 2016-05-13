@@ -1,2 +1,23 @@
 <resources>>
+
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <!-- Customize your theme here. -->
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="colorAccent">@color/colorAccent</item>
+                <item name="android:colorBackground">@drawable/mclogo</item>
+                <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+                <item name="android:windowBackground">@drawable/black</item>
+        </style>
+
+        <style name="MindCarTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+                <item name="android:colorBackground">@drawable/screen_background_selector_light</item>
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="colorAccent">@color/colorAccent</item>
+                <item name="android:windowBackground">@drawable/screen_background_selector_light</item>
+                <item name="android:buttonStyle">@drawable/buttonshape</item>
+                <item name="android:button">@drawable/buttonshape</item>
+        </style>
+
 </resources>

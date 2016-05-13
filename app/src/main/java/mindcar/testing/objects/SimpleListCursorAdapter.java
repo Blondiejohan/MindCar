@@ -50,7 +50,7 @@ public class SimpleListCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView text = (TextView) view.findViewById(R.id.text);
+        TextView text = (TextView) view.findViewById(R.id.emptyText);
         text.setText(cursor.getString(cursor.getColumnIndexOrThrow(cursor.getColumnName(1))));
     }
 

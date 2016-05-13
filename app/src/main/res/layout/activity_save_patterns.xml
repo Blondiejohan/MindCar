@@ -11,24 +11,28 @@
 
 
     <TextView
-        android:layout_width="166dp"
-        android:layout_height="94dp"
+        android:layout_width="295dp"
+        android:layout_height="47dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Direction"
         android:id="@+id/direction"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center|top"
+        style="@style/TextView"
+        android:gravity="center_vertical|center_horizontal" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="test"
         android:id="@+id/test"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_gravity="center_horizontal|bottom"
+        style="@style/button"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Text"
-        android:id="@+id/text"
-        android:layout_gravity="center" />
+        android:id="@+id/emptyText"
+        android:layout_gravity="center"
+        style="@style/TextView"/>
 </FrameLayout>

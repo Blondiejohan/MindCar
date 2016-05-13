@@ -60,7 +60,7 @@ public class SavePatterns extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_patterns);
         direction = (TextView) findViewById(R.id.direction);
-        text = (TextView) findViewById(R.id.text);
+        text = (TextView) findViewById(R.id.emptyText);
         test = (Button) findViewById(R.id.test);
         spAdapter = BluetoothAdapter.getDefaultAdapter();
         isConnected = false;
