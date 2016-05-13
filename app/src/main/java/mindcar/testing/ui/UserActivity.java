@@ -43,7 +43,11 @@ import android.content.SharedPreferences.Editor;
 import android.view.View;
 
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.SupervisedTrainingElement;
 import org.neuroph.core.learning.TrainingSet;
+import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.nnet.learning.MomentumBackpropagation;
+import org.neuroph.util.TransferFunctionType;
 
 import java.util.LinkedList;
 
@@ -100,9 +104,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         patternList.add(new double[160]);
         patternList.add(new double[160]);
 
-        TrainingSet dataSet = null;
-               // NeuralNetworkHelper.createDataSet(patternList, 160, 1);
-        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
+
+//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, 160, 1);
+//        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
 
 
 

@@ -41,7 +41,6 @@
         <activity android:name=".ui.UserImageActivity"/>
         <activity android:name=".ui.StartActivity"/>
 
-
     </application>
 
 </manifest>
