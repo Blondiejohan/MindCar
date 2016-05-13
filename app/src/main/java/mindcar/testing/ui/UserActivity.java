@@ -37,7 +37,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private Command x;
     boolean isConnected = false;
     Button restart;
-  
+
     Eeg eeg;
     DatabaseAccess databaseAccess;
 
@@ -182,16 +182,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     EegBlink eegBlink = new EegBlink(0,0);
                     //SmartCar smartCar = new SmartCar();
                     eegBlink.setBlink(msg.arg1);
-                    if (eegBlink.leftBlink()){
-                        x = Command.l;
-                        car.getCommands();
-                    }
+                    eegBlink.setAttention(5);
 
-                    if (eegBlink.rightBlink()){
-                        x = Command.r;
-                        car.getCommands();
-                    }
+                    while (eegBlink.getAttention()>40) {
+                        x = Command.f;
 
+                        if (eegBlink.leftBlink()) {
+                            x = Command.r;
+                            car.setCommand(x);
+                        }
+
+                        if (eegBlink.rightBlink()) {
+                            x = Command.l;
+                            car.setCommand(x);
+                        }
+                    }
 
                 case TGDevice.MSG_RAW_DATA:
                     if (eeg.isFull()) {
