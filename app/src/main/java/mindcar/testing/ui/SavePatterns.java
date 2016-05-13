@@ -46,6 +46,7 @@ public class SavePatterns extends AppCompatActivity {
 
     int nrOfTimes = 20;
     int updateNr = 20;
+    int times = 20;
     TextView direction;
     TextView text;
     Button test;
@@ -100,7 +101,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", left.toArray().toString());
+            databaseAccess.addDirection("left", this.toString(left.toArray()));
 
             databaseAccess.close();
             start = 2;
@@ -120,7 +121,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", right.toArray().toString());
+            databaseAccess.addDirection("right", this.toString(right.toArray()));
 
             databaseAccess.close();
             start = 3;
@@ -140,7 +141,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", forward.toArray().toString());
+            databaseAccess.addDirection("forward", this.toString(forward.toArray()));
 
             databaseAccess.close();
             start = 4;
@@ -160,10 +161,11 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", stop.toArray().toString());
+            databaseAccess.addDirection("stop", this.toString(stop.toArray()));
 
             databaseAccess.close();
             start = 5;
+            tgDevice.stop();
             tgDevice.close();
             startActivity(new Intent(SavePatterns.this, UserActivity.class));
         }
@@ -177,7 +179,7 @@ public class SavePatterns extends AppCompatActivity {
     public final Handler tgHandler = new Handler() {
         @Override
             public void handleMessage (Message msg){
-            int times = 20;
+
             switch (msg.what) {
                     case TGDevice.MSG_STATE_CHANGE:
                         switch (msg.arg1) {
@@ -219,4 +221,12 @@ public class SavePatterns extends AppCompatActivity {
                 }
             }
     };
+
+    public String toString(double[] doubles){
+        StringBuilder str = new StringBuilder();
+        for(double d: doubles){
+            str.append("s" + d + "e");
+        }
+        return str.toString();
+    }
 }

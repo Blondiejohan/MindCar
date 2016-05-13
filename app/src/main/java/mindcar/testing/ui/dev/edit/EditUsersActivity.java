@@ -27,13 +27,14 @@ import mindcar.testing.util.DatabaseAccess;
  */
 public class EditUsersActivity extends Activity implements EditActivity{
     private DatabaseAccess databaseAccess;
-    private Button addNewUser, addUser;
+    private Button addNewUser, addUser, updateAddImage;
     private Cursor cursor;
     private SimpleListCursorAdapter simpleListCursorAdapter;
     private EditText username, password, text1, text2;
     private TextView textView1, textView2;
-    private Switch aSwitch;
+    private Switch aSwitch, updateDevStatus;
     private ListView databaseList;
+    private int devBoolean = 0;
 
     /**
      * Creates the activity for editing the Users table.
@@ -126,6 +127,18 @@ public class EditUsersActivity extends Activity implements EditActivity{
         text2.setTransformationMethod(PasswordTransformationMethod.getInstance());
         text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
 
+        updateDevStatus = (Switch) findViewById(R.id.updateDevStatus);
+        updateDevStatus.setVisibility(View.VISIBLE);
+
+        if(aSwitch.isChecked()){
+            devBoolean = 1;
+        }
+
+
+
+        updateAddImage = (Button) findViewById(R.id.updateAddImage);
+        updateAddImage.setVisibility(View.VISIBLE);
+
         final Button update = (Button) dialog.findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +146,7 @@ public class EditUsersActivity extends Activity implements EditActivity{
                 ContentValues cv = new ContentValues();
                 cv.put("username", text1.getText().toString());
                 cv.put("password", text2.getText().toString());
+                cv.put("developer", devBoolean);
                 databaseAccess.update("Users", cv, ((int) id));
                 update();
                 dialog.cancel();

@@ -58,7 +58,7 @@ import java.util.LinkedList;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SmartCar car;
-    private TGDevice tgDevice;
+    public static TGDevice tgDevice;
     private Pattern pattern;
     private Command x;
     boolean isConnected = false;
@@ -69,6 +69,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     String name = StartActivity.un;
     String pw = StartActivity.pw;
+
+    int times = 20;
 
 
     private SQLiteOpenHelper openHelper;
@@ -94,27 +96,35 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_user);
 
         LinkedList<double[]> patternList = new LinkedList<>();
-    //    patternList.add(databaseAccess.getDirection("left"));
-    //    patternList.add(databaseAccess.getDirection("right"));
-    //    patternList.add(databaseAccess.getDirection("forward"));
-    //    patternList.add(databaseAccess.getDirection("stop"));
 
-        patternList.add(new double[160]);
-        patternList.add(new double[160]);
-        patternList.add(new double[160]);
-        patternList.add(new double[160]);
+        databaseAccess.open();
+        patternList.add(databaseAccess.getDirection("left"));
+        patternList.add(databaseAccess.getDirection("right"));
+        patternList.add(databaseAccess.getDirection("forward"));
+        patternList.add(databaseAccess.getDirection("stop"));
+databaseAccess.close();
+//        patternList.add(new double[160]);
+//        patternList.add(new double[160]);
+//        patternList.add(new double[160]);
+//        patternList.add(new double[160]);
 
 
-//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, 160, 1);
-//        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
+        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 1);
+        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,patternList.get(0).length,1);
 
 
 
         pattern = new Pattern();
         car = new SmartCar();
         x = car.getCommands();
+
+
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
-        tgDevice.start();
+        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+            tgDevice.connect(true);
+            tgDevice.start();
+        }
 
         logout = (Button) findViewById(R.id.logout);
         displayName(v);
@@ -155,6 +165,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         switch (v.getId()){
             case R.id.logout:
+                tgDevice.stop();
+                tgDevice.close();
                 startActivity(new Intent(this, StartActivity.class));
         }
     }
@@ -180,7 +192,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handleMessage(Message msg) {
             Log.i("Time start ", System.currentTimeMillis() + "");
-            int times = 20;
+
 
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
@@ -201,6 +213,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                             pattern.add(eeg);
 
                             ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
+
                             String send = compPatt.compare(databaseAccess);
                             Log.i("Send message " , send);
                             eeg = new Eeg();

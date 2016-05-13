@@ -42,6 +42,10 @@ public class ComparePatterns extends Activity {
         double[] sForward = databaseAccess.getDirection("forward");
         double[] sStop = databaseAccess.getDirection("stop");
         databaseAccess.close();
+        Log.i("Saved1", sLeft.length + "");
+        Log.i("Saved2", compare1.length + "");
+
+
         LinearRegression linearRegressionLeft = new LinearRegression(compare1,sLeft);
         LinearRegression linearRegressionRight = new LinearRegression(compare1,sRight);
         LinearRegression linearRegressionForward = new LinearRegression(compare1,sForward);
@@ -86,7 +90,7 @@ public class ComparePatterns extends Activity {
             }
         }
 
-
+        Log.i("Line ", line + "");
         return result;
     }
 }
