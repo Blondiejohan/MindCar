@@ -105,8 +105,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         patternList.add(new double[160]);
 
 
-//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, 160, 1);
-//        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
+        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, 160, 1);
+        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,160,1);
 
 
 
