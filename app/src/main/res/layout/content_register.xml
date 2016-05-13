@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,71 +13,83 @@
     tools:context="package mindcar.testing.Register"
     tools:showIn="@layout/activity_register">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgPicture"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/profile_image" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Username"
+        android:hint="Username"
         android:ems="10"
         android:id="@+id/ET_USER_NAME"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentTop="true"
+        android:editable="true"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_below="@+id/imgPicture"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginBottom="20dp" />
 
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ET_PASS"
         android:layout_marginBottom="20dp"
+        android:textColor="#3efafa"
+        android:textStyle="bold|italic"
+        android:editable="true"
+        android:backgroundTint="@android:color/holo_blue_light"
         android:layout_below="@+id/ET_USER_NAME"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Password"
+        android:hint="Password"
+        android:layout_alignLeft="@+id/ET_USER_NAME"
         android:layout_alignRight="@+id/ET_USER_NAME"
-        android:layout_alignEnd="@+id/ET_USER_NAME" />
 
+         />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:text="TAKE NEW PHOTO"
+        android:id="@+id/takePhoto"
+        android:background="@drawable/buttonshape"
+        android:clickable="true"
+        android:layout_below="@+id/ET_PASS"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="150dp" />
+
+    <Button
+        style="@style/button"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:text="CHOOSE EXISTING IMAGE"
+        android:background="@drawable/buttonshape"
+        android:id="@+id/chooseImage"
+        android:layout_below="@+id/takePhoto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        style="@style/button"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
         android:text="REGISTER"
         android:id="@+id/bRegister"
         android:onClick="userReg"
+        android:background="@drawable/buttonshape"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgPicture"
-        android:layout_below="@+id/ET_PASS"
-        android:layout_above="@+id/takePhoto"
-        android:clickable="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take New Photo"
-        android:id="@+id/takePhoto"
-        android:layout_above="@+id/bRegister"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:clickable="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Existing Image"
-        android:id="@+id/chooseImage"
-        android:layout_above="@+id/bRegister"
-        android:layout_alignRight="@+id/imgPicture"
-        android:layout_alignEnd="@+id/imgPicture" />
 </RelativeLayout>

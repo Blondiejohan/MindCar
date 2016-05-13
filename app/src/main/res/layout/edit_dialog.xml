@@ -30,17 +30,6 @@
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        android:id="@+id/update"
-        android:layout_below="@+id/text2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +37,8 @@
         android:id="@+id/textView1"
         android:layout_above="@+id/text2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,15 +48,24 @@
         android:layout_below="@+id/text1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
+        android:text="Update"
+        android:id="@+id/update"
+        style="@style/button"
+        android:layout_below="@+id/text2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Delete"
         android:id="@+id/delete"
+        style="@style/button"
         android:layout_below="@+id/update"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignLeft="@+id/update"
+        android:layout_alignStart="@+id/update"
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>
