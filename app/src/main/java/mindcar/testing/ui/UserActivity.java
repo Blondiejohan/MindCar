@@ -3,7 +3,12 @@ package mindcar.testing.ui;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,11 +36,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.view.View;
+import android.widget.ToggleButton;
+
+import java.io.FileInputStream;
 
 
 /**
@@ -49,21 +58,33 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private Pattern<Eeg> pattern;
     private Command x;
 
-    String name = StartActivity.un;
+    public String name = StartActivity.un;
     String pw = StartActivity.pw;
+
+    public DatabaseAccess databaseAccess;
+    public TGDevice tgdevice;
 
 
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
-    private static DatabaseAccess instance;
+    private DatabaseAccess instance;
     View v;
+    ImageView iv;
     TextView username;
     Button logout;
+    ImageView userPic;
+    Bitmap finalPic;
+    ToggleButton toggle;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
+    private GoogleApiClient client;
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
 
     @Override
@@ -71,21 +92,46 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        databaseAccess = DatabaseAccess.getInstance(this);
+        iv = (ImageView) findViewById(R.id.profile_image_view);
         /*pattern = new Pattern<>();
         car = new SmartCar();
         x = car.getCommands();
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
         tgDevice.start();*/
+        toggle = (ToggleButton) findViewById(R.id.toggleButton);
 
-        logout = (Button) findViewById(R.id.logout);
+        toggle.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                if (toggle.isChecked()){
+                    tgdevice.start();
+
+                }else{
+                    tgdevice.stop();
+
+                }
+
+            }
+                                  });
         displayName(v);
-        //username.setVisibility(View.VISIBLE);
+
+
+        //if      (databaseAccess.getPhoto(name) != null){
+
+            displayPhoto(iv);//}
+
+        username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
+        logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -133,12 +179,73 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void onClick(View v){
-        switch (v.getId()){
+    public void displayPhoto(ImageView p) {
+        userPic = iv;
+        byte[] image;
+        System.out.println("The username that gets sent to getPhoto from displayPhoto is " + name);
+        image = databaseAccess.getPhoto(name);
+        if (image != null) {
+            //return;
+            //byte[] pic = image.getBlob(1);
+            finalPic = getImage(image);
+            Drawable d = new BitmapDrawable(finalPic);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                userPic.setBackground(d);
+                }
+        }
+    }
+
+    // convert from byte array to bitmap
+    public Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.logout:
                 startActivity(new Intent(this, StartActivity.class));
         }
     }
+
+   /* @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "User Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://mindcar.testing.ui/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "User Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://mindcar.testing.ui/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }*/
 
 
    /* public int getBatteryLevel() {
@@ -173,7 +280,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }*/
 
 
-    };
+};
 
     //@Override
     //public void onStart() {

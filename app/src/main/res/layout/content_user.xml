@@ -54,7 +54,7 @@
         android:layout_height="150dp"
         android:id="@+id/profile_image_view"
         android:contentDescription=""
-        android:src="@drawable/profile_image"
+
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/username" />

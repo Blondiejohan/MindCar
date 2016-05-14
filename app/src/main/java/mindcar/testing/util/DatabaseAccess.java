@@ -7,13 +7,15 @@ package mindcar.testing.util;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
-    private SQLiteDatabase database;
+    private static SQLiteDatabase database;
     private static DatabaseAccess instance;
+
 
     /**
      * Private constructor to aboid object creation from outside classes.
@@ -96,11 +98,30 @@ public class DatabaseAccess {
             database.insert(table,null,values);
     }
 
-    public void addRegistration(String username, String password){
+    public void addRegistration(String username, String password, byte[] photo) throws SQLException{
         ContentValues values = new ContentValues();
         values.put("username", username);
         values.put("password", password);
+        values.put("photo", photo);
+
         database.insert("USERS", null, values);
+    }
+
+    public void addPhoto(byte[] photo)throws SQLException{
+        ContentValues pic = new ContentValues();
+        pic.put("photo", photo);
+        database.insert("USERS", null, pic);
+    }
+
+    public byte[] getPhoto(String username){
+        System.out.println("The user name for the login passed to getPhoto is " + username);
+        Cursor cursor = database.rawQuery("select * from users where username = '" + username + "'", null);
+        cursor.moveToLast();
+        byte[] picByte;
+        if (cursor != null){
+            picByte = cursor.getBlob(cursor.getColumnIndex("photo"));
+        return picByte;}
+        else return null;
     }
 
 
