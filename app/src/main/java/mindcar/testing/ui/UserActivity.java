@@ -17,13 +17,11 @@ import com.neurosky.thinkgear.TGDevice;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Command;
-import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
 import mindcar.testing.util.DatabaseAccess;
-import mindcar.testing.util.MessageParser;
 
 
 /**
@@ -74,8 +72,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         pattern = new Pattern();
         car = new SmartCar();
         x = car.getCommands();
-        tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
-        tgDevice.start();
+
 
         logout = (Button) findViewById(R.id.logout);
         restart = (Button) findViewById(R.id.toggleButton);
@@ -83,6 +80,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout.setOnClickListener(this);
+
+        tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
+        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+            tgDevice.connect(true);
+            tgDevice.start();
+        }
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -181,6 +186,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
                 case TGDevice.MSG_BLINK:
                     EegBlink eegBlink = new EegBlink();
+                    Log.i("test",msg.arg1+"");
                     //SmartCar smartCar = new SmartCar();
                     eegBlink.setBlink(msg.arg1);
                     eegBlink.setAttention(5);
@@ -202,18 +208,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                     break;
-
-                case TGDevice.MSG_RAW_DATA:
-                    if (eeg.isFull()) {
-                        ComparePatterns compPatt = new ComparePatterns(eeg);
-                        String send = compPatt.compare(databaseAccess);
-
-                        eeg = new Eeg();
-                        break;
-                    }else{
-                        MessageParser.parseRawData(msg, eeg);
-                        break;
-                    }
             }
         }
     };
