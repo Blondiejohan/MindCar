@@ -200,6 +200,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                             car.setCommand(x);
                         }
 
+
                         if (eegBlink.rightBlink()) {
                             Log.i("test","Left");
                             x = Command.l;
