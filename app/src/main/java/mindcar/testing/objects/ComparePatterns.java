@@ -53,11 +53,13 @@ public class ComparePatterns extends Activity {
         neuralNetwork.calculate();
         double[] res = neuralNetwork.getOutput();
         String result = "";
+        Log.i("res",res[0]+"");
         double line = 0;
+        double limit = 0.008;
         if(res[0] < 1.5){
             line = linearRegressionLeft.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.007) {
+            if(line > limit) {
                 result = "Left";
             } else {
                 result = "";
@@ -65,7 +67,7 @@ public class ComparePatterns extends Activity {
         } else if (res[0] > 1.5 && res[0] < 2.5){
             line = linearRegressionRight.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.007) {
+            if(line > limit) {
                 result = "Right";
             } else {
                 result = "";
@@ -73,7 +75,7 @@ public class ComparePatterns extends Activity {
         } else if (res[0] > 2.5 && res[0] < 3.5){
             line = linearRegressionForward.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.007) {
+            if(line > limit) {
                 result = "Forward";
             } else {
                 result = "";
@@ -81,7 +83,7 @@ public class ComparePatterns extends Activity {
         } else {
             line = linearRegressionStop.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.007) {
+            if(line > limit) {
                 result = "Stop";
             } else {
                 result = "";
