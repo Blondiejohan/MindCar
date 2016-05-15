@@ -13,10 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.neurosky.thinkgear.TGDevice;
+
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.TrainingSet;
+
+import java.util.LinkedList;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Command;
@@ -24,32 +26,9 @@ import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.util.NeuralNetworkHelper;
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.view.View;
-
-import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.learning.SupervisedTrainingElement;
-import org.neuroph.core.learning.TrainingSet;
-import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.nnet.learning.MomentumBackpropagation;
-import org.neuroph.util.TransferFunctionType;
-
-import java.util.LinkedList;
 
 
 /**
@@ -70,7 +49,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     String name = StartActivity.un;
     String pw = StartActivity.pw;
 
-    int times = 20;
+    int times = 120;
 
 
     private SQLiteOpenHelper openHelper;
@@ -191,7 +170,7 @@ databaseAccess.close();
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.i("Time start ", System.currentTimeMillis() + "");
+
 
 
             switch (msg.what) {
@@ -210,14 +189,13 @@ databaseAccess.close();
                         MessageParser.parseRawData(msg, eeg);
 
                         if (times == 0){
+                            Log.i("Time start ", System.currentTimeMillis() + "");
                             pattern.add(eeg);
-
                             ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
-
                             String send = compPatt.compare(databaseAccess);
                             Log.i("Send message " , send);
                             eeg = new Eeg();
-                            times = 20;
+                            times = 120;
                             Log.i("Time stop ", System.currentTimeMillis() + "");
                         }else{
                             times--;

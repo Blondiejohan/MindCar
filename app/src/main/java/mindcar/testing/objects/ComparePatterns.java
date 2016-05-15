@@ -42,8 +42,6 @@ public class ComparePatterns extends Activity {
         double[] sForward = databaseAccess.getDirection("forward");
         double[] sStop = databaseAccess.getDirection("stop");
         databaseAccess.close();
-        Log.i("Saved1", sLeft.length + "");
-        Log.i("Saved2", compare1.length + "");
 
 
         LinearRegression linearRegressionLeft = new LinearRegression(compare1,sLeft);
@@ -59,7 +57,7 @@ public class ComparePatterns extends Activity {
         if(res[0] < 1.5){
             line = linearRegressionLeft.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.9) {
+            if(line > 0.007) {
                 result = "Left";
             } else {
                 result = "";
@@ -67,7 +65,7 @@ public class ComparePatterns extends Activity {
         } else if (res[0] > 1.5 && res[0] < 2.5){
             line = linearRegressionRight.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.9) {
+            if(line > 0.007) {
                 result = "Right";
             } else {
                 result = "";
@@ -75,7 +73,7 @@ public class ComparePatterns extends Activity {
         } else if (res[0] > 2.5 && res[0] < 3.5){
             line = linearRegressionForward.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.9) {
+            if(line > 0.007) {
                 result = "Forward";
             } else {
                 result = "";
@@ -83,7 +81,7 @@ public class ComparePatterns extends Activity {
         } else {
             line = linearRegressionStop.R2();
             Log.i("Linear ", line + "");
-            if(line > 0.9) {
+            if(line > 0.007) {
                 result = "Stop";
             } else {
                 result = "";
