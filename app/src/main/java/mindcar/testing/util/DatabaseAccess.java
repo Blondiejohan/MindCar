@@ -88,7 +88,7 @@ public class DatabaseAccess {
         }
         int i = 0;
         while (str.length()!= 0 && str.charAt(0) == 's') {
-            String s = str.substring(str.indexOf('s')+1,str.indexOf('e'))+1;
+            String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
             arr[i] = Double.parseDouble(s);
             str = str.substring(str.indexOf('e')+1);
             Log.i("arr",s);
