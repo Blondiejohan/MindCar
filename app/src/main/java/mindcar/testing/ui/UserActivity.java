@@ -78,6 +78,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         tgDevice.start();
 
         logout = (Button) findViewById(R.id.logout);
+        restart = (Button) findViewById(R.id.toggleButton);
         displayName(v);
         //username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
@@ -186,17 +187,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
                     while (eegBlink.getAttention()>40) {
                         x = Command.f;
-
+                        Log.i("test","Forward");
                         if (eegBlink.leftBlink()) {
+                            Log.i("test","Right");
                             x = Command.r;
                             car.setCommand(x);
                         }
 
                         if (eegBlink.rightBlink()) {
+                            Log.i("test","Left");
                             x = Command.l;
                             car.setCommand(x);
                         }
+
                     }
+                    break;
 
                 case TGDevice.MSG_RAW_DATA:
                     if (eeg.isFull()) {
