@@ -25,10 +25,26 @@ public class NeuralNetworkHelper {
 
     public static TrainingSet createTrainingSet(List<double[]> input, int inputSize, int outputSize) {
         TrainingSet trainingSet = new TrainingSet(inputSize, outputSize);
+
+        // Wanted scenarios
         trainingSet.addElement(new SupervisedTrainingElement(input.get(0), new double[]{1,0,0,0}));
         trainingSet.addElement(new SupervisedTrainingElement(input.get(1), new double[]{0,1,0,0}));
         trainingSet.addElement(new SupervisedTrainingElement(input.get(2), new double[]{0,0,1,0}));
         trainingSet.addElement(new SupervisedTrainingElement(input.get(3), new double[]{0,0,0,1}));
+
+        // Baseline scenarios
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{0,0,0,0}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{0,0,1,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{0,1,1,0}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,1,0,0}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,0,1,0}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{0,1,0,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,0,0,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{0,1,1,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,1,1,0}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,0,1,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,1,0,1}));
+        trainingSet.addElement(new SupervisedTrainingElement(input.get(4), new double[]{1,1,1,1}));
 
         return trainingSet;
     }

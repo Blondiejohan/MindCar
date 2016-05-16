@@ -108,6 +108,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         patternList.add(databaseAccess.getDirection("right"));
         patternList.add(databaseAccess.getDirection("forward"));
         patternList.add(databaseAccess.getDirection("stop"));
+        patternList.add(databaseAccess.getBaseline());
         databaseAccess.close();
 
         TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
