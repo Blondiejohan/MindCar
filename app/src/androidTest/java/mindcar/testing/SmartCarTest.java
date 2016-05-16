@@ -4,6 +4,7 @@ import junit.framework.Assert;import junit.framework.TestCase;
 
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Eeg;
+import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.SmartCar;
 
 /**

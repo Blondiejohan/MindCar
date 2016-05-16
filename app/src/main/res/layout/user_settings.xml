@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="select new username"
+        android:hint="select new username"
         android:ems="10"
         android:id="@+id/changeUsername"
         android:layout_gravity="center_horizontal" />
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="confirm new username"
+        android:hint="confirm new username"
         android:ems="10"
         android:id="@+id/changeUsernameConf" />
 
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="select new password"
+        android:hint="select new password"
         android:ems="10"
         android:id="@+id/changePassword" />
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="confirm new password"
+        android:hint="confirm new password"
         android:ems="10"
         android:id="@+id/changePasswordConf" />
 
@@ -47,5 +47,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Change Password"
-        android:id="@+id/passwordOK" />
+        android:id="@+id/passwordOK"
+        style="?android:attr/buttonStyleSmall" />
 </LinearLayout>

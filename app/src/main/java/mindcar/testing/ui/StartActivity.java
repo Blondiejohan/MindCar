@@ -14,6 +14,9 @@ import android.widget.Toast;
 import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
+import mindcar.testing.util.UserData;
+
+import static mindcar.testing.util.UserData.*;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 

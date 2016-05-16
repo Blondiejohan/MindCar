@@ -5,18 +5,18 @@ package mindcar.testing.util;
  */
 public class UserData {
 
-    private String Username;
-    private String Password;
+    private static String Username;
+    private static String Password;
 
-    public String getUsername() {
+    public static String getUsername() {
         return Username;
     }
 
-    public void setUsername(String username) {
+    public static void setUsername(String username) {
         Username = username;
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return Password;
     }
 

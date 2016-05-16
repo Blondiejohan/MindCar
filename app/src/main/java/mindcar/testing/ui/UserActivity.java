@@ -36,13 +36,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     boolean isConnected = false;
     Button restart;
 
-    Eeg eeg;
-    DatabaseAccess databaseAccess;
+    //nikos
+    Button userSettings;
 
+    Eeg eeg;
+    EegBlink eegBlink;
+
+    DatabaseAccess databaseAccess;
     String name = StartActivity.un;
     String pw = StartActivity.pw;
-
-
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
@@ -60,11 +62,22 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isConnected = false;
-        eeg = new Eeg();
-        databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
 
+        //nikos
+        userSettings = (Button) findViewById(R.id.userSettings);
+        logout = (Button) findViewById(R.id.logout);
+        restart = (Button) findViewById(R.id.toggleButton);
+
+        userSettings.setOnClickListener(this);
+
+
+
+
+        isConnected = false;
+        eeg = new Eeg();
+        eegBlink = new EegBlink();
+        databaseAccess = DatabaseAccess.getInstance(this);
 
         double[] testDoubles = {2, 5, 8, 11, 15, 25, 36, 46};
 
@@ -74,12 +87,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         x = car.getCommands();
 
 
-        logout = (Button) findViewById(R.id.logout);
-        restart = (Button) findViewById(R.id.toggleButton);
+
         displayName(v);
         //username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout.setOnClickListener(this);
+
 
         tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
         if (tgDevice.getState() != TGDevice.STATE_CONNECTING
@@ -150,6 +163,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.logout:
                 startActivity(new Intent(this, StartActivity.class));
+                break;
+            case R.id.userSettings:
+                startActivity(new Intent(this, UserSettings.class));
+                break;
         }
     }
 
@@ -185,30 +202,35 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
                 case TGDevice.MSG_BLINK:
-                    EegBlink eegBlink = new EegBlink();
-                    Log.i("test",msg.arg1+"");
+                    Log.i("test", msg.arg1 + "");
                     //SmartCar smartCar = new SmartCar();
                     eegBlink.setBlink(msg.arg1);
-                    eegBlink.setAttention(5);
 
                     while (eegBlink.getAttention()>40) {
                         x = Command.f;
                         Log.i("test","Forward");
                         if (eegBlink.leftBlink()) {
-                            Log.i("test","Right");
-                            x = Command.r;
-                            car.setCommand(x);
-                        }
-
-
-                        if (eegBlink.rightBlink()) {
                             Log.i("test","Left");
                             x = Command.l;
                             car.setCommand(x);
                         }
 
+
+                        if (eegBlink.rightBlink()) {
+                            Log.i("test","Right");
+                            x = Command.r;
+                            car.setCommand(x);
+                        }
+
                     }
                     break;
+
+                case TGDevice.MSG_ATTENTION:
+                    eegBlink.setAttention(msg.arg1);
+                    if (eegBlink.getAttention()>40){
+                        x = Command.f;
+                        car.setCommand(x);
+                    }
             }
         }
     };

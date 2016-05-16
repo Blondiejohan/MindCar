@@ -12,6 +12,8 @@ import mindcar.testing.R;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.UserData;
 
+import static mindcar.testing.util.UserData.*;
+
 /**
  * Created by Nikolaos-Machairiotis Sasopoulos on 12/05/2016.
  */
@@ -64,7 +66,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
                     databaseAccess.updateUsername("nikos", Username);
                     Toast.makeText(getApplicationContext(), "new Changed to " + "" + Username, Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
-                    startActivity(new Intent(this, StartActivity.class));
+                    startActivity(new Intent(this, UserActivity.class));
                 }
 
                 else
