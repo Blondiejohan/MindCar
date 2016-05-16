@@ -82,7 +82,7 @@ public class DatabaseAccess {
     public double[] getDirection(String direction) {
         Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
         String str= "";
-        double[] arr = new double[160];
+        double[] arr = new double[800];
         if (cursor.moveToFirst()) {
             str = cursor.getString(cursor.getColumnIndex(direction) + 3);
         }
@@ -90,9 +90,15 @@ public class DatabaseAccess {
         while (str.length()!= 0 && str.charAt(0) == 's') {
             String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
             arr[i] = Double.parseDouble(s);
+
             str = str.substring(str.indexOf('e')+1);
-            Log.i("arr",s);
+            i++;
         }
+        StringBuilder log = new StringBuilder();
+        for (int j = 0; j < arr.length;j++){
+            log.append(arr[j]+" ");
+        }
+        Log.i("String2",log.toString()+"");
         return arr;
     }
 

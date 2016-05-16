@@ -2,8 +2,6 @@ package mindcar.testing.util;
 
 import android.os.Message;
 
-import com.neurosky.thinkgear.TGDevice;
-
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
@@ -60,7 +58,6 @@ public class MessageParser {
      * @param eeg
      */
     public static void parseRawData(Message msg, Eeg eeg){
-        if(msg.what == TGDevice.MSG_RAW_DATA) {
             int value = msg.arg1;
             if (value >= 0 && value <= 3) {
                 eeg.setDelta(value);
@@ -81,7 +78,7 @@ public class MessageParser {
             } else {
                 ;
             }
-        }
+
     }
 
 }

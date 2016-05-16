@@ -34,17 +34,17 @@ public class ComparePatterns extends Activity {
      * of the low and high variables of that wave.
      */
     public String compare(DatabaseAccess databaseAccess) {
-//        databaseAccess.open();
-//        double[] sLeft = databaseAccess.getDirection("left");
-//        double[] sRight = databaseAccess.getDirection("right");
-//        double[] sForward = databaseAccess.getDirection("forward");
-//        double[] sStop = databaseAccess.getDirection("stop");
-//        databaseAccess.close();
+        databaseAccess.open();
+        double[] sLeft = databaseAccess.getDirection("left");
+        double[] sRight = databaseAccess.getDirection("right");
+        double[] sForward = databaseAccess.getDirection("forward");
+        double[] sStop = databaseAccess.getDirection("stop");
+        databaseAccess.close();
 
-        double[] sLeft = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
-        double[] sRight = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
-        double[] sForward = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
-        double[] sStop = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+//        double[] sLeft = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+//        double[] sRight = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+//        double[] sForward = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+//        double[] sStop = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
 
 
         LinearRegression linearRegressionLeft = new LinearRegression(compare1, sLeft);
@@ -55,42 +55,42 @@ public class ComparePatterns extends Activity {
         neuralNetwork.setInput(compare1);
         neuralNetwork.calculate();
         double[] res = neuralNetwork.getOutput();
-        String result = "";
+        String result = "w";
         Log.i("res", res[0] + " " + res[1] + " " + res[2] + " " + res[3]);
         double line = 0;
-        double limit = 0.008;
+        double limit = 0.04;
 
         if (res[0] > 0.9 && res[0] <= 1) {
             line = linearRegressionLeft.R2();
             Log.i("Linear ", line + "");
             if (line > limit) {
-                result = "Left";
+                result = "l";
             } else {
-                result = "";
+                result = "q";
             }
         } else if (res[1] > 0.9 && res[1] <= 1) {
             line = linearRegressionRight.R2();
             Log.i("Linear ", line + "");
             if (line > limit) {
-                result = "Right";
+                result = "r";
             } else {
-                result = "";
+                result = "q";
             }
         } else if (res[2] > 0.9 && res[2] <= 1) {
             line = linearRegressionForward.R2();
             Log.i("Linear ", line + "");
             if (line > limit) {
-                result = "Forward";
+                result = "f";
             } else {
-                result = "";
+                result = "q";
             }
         } else if (res[3] > 0.9 && res[3] <= 1) {
             line = linearRegressionStop.R2();
             Log.i("Linear ", line + "");
             if (line > limit) {
-                result = "Stop";
+                result = "s";
             } else {
-                result = "";
+                result = "q";
             }
         }
         Log.i("Line ", line + "");

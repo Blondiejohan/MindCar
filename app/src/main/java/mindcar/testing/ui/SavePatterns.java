@@ -44,8 +44,8 @@ public class SavePatterns extends AppCompatActivity {
     Pattern stop;
     boolean stopBool = true;
 
-    int nrOfTimes = 20;
-    int updateNr = 20;
+    int nrOfTimes = 100;
+    int updateNr = 100;
     int times = 20;
     TextView direction;
     TextView text;

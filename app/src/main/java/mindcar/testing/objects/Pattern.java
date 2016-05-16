@@ -1,6 +1,5 @@
 package mindcar.testing.objects;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -16,12 +15,12 @@ public class Pattern {
     // constructor of the list and a capacity limit to the list
     public Pattern(){
         this.list = new LinkedList<>();
-        this.capacity = 20;
+        this.capacity = 100;
     }
 
     public Pattern(Eeg eeg){
         this.list = new LinkedList<>();
-        this.capacity = 20;
+        this.capacity = 100;
         add(eeg);
     }
     // another constructor with the capacity set to the limit

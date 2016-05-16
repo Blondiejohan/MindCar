@@ -1,6 +1,7 @@
 package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,13 +20,14 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.TrainingSet;
 
 import java.util.LinkedList;
+import java.util.Set;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.BackupControl;
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.ComparePatterns;
-import mindcar.testing.objects.ConnectThread;
-import mindcar.testing.objects.ConnectedThread;
+import mindcar.testing.objects.Connected;
+import mindcar.testing.objects.Connection;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
@@ -53,7 +55,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     String name = StartActivity.un;
     String pw = StartActivity.pw;
 
-    int times = 120;
+    int times = 1000;
 
 
     private SQLiteOpenHelper openHelper;
@@ -62,6 +64,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     View v;
     TextView username;
     Button logout;
+
+    BluetoothAdapter bluetoothAdapter;
+    BluetoothDevice bluetoothDevice;
+    Connection connection;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -79,17 +85,33 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
 
-//        LinkedList<double[]> patternList = new LinkedList<>();
-//
-//        databaseAccess.open();
-//        patternList.add(databaseAccess.getDirection("left"));
-//        patternList.add(databaseAccess.getDirection("right"));
-//        patternList.add(databaseAccess.getDirection("forward"));
-//        patternList.add(databaseAccess.getDirection("stop"));
-//        databaseAccess.close();
-//
-//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
-//        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
+        if(devices.size() > 0) {
+            for (BluetoothDevice bl : devices) {
+                Log.i("stuff", bl.getName().toString());
+                if (bl.getName().equals("Group 2")) {
+                    Log.i("stuff2",bl.getName().toString());
+                    bluetoothDevice = bl;
+                    connection = new Connection(bluetoothDevice);
+                    connection.start();
+                }
+            }
+        }
+
+
+
+        LinkedList<double[]> patternList = new LinkedList<>();
+
+        databaseAccess.open();
+        patternList.add(databaseAccess.getDirection("left"));
+        patternList.add(databaseAccess.getDirection("right"));
+        patternList.add(databaseAccess.getDirection("forward"));
+        patternList.add(databaseAccess.getDirection("stop"));
+        databaseAccess.close();
+
+        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
+        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
 
 
         pattern = new Pattern();
@@ -137,7 +159,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         username = (TextView) findViewById(R.id.username);
         username.setText(name);
 
-
     }
 
     public void onClick(View v) {
@@ -148,7 +169,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, StartActivity.class));
                 break;
             case R.id.toggleButton:
-                testComparePatterns();
+
+                //testComparePatterns();
                 break;
         }
     }
@@ -224,8 +246,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
                         String send = compPatt.compare(databaseAccess);
                         Log.i("Send message ", send);
+                        Connected.write(send);
+
                         eeg = new Eeg();
-                        times = 120;
+                        times = 1000;
                         Log.i("Time stop ", System.currentTimeMillis() + "");
                     } else {
                         times--;

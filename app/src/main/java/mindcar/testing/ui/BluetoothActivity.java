@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,8 +29,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import mindcar.testing.R;
-import mindcar.testing.objects.ConnectThread;
-import mindcar.testing.objects.ConnectedThread;
+import mindcar.testing.objects.Connection;
 
 
 /**
@@ -174,7 +172,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         BluetoothDevice selectedDevice = mDeviceList.get(position); //getting the position in mDeviceList
         if(selectedDevice.getName().equals("Group 2")){
 
-            ConnectThread connect = new ConnectThread(selectedDevice); //passing in the selectedDevice and connecting it
+            Connection connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
             connect.start();
             bar.setVisibility(View.VISIBLE);
 
