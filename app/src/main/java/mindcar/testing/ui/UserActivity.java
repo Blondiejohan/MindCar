@@ -21,8 +21,11 @@ import org.neuroph.core.learning.TrainingSet;
 import java.util.LinkedList;
 
 import mindcar.testing.R;
+import mindcar.testing.objects.BackupControl;
 import mindcar.testing.objects.Command;
 import mindcar.testing.objects.ComparePatterns;
+import mindcar.testing.objects.ConnectThread;
+import mindcar.testing.objects.ConnectedThread;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
@@ -41,9 +44,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private Pattern pattern;
     private Command x;
     boolean isConnected = false;
-    Button restart;
+    Button restart, start;
     NeuralNetwork neuralNetwork;
     Eeg eeg;
+    BackupControl backupControl;
     DatabaseAccess databaseAccess;
 
     String name = StartActivity.un;
@@ -58,11 +62,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     View v;
     TextView username;
     Button logout;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
 
 
     @Override
@@ -71,26 +75,32 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         isConnected = false;
         eeg = new Eeg();
+        backupControl = new BackupControl();
         databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
 
         LinkedList<double[]> patternList = new LinkedList<>();
 
-        databaseAccess.open();
-        patternList.add(databaseAccess.getDirection("left"));
-        patternList.add(databaseAccess.getDirection("right"));
-        patternList.add(databaseAccess.getDirection("forward"));
-        patternList.add(databaseAccess.getDirection("stop"));
-databaseAccess.close();
-//        patternList.add(new double[160]);
-//        patternList.add(new double[160]);
-//        patternList.add(new double[160]);
-//        patternList.add(new double[160]);
+//        databaseAccess.open();
+//        patternList.add(databaseAccess.getDirection("left"));
+//        patternList.add(databaseAccess.getDirection("right"));
+//        patternList.add(databaseAccess.getDirection("forward"));
+//        patternList.add(databaseAccess.getDirection("stop"));
+//        databaseAccess.close();
+
+        double[] d1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+        double[] d2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+        double[] d3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+        double[] d4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+
+        patternList.add(d1);
+        patternList.add(d2);
+        patternList.add(d3);
+        patternList.add(d4);
 
 
-        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 1);
-        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet,patternList.get(0).length,1);
-
+        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
+        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
 
 
         pattern = new Pattern();
@@ -111,6 +121,10 @@ databaseAccess.close();
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout.setOnClickListener(this);
 
+        start = (Button) findViewById(R.id.toggleButton);
+        start.setOnClickListener(this);
+
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -128,10 +142,6 @@ databaseAccess.close();
     }
 
 
-
-
-
-
     public void displayName(View view) {
         // SharedPreferences sharedpreferences = getSharedPreferences("displayUserName", Context.MODE_PRIVATE);
         // String name = sharedpreferences.getString("username", "");
@@ -141,12 +151,16 @@ databaseAccess.close();
 
     }
 
-    public void onClick(View v){
-        switch (v.getId()){
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.logout:
                 tgDevice.stop();
                 tgDevice.close();
                 startActivity(new Intent(this, StartActivity.class));
+                break;
+            case R.id.toggleButton:
+                testComparePatterns();
+                break;
         }
     }
 
@@ -172,7 +186,6 @@ databaseAccess.close();
         public void handleMessage(Message msg) {
 
 
-
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -184,26 +197,79 @@ databaseAccess.close();
                     }
                     break;
 
+                case TGDevice.MSG_ATTENTION:        // Set car to forward or stop depending on attention level
+                    backupControl.setAttention(msg.arg1);
+                    if (backupControl.getAttention() >= 50){
+                        car.setCommand(Command.f);
+                    } else {
+                        car.setCommand(Command.s);
+                    }
+                    break;
+
+                case TGDevice.MSG_BLINK:            // Set car to left or right depending on blink state
+//                    -=THIS USES BLINK STATE=-
+                    backupControl.setBlink(msg.arg1);
+                    if(backupControl.getBlinkState() == BackupControl.BLINK_HOLD){
+                        car.setCommand(Command.l);
+                    } else if (backupControl.getBlinkState() == BackupControl.BLINK_RELEASE){
+                        car.setCommand(Command.r);
+                    }
+
+//                    -=THIS USES NUMBER OF BLINKS=-
+//                    if(backupControl.getNumberOfBlinks() == 2){
+//                        car.setCommand(Command.l);
+//                    } else if (backupControl.getNumberOfBlinks() == 3){
+//                        car.setCommand(Command.r);
+//                    }
+//                    backupControl.setNumberOfBlinks(0);
+
+                    break;
+
                 case TGDevice.MSG_RAW_DATA:
 
-                        MessageParser.parseRawData(msg, eeg);
+                    MessageParser.parseRawData(msg, eeg);
 
-                        if (times == 0){
-                            Log.i("Time start ", System.currentTimeMillis() + "");
-                            pattern.add(eeg);
-                            ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
-                            String send = compPatt.compare(databaseAccess);
-                            Log.i("Send message " , send);
-                            eeg = new Eeg();
-                            times = 120;
-                            Log.i("Time stop ", System.currentTimeMillis() + "");
-                        }else{
-                            times--;
-                        }
+                    if (times == 0) {
+                        Log.i("Time start ", System.currentTimeMillis() + "");
+                        pattern.add(eeg);
+                        ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
+                        String send = compPatt.compare(databaseAccess);
+                        Log.i("Send message ", send);
+                        eeg = new Eeg();
+                        times = 120;
+                        Log.i("Time stop ", System.currentTimeMillis() + "");
+                    } else {
+                        times--;
+                    }
 
-                        break;
+                    break;
 
             }
         }
     };
+
+    public void testComparePatterns() {
+        start.setText("Stop");
+        for (int i = 0; i < 10000000; i++) {
+            continue;
+        }
+
+        double[] t1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+        double[] t2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+        double[] t3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+        double[] t4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+
+        ComparePatterns test1 = new ComparePatterns(t1, neuralNetwork);
+        Log.i("Test", test1.compare(databaseAccess));
+
+        ComparePatterns test2 = new ComparePatterns(t2, neuralNetwork);
+        Log.i("Test", test2.compare(databaseAccess));
+        ComparePatterns test3 = new ComparePatterns(t3, neuralNetwork);
+        Log.i("Test", test3.compare(databaseAccess));
+        ComparePatterns test4 = new ComparePatterns(t4, neuralNetwork);
+        Log.i("Test", test4.compare(databaseAccess));
+        start.setText("Start");
+
+    }
+
 }
