@@ -79,28 +79,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         databaseAccess = DatabaseAccess.getInstance(this);
         setContentView(R.layout.activity_user);
 
-        LinkedList<double[]> patternList = new LinkedList<>();
-
+//        LinkedList<double[]> patternList = new LinkedList<>();
+//
 //        databaseAccess.open();
 //        patternList.add(databaseAccess.getDirection("left"));
 //        patternList.add(databaseAccess.getDirection("right"));
 //        patternList.add(databaseAccess.getDirection("forward"));
 //        patternList.add(databaseAccess.getDirection("stop"));
 //        databaseAccess.close();
-
-        double[] d1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
-        double[] d2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
-        double[] d3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
-        double[] d4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
-
-        patternList.add(d1);
-        patternList.add(d2);
-        patternList.add(d3);
-        patternList.add(d4);
-
-
-        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
-        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
+//
+//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
+//        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
 
 
         pattern = new Pattern();
@@ -249,6 +238,22 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     public void testComparePatterns() {
+        LinkedList<double[]> patternList = new LinkedList<>();
+
+        double[] d1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+        double[] d2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+        double[] d3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+        double[] d4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+
+        patternList.add(d1);
+        patternList.add(d2);
+        patternList.add(d3);
+        patternList.add(d4);
+
+
+        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
+        NeuralNetwork testNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
+
         start.setText("Stop");
         for (int i = 0; i < 10000000; i++) {
             continue;
@@ -259,14 +264,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         double[] t3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
         double[] t4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
 
-        ComparePatterns test1 = new ComparePatterns(t1, neuralNetwork);
+        ComparePatterns test1 = new ComparePatterns(t1, testNetwork );
         Log.i("Test", test1.compare(databaseAccess));
 
-        ComparePatterns test2 = new ComparePatterns(t2, neuralNetwork);
+        ComparePatterns test2 = new ComparePatterns(t2, testNetwork );
         Log.i("Test", test2.compare(databaseAccess));
-        ComparePatterns test3 = new ComparePatterns(t3, neuralNetwork);
+        ComparePatterns test3 = new ComparePatterns(t3, testNetwork );
         Log.i("Test", test3.compare(databaseAccess));
-        ComparePatterns test4 = new ComparePatterns(t4, neuralNetwork);
+        ComparePatterns test4 = new ComparePatterns(t4, testNetwork );
         Log.i("Test", test4.compare(databaseAccess));
         start.setText("Start");
 

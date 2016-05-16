@@ -60,7 +60,7 @@ public class ComparePatterns extends Activity {
         double line = 0;
         double limit = 0.008;
 
-        if (res[0] > 0.9 && res[0] <= 1.0) {
+        if (res[0] > 0.9 && res[0] <= 1) {
             line = linearRegressionLeft.R2();
             Log.i("Linear ", line + "");
             if (line > limit) {
