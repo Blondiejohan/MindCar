@@ -32,6 +32,9 @@ public class SavePatterns extends AppCompatActivity {
     TGDevice tgDevice;
 
     private BluetoothAdapter spAdapter;// this class intitilizes bt hardware on a device
+    Pattern baseline;
+    boolean baseBool = true;
+
     Pattern right;
     boolean rightBool = true;
 
@@ -51,7 +54,7 @@ public class SavePatterns extends AppCompatActivity {
     TextView text;
     Button test;
     DatabaseAccess databaseAccess;
-    int start = 1;
+    int start = 0;
     public boolean isConnected;
     Eeg eeg;
 
@@ -88,6 +91,26 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
+    public void saveBaseline(Eeg eeg) {
+        if (baseBool) {
+
+            baseline = new Pattern(eeg);
+            baseBool = false;
+        }
+        if (updateNr >= 0) {
+            baseline.add(eeg);
+            text.setText(updateNr + "");
+            updateNr = updateNr - 1;
+        } else {
+            updateNr = nrOfTimes;
+            databaseAccess.open();
+            databaseAccess.addBaseline(this.toString(baseline.toArray()));
+
+            databaseAccess.close();
+            start = 1;
+        }
+
+    }
 
     public void saveLeft(Eeg eeg) {
         if (leftBool) {
@@ -95,7 +118,7 @@ public class SavePatterns extends AppCompatActivity {
             leftBool = false;
         }
         if (updateNr >= 0) {
-            left.add(eeg);
+            left.add(eeg,baseline);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
@@ -115,7 +138,7 @@ public class SavePatterns extends AppCompatActivity {
             rightBool = false;
         }
         if (updateNr > 0) {
-            right.add(eeg);
+            right.add(eeg,baseline);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
@@ -135,7 +158,7 @@ public class SavePatterns extends AppCompatActivity {
             forwardBool = false;
         }
         if (updateNr > 0) {
-            forward.add(eeg);
+            forward.add(eeg,baseline);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
@@ -155,7 +178,7 @@ public class SavePatterns extends AppCompatActivity {
             stopBool = false;
         }
         if (updateNr > 0) {
-            stop.add(eeg);
+            stop.add(eeg,baseline);
             text.setText(updateNr + "");
             updateNr = updateNr - 1;
         } else {
@@ -193,6 +216,13 @@ public class SavePatterns extends AppCompatActivity {
 
                     case TGDevice.MSG_RAW_DATA:
                         if (times == 0){
+                            if(start == 0 && eeg.isFull()){
+                                direction.setText("Establishing baseline \n please relax");
+                                saveBaseline(eeg);
+                            } else {
+                                times = 20;
+                                break;
+                            }
                             if (start == 1){
                                 direction.setText("Think Left");
                                 saveLeft(eeg);

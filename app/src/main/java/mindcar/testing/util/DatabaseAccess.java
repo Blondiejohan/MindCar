@@ -139,4 +139,10 @@ public class DatabaseAccess {
         direc.put("pattern", pattern);
         database.insert("PATTERNS", null, direc);
     }
+
+    public void addBaseline(String pattern) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("baseline", pattern);
+        database.update("Users",contentValues, "username = 'Sanja'", null);
+    }
 }
