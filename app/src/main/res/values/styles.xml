@@ -15,14 +15,14 @@
     </style>
     <style name="MindCarTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@drawable/screen_background_selector_light</item>
+        <item name="colorPrimaryDark">@drawable/background</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@drawable/screen_background_selector_light</item>
+        <item name="android:windowBackground">@drawable/background</item>
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name ="android:textColorHint">@color/colorPrimary</item>
-        <item name="android:colorBackground">@drawable/screen_background_selector_light</item>
-        <item name="android:colorForeground">@drawable/screen_background_selector_light</item>
+        <item name="android:colorBackground">@drawable/background</item>
+        <item name="android:colorForeground">@drawable/background</item>
     </style>
     <style name="button">
         <item name="android:background">@drawable/buttonshape</item>

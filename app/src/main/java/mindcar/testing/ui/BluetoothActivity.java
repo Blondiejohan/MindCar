@@ -222,10 +222,9 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                 } else if (device.getName().equals("MindWave Mobile")) {
                     if (!mDeviceList.contains(device)) {
-                        String s = "(Paired)";
+                       // String s = "(Paired)";
                         mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
-
                         deviceTwo = true;
                     }
 
