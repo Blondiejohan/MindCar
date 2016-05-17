@@ -7,8 +7,17 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="package mindcar.testing.Login2"
     tools:showIn="@layout/activity_start">
-
-    
+    <ImageView
+        android:id="@+id/imageView"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/intro"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="270dp"
@@ -17,15 +26,12 @@
         android:id="@+id/ET_PASSWORD"
         android:backgroundTint="@android:color/holo_blue_light"
         android:inputType="textPassword"
-        android:textColor="#3efafa"
-        android:textStyle="bold|italic"
-        android:textColorHint="#3efafa"
-        android:textSize="20sp"
         android:editable="true"
         android:layout_below="@+id/ET_USER_NAME"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="Password"
+        style="@style/EditText"
        />
 
     <EditText
@@ -34,15 +40,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/ET_USER_NAME"
         android:backgroundTint="@android:color/holo_blue_light"
-        android:textColor="#3efafa"
-        android:textStyle="bold|italic"
-        android:textColorHint="#3efafa"
-        android:textSize="20sp"
+        style="@style/EditText"
         android:editable="true"
         android:layout_alignLeft="@+id/ET_PASSWORD"
         android:layout_alignStart="@+id/ET_PASSWORD"
         android:layout_marginTop="80dp"
         android:hint="Username"
+        android:contentDescription="Input username"
+        android:inputType="textPersonName"
         />
 
     <Button
@@ -51,11 +56,11 @@
         android:text="LOGIN"
         android:id="@+id/bLogin"
         android:clickable="true"
-        android:layout_alignParentBottom="true"
+        style="@style/button"
+        android:layout_marginBottom="79dp"
+        android:layout_above="@+id/devView"
         android:layout_alignLeft="@+id/ET_PASSWORD"
-        android:layout_alignStart="@+id/ET_PASSWORD"
-        android:layout_marginBottom="166dp"
-        style="@style/button"/>
+        android:layout_alignStart="@+id/ET_PASSWORD" />
 
     <Button
         android:layout_width="130dp"
@@ -74,25 +79,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Login as Developer"
         android:id="@+id/devView"
-        android:textStyle="italic"
-        android:textSize="15sp"
-        android:textColor="#3efafa"
-        android:clickable="false"
+        style="@style/TextView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="44dp" />
 
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/userSettings"
-        android:layout_below="@+id/bLogin"
-        android:layout_alignRight="@+id/devView"
-        android:layout_alignEnd="@+id/devView"
-        android:layout_marginTop="65dp" />
 
 
 </RelativeLayout>

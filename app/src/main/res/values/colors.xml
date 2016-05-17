@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2bb8ba</color>
-    <color name="colorPrimaryDark">#000606</color>
-    <color name="colorAccent">#0fc2c2</color>
-    <color name="mclogo">#25fde4</color>
+    <color name="colorPrimary">#00d0ff</color>
+    <color name="colorPrimaryDark">#080808</color>
+    <color name="colorAccent">#00d0ff</color>
+    <color name="colorBlue">#00d0ff</color>
     <color name="black">#0a0000</color>
-    <color name="legacy_light_primary">#45fafd</color>
-    <color name="background_light">#0fc2c2</color>
+    <color name="legacy_light_primary">#00d0ff</color>
+    <color name="background_light">#00d0ff</color>
     <color name="dim_foreground_dark">#0a0a0a</color>
     <color name="LightBlue">#FFD5FEFF</color>
+    <color name="buttontextcolor">#0e0e0e</color>
+    <color name="editline">#68cee6</color>
 </resources>
