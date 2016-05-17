@@ -86,8 +86,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     BackupControl backupControl;
     DatabaseAccess databaseAccess;
     EegBlink eegBlink;
-
-    DatabaseAccess databaseAccess;
     String name = StartActivity.un;
     String pw = StartActivity.pw;
 

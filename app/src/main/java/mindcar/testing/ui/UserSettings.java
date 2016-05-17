@@ -65,7 +65,6 @@ public class UserSettings  extends Activity implements View.OnClickListener {
                     databaseAccess.updateUsername(StartActivity.ET_USER_NAME.getText().toString(), Username);
                     Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
-                    finish();
                     startActivity(new Intent(this, UserActivity.class));
                 }
 
@@ -82,7 +81,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
                 //newCredentials.setPassword(Password);
 
                 if (Password.equals(PasswordConf) && Password!=Username)
-                    databaseAccess.updatePassword(StartActivity.ET_PASS.getText().toString(),Password);
+                    databaseAccess.updatePassword(StartActivity.ET_PASSWORD.getText().toString(),Password);
 
                 Toast.makeText(getApplicationContext(), "Password successfully changed to" + Password, Toast.LENGTH_LONG).show();
 
