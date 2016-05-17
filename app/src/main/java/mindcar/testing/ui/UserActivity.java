@@ -97,17 +97,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     BluetoothDevice bluetoothDevice;
     Connection connection;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-
 
     @Override
 
@@ -161,17 +150,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             tgDevice.connect(true);
             tgDevice.start();
         }
-        tgDevice.start();*/
+        tgDevice.start();
+
         toggle = (ToggleButton) findViewById(R.id.toggleButton);
 
         toggle.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
                 if (toggle.isChecked()){
-                    tgdevice.start();
+                    tgDevice.start();
 
                 }else{
-                    tgdevice.stop();
+                    tgDevice.stop();
 
                 }
 
@@ -193,12 +183,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         start.setOnClickListener(this);
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 //        restart.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -261,6 +245,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         userPic = iv;
         byte[] image;
         System.out.println("The username that gets sent to getPhoto from displayPhoto is " + name);
+        databaseAccess.open();
         image = databaseAccess.getPhoto(name);
         if (image != null) {
             //return;
@@ -271,6 +256,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 userPic.setBackground(d);
                 }
         }
+        databaseAccess.close();
     }
 
     // convert from byte array to bitmap
@@ -291,46 +277,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-   /* @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "User Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://mindcar.testing.ui/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "User Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://mindcar.testing.ui/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }*/
 
 
    /* public int getBatteryLevel() {
