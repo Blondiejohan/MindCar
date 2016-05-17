@@ -46,9 +46,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
         bSIGNUP = (Button) findViewById(R.id.bSIGNUP);
         devView = (TextView) findViewById(R.id.devView);
 
-        //nikos
-        userSettings = (Button) findViewById(R.id.userSettings);
-        userSettings.setOnClickListener(this);
 
         bLogin.setOnClickListener(this);
         bSIGNUP.setOnClickListener(this);
@@ -69,7 +66,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     un = ET_USER_NAME.getText().toString();
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
-                    startActivity(new Intent(this, BluetoothActivity.class));
+                    startActivity(new Intent(this, UserActivity.class));
                     //startActivity(new Intent(this, oldConnection.class));
                 }
                 else {
@@ -88,9 +85,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, DeveloperActivity.class));
                 break;
 
-            case R.id.userSettings:
-                startActivity(new Intent(this, UserSettings.class));
-               break;
         }
 
     }
