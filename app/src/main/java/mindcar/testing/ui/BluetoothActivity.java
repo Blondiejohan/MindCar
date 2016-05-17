@@ -112,37 +112,33 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     public void setupUI() {
 
         connectedDevices = new ArrayList<String>();
+
         listView = (ListView) findViewById(R.id.listView);//the list with the paired items
+
         listView.setOnItemClickListener(this); // registers callback when an item been clicked
+
         mylist = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 0);//layout
+
         listView.setAdapter(mylist);//pouring myList into the listView
+
         mylist.notifyDataSetChanged();
-        exit = (Button) findViewById(R.id.button1);// a button to terminate the application
-        exit.setVisibility(View.VISIBLE);
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AppExit(); //method to terminate the application, avialable below!
-            }
-        });
-
 
         bar = (ProgressBar) findViewById(R.id.progressBar2);// bar indicator of pairing and connection status
+
         bar.setVisibility(View.GONE);
+
         activate = (Button) findViewById(R.id.button);
+
         activate.setVisibility(View.VISIBLE);
+
         activate.setOnClickListener(new View.OnClickListener() { //turning on and off bluetooth and changing text of button
             @Override
             public void onClick(View v) {
 
                 if (!theAdapter.isEnabled()) {
                     setBluetooth(true);
-                    //activate.setText("Discover And Pair");
                     bar.setVisibility(View.VISIBLE);
                 } else {
-                    //setBluetooth(false);
-                    //activate.setText("Discover And Pair");
                     bar.setVisibility(View.GONE);
                     checkItems();
                 }
@@ -202,16 +198,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             return bluetoothAdapter.disable();
         }
         return true;
-    }
-
-    // this method terminates the application and exits back to the androids main view
-    public void AppExit() {
-
-        this.finish();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 
     /**
@@ -310,7 +296,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 connectedDevices.remove(device.getName());
                 toastMaker("Disconnected From: "+device.getName());
-                if (device.getName().equals("MindWave Mobile")){
+                if (device.getName().equals("Group 2")) {
                     //back();
 
                 }

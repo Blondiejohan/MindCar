@@ -39,21 +39,9 @@
         android:id="@+id/button"
         android:layout_row="3"
         android:layout_column="0"
-        android:background="@drawable/buttonshape"
         style="@style/button"
         android:layout_gravity="center" />
 
-    <Button
-        android:layout_height="@dimen/buttonHeight"
-        android:layout_width="@dimen/buttonWidth"
-        android:text="Exit"
-        android:id="@+id/button1"
-        android:layout_row="7"
-        android:layout_column="0"
-        android:layout_below="@id/button"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/buttonshape"
-        style="@style/button"/>
 
 
     <ProgressBar
