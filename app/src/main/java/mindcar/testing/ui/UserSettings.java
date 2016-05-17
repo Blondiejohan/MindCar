@@ -54,24 +54,24 @@ public class UserSettings  extends Activity implements View.OnClickListener {
         String Username = changeUsername.getText().toString();
         String UsernameConf = changeUsernameConf.getText().toString();
         //newCredentials.setUsername(Username);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
 
         switch (v.getId()) {
             case R.id.usernameOK:
 
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-                databaseAccess.open();
-
                 if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)){
 
-                    databaseAccess.updateUsername("nikos", Username);
-                    Toast.makeText(getApplicationContext(), "new Changed to " + "" + Username, Toast.LENGTH_SHORT).show();
+                    databaseAccess.updateUsername(StartActivity.ET_USER_NAME.getText().toString(), Username);
+                    Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
+                    finish();
                     startActivity(new Intent(this, UserActivity.class));
                 }
 
                 else
 
-                    Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
 
                break;
 
@@ -81,10 +81,10 @@ public class UserSettings  extends Activity implements View.OnClickListener {
                 String PasswordConf = changePassordConf.getText().toString();
                 //newCredentials.setPassword(Password);
 
-                if (Password.equals(PasswordConf))
-                    //databaseAccess.updatePassword(oldPassword,Password);
+                if (Password.equals(PasswordConf) && Password!=Username)
+                    databaseAccess.updatePassword(StartActivity.ET_PASS.getText().toString(),Password);
 
-                Toast.makeText(getApplicationContext(), "No code", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Password successfully changed to" + Password, Toast.LENGTH_LONG).show();
 
                 break;
                 }

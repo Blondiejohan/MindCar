@@ -231,6 +231,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         x = Command.f;
                         car.setCommand(x);
                     }
+                    break;
             }
         }
     };

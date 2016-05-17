@@ -21,7 +21,7 @@ import static mindcar.testing.util.UserData.*;
 public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin;
-    EditText ET_USER_NAME, ET_PASS;
+    static EditText ET_USER_NAME, ET_PASS;
     Button bSIGNUP;
     TextView devView;
 
@@ -29,7 +29,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button userSettings;
 
     public static String un, pw;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
