@@ -1,5 +1,7 @@
 package mindcar.testing.objects;
 
+import mindcar.testing.ui.UserSettings;
+
 /**
  * Object: This object is used for updating values for different parts of our project
  * based on how it is instantiated.

@@ -21,6 +21,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.neurosky.thinkgear.TGDevice;
 
 import org.neuroph.core.NeuralNetwork;
@@ -36,6 +39,7 @@ import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.Connection;
 import mindcar.testing.objects.Eeg;
+import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
 import mindcar.testing.util.CommandUtils;
@@ -67,16 +71,23 @@ import java.io.FileInputStream;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SmartCar car;
-    public static TGDevice tgDevice;
+    private TGDevice tgDevice;
     private Pattern pattern;
     private Command x;
     boolean isConnected = false;
-    Button restart, start;
+    Button restart;
+
+    //nikos
+    Button userSettings;
+
+    Button  start;
     NeuralNetwork neuralNetwork;
     Eeg eeg;
     BackupControl backupControl;
     DatabaseAccess databaseAccess;
+    EegBlink eegBlink;
 
+    DatabaseAccess databaseAccess;
     String name = StartActivity.un;
     String pw = StartActivity.pw;
 
@@ -102,11 +113,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
+
+        //nikos
+        userSettings = (Button) findViewById(R.id.userSettings);
+        logout = (Button) findViewById(R.id.logout);
+        restart = (Button) findViewById(R.id.toggleButton);
+
+        userSettings.setOnClickListener(this);
+        
         isConnected = false;
         eeg = new Eeg();
         backupControl = new BackupControl();
+        eegBlink = new EegBlink();
         databaseAccess = DatabaseAccess.getInstance(this);
-        setContentView(R.layout.activity_user);
         iv = (ImageView) findViewById(R.id.profile_image_view);
         
 
@@ -275,11 +295,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
                 //testComparePatterns();
                 break;
+            case R.id.userSettings:
+                startActivity(new Intent(this, UserSettings.class));
+                break;
         }
     }
 
 
-   /* public int getBatteryLevel() {
+    public int getBatteryLevel() {
         int batterylvl = 0;
         //code for getting and displaying the SmartCar's battery level
         return batterylvl;
@@ -289,7 +312,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         int speed = 0;
         //code for getting and displaying a live reading of SmartCar's speed while driving.
         return speed;
-    }*/
+    }
 
 
     /**
@@ -298,8 +321,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
-
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -311,33 +332,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
 
-                case TGDevice.MSG_ATTENTION:        // Set car to forward or stop depending on attention level
-                    backupControl.setAttention(msg.arg1);
-                    if (backupControl.getAttention() >= 50){
-                        car.setCommand(Command.f);
-                    } else {
-                        car.setCommand(Command.s);
-                    }
-                    break;
-
-                case TGDevice.MSG_BLINK:            // Set car to left or right depending on blink state
-//                    -=THIS USES BLINK STATE=-
-                    backupControl.setBlink(msg.arg1);
-                    if(backupControl.getBlinkState() == BackupControl.BLINK_HOLD){
-                        car.setCommand(Command.l);
-                    } else if (backupControl.getBlinkState() == BackupControl.BLINK_RELEASE){
-                        car.setCommand(Command.r);
-                    }
-
-//                    -=THIS USES NUMBER OF BLINKS=-
-//                    if(backupControl.getNumberOfBlinks() == 2){
-//                        car.setCommand(Command.l);
-//                    } else if (backupControl.getNumberOfBlinks() == 3){
-//                        car.setCommand(Command.r);
-//                    }
-//                    backupControl.setNumberOfBlinks(0);
-
-                    break;
+                
 
                 case TGDevice.MSG_RAW_DATA:
 
@@ -357,9 +352,38 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         times--;
                     }
+                    break;
+                case TGDevice.MSG_BLINK:
+                    Log.i("test", msg.arg1 + "");
+                    //SmartCar smartCar = new SmartCar();
+                    eegBlink.setBlink(msg.arg1);
 
+                    while (eegBlink.getAttention()>40) {
+                        x = Command.f;
+                        Log.i("test","Forward");
+                        if (eegBlink.leftBlink()) {
+                            Log.i("test","Left");
+                            x = Command.l;
+                            car.setCommand(x);
+                        }
+
+
+                        if (eegBlink.rightBlink()) {
+                            Log.i("test","Right");
+                            x = Command.r;
+                            car.setCommand(x);
+                        }
+
+                    }
                     break;
 
+                case TGDevice.MSG_ATTENTION:
+                    eegBlink.setAttention(msg.arg1);
+                    if (eegBlink.getAttention()>40){
+                        x = Command.f;
+                        car.setCommand(x);
+                    }
+                    break;
             }
         }
     };

@@ -149,6 +149,16 @@ public class DatabaseAccess {
         database.update(table, values, "_id = " + id, null);
     }
 
+    public void updateUsername (String oldUsername, String newUsername) {
+        String sql = "UPDATE Users SET username = '" +newUsername+ "' where username = '"+oldUsername+"';";
+        database.execSQL(sql);
+    }
+
+    public void updatePassword (String oldPassword, String newPassword){
+        String sql = "Update Users SET password = '" +newPassword+ "' where password = '"+oldPassword+"';";
+        database.execSQL(sql);
+    }
+
     public boolean isDeveloper(String username, String password) {
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
         return cursor.getCount() == 1;

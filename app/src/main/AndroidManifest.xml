@@ -56,6 +56,9 @@
             android:theme="@style/MindCarTheme"/>
         <activity android:name=".ui.SavePatterns"
             android:theme="@style/MindCarTheme"/>
+            <activity android:name=".ui.UserSettings"
+                android:theme="@style/MindCarTheme">
+        </activity>
     </application>
 
 </manifest>
