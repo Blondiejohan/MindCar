@@ -25,7 +25,7 @@ import static mindcar.testing.util.UserData.*;
 public class StartActivity extends Activity implements View.OnClickListener {
 
     Button bLogin;
-    static EditText ET_USER_NAME, ET_PASSWORD;
+    EditText ET_USER_NAME, ET_PASSWORD;
     Button bSIGNUP;
     TextView devView;
 
