@@ -37,6 +37,7 @@
         android:text="Add new command"
         android:id="@+id/addNewCommand"
         android:layout_marginTop="20dp"
-        style="@style/button"/>
+        style="@style/button"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

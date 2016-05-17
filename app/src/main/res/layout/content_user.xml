@@ -90,7 +90,7 @@
 
     <ToggleButton
         style="@style/button"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="50dp"
         android:id="@+id/toggleButton"
         android:checked="false"
@@ -117,25 +117,16 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        style="@style/button"
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="@dimen/buttonHeight"
-        android:text="SETTINGS"
-        android:id="@+id/button2"
+        android:text="Settings"
+        android:id="@+id/userSettings"
+        android:clickable="true"
+        style="@style/button"
         android:layout_above="@+id/logout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="59dp" />
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/userSettings"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/profile_image_view"
-        android:layout_toStartOf="@+id/profile_image_view"
-        android:clickable="true" />
 
 
 </RelativeLayout>
