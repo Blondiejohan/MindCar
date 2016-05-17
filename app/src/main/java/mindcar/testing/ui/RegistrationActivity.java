@@ -12,11 +12,14 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
@@ -27,12 +30,14 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     EditText ET_USER_NAME, ET_PASS;
     String user_name, user_pass;
 
+
     //Madisen's
         //Choosing and taking the Image
     private static final int SELECTED_PICTURE = 1;
     Button chooseImage, takePhoto;
     public static final int CAMERA_REQUEST = 1313;
     ImageView imgPhoto;
+    public static byte[] myPic, chosenPic, takenPic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,36 +67,16 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
     }
 
-    @Override
-    public void onClick(View v) {
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-        databaseAccess.open();
-        switch (v.getId()) {
-            case R.id.bRegister:
-                if (databaseAccess.checkAvailability(ET_USER_NAME.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "Welcome " + ET_USER_NAME.getText().toString() + " " + ET_PASS.getText().toString(), Toast.LENGTH_SHORT).show();
-                    databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString());
-                    //databaseAccess.close();
-                    startActivity(new Intent(this, StartActivity.class));
-                } else
-                    Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
-                break;
-            //Madisen's shit
-                //If the button chooseImage is clicked, access external data and go to next method
-            case R.id.chooseImage:
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, SELECTED_PICTURE);
-                break;
-                //if takePhoto button is clicked, open the camera.
-            case R.id.takePhoto:
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                break;
+    // convert from bitmap to byte array
+    public static byte[] getBytes(Bitmap bitmap) {
 
-        }
-
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        myPic = stream.toByteArray();
+        return myPic;
     }
+
+
     //Madisen's shit
         //Method for telling the takePhoto and chooseImage buttons what to do.
     @Override
@@ -119,7 +104,9 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         imgPhoto.setBackground(d);
                     }
-
+                    else Toast.makeText(getApplicationContext(),"Your Android SDK version is not recent enough, please upgrade your software and try again.", Toast.LENGTH_LONG).show();
+                    //Store image as byte for later saving it into the database
+                    chosenPic = getBytes(yourSelectedImage);
                 }
                 break;
             //if you choose to select a photo and successfully do so..
@@ -134,13 +121,57 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                         //Now we have the image from the camera
                         imgPhoto.setImageBitmap(cameraImage);
                     //}
-
+                    takenPic = getBytes(cameraImage);
                 }
-                else Toast.makeText(getApplicationContext(), "Picture was not successfully chosen", Toast.LENGTH_LONG);
+                else Toast.makeText(getApplicationContext(), "Picture was not successfully chosen", Toast.LENGTH_LONG).show();
 
                 break;
 
 
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        switch (v.getId()) {
+            case R.id.bRegister:
+                if (databaseAccess.checkAvailability(ET_USER_NAME.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Welcome " + ET_USER_NAME.getText().toString() + " " + ET_PASS.getText().toString(), Toast.LENGTH_SHORT).show();
+                   if (takenPic != null){
+                                //databaseAccess.addPhoto(takenPic);
+                        databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), myPic);
+                        }
+                    if (chosenPic != null){
+                        //databaseAccess.addPhoto(chosenPic);
+                        databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), myPic);
+
+                    }
+                    else if ((takenPic == null) || (chosenPic == null)){
+                        databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), null);
+                    }
+
+                        //databaseAccess.close();
+
+                    startActivity(new Intent(this, StartActivity.class));
+                } else
+                    Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
+                break;
+            //Madisen's shit
+            //If the button chooseImage is clicked, access external data and go to next method
+            case R.id.chooseImage:
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECTED_PICTURE);
+                break;
+            //if takePhoto button is clicked, open the camera.
+            case R.id.takePhoto:
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                break;
+
+        }
+
     }
 }
