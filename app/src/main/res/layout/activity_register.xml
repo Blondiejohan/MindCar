@@ -7,6 +7,9 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.RegistrationActivity">
 
-    <include layout="@layout/content_register" />
+    <include layout="@layout/content_register"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
