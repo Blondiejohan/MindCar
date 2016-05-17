@@ -24,7 +24,7 @@ public class Intro extends Activity {
             @Override
             public void run() {
 
-                Intent mainIntent = new Intent(Intro.this,BluetoothActivity.class);
+                Intent mainIntent = new Intent(Intro.this,StartActivity.class);
                 Intro.this.startActivity(mainIntent);
                 Intro.this.finish();
             }

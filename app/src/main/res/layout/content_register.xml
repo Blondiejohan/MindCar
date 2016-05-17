@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AppTheme"
+    style="@style/MindCarTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -20,8 +20,7 @@
         android:clickable="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/profile_image" />
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -31,11 +30,12 @@
         android:ems="10"
         android:id="@+id/ET_USER_NAME"
         android:editable="true"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="@color/editline"
         android:layout_below="@+id/imgPicture"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        style="@style/EditText"/>
 
 
 
@@ -47,42 +47,44 @@
         android:textColor="#3efafa"
         android:textStyle="bold|italic"
         android:editable="true"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="@color/editline"
         android:layout_below="@+id/ET_USER_NAME"
         android:hint="Password"
         android:layout_alignLeft="@+id/ET_USER_NAME"
         android:layout_alignRight="@+id/ET_USER_NAME"
+        android:inputType="textPassword"
+        style="@style/EditText"
 
          />
 
     <Button
         style="@style/button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="TAKE NEW PHOTO"
         android:id="@+id/takePhoto"
         android:background="@drawable/buttonshape"
         android:clickable="true"
+        android:layout_marginTop="80dp"
         android:layout_below="@+id/ET_PASS"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="150dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         style="@style/button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="CHOOSE EXISTING IMAGE"
         android:background="@drawable/buttonshape"
         android:id="@+id/chooseImage"
-        android:layout_below="@+id/takePhoto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignTop="@+id/takePhoto"
+        android:layout_alignRight="@+id/ET_PASS"
+        android:layout_alignEnd="@+id/ET_PASS" />
 
     <Button
         style="@style/button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="REGISTER"
         android:id="@+id/bRegister"
         android:onClick="userReg"

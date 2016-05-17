@@ -35,10 +35,10 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/profile_image_view"
-        android:src="@drawable/profile_image"
         android:layout_alignTop="@+id/username"
         android:layout_alignRight="@+id/attentionBar"
-        android:layout_alignEnd="@+id/attentionBar" />
+        android:layout_alignEnd="@+id/attentionBar"
+        android:scaleType="fitXY"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,24 +86,23 @@
 
     <ToggleButton
         style="@style/button"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:id="@+id/toggleButton"
         android:checked="false"
         android:clickable="false"
         android:textOff="Start"
         android:textOn="Pause"
         android:visibility="visible"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:text="start_pause_toggle_button"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/attentionBar"
-        android:layout_marginTop="40dp" />
+        android:layout_below="@+id/attentionBar"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="@style/button"
-        android:layout_width="130dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Log Out"
         android:id="@+id/logout"
         android:visibility="visible"
@@ -113,9 +112,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-
-
-
+    <Button
+        style="@style/button"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
+        android:text="SETTINGS"
+        android:id="@+id/button2"
+        android:layout_above="@+id/logout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="59dp" />
 
 
 </RelativeLayout>

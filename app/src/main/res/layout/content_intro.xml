@@ -13,7 +13,7 @@
         android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/mclogo"
+        android:src="@drawable/intro"
 
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"

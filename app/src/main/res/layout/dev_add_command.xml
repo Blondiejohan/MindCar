@@ -14,9 +14,11 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:id="@+id/devTextCommand"
         android:hint="Add new command"
-        android:backgroundTint="@android:color/holo_blue_light"/>
+        android:backgroundTint="@android:color/holo_blue_light"
+        style="@style/EditText"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -25,7 +27,8 @@
         android:hint="Add description"
         android:backgroundTint="@android:color/holo_blue_light"
         android:layout_below= "@id/devTextCommand"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        style="@style/EditText"/>
 
     <Button
         style="@style/button"
