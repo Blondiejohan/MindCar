@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.neuroph.core.NeuralNetwork;
 
+import mindcar.testing.ui.StartActivity;
 import mindcar.testing.util.DatabaseAccess;
 
 /**
@@ -35,10 +36,10 @@ public class ComparePatterns extends Activity {
      */
     public String compare(DatabaseAccess databaseAccess) {
         databaseAccess.open();
-        double[] sLeft = databaseAccess.getDirection("left");
-        double[] sRight = databaseAccess.getDirection("right");
-        double[] sForward = databaseAccess.getDirection("forward");
-        double[] sStop = databaseAccess.getDirection("stop");
+        double[] sLeft = databaseAccess.getPattern("left", StartActivity.un);
+        double[] sRight = databaseAccess.getPattern("right", StartActivity.un);
+        double[] sForward = databaseAccess.getPattern("forward", StartActivity.un);
+        double[] sStop = databaseAccess.getPattern("stop", StartActivity.un);
         databaseAccess.close();
 
 //        double[] sLeft = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};

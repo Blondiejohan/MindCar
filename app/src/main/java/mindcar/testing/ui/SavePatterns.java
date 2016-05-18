@@ -70,13 +70,9 @@ public class SavePatterns extends AppCompatActivity {
         isConnected = false;
         databaseAccess = DatabaseAccess.getInstance(this);
         tgDevice = new TGDevice(spAdapter, tgHandler);
+        tgDevice.connect(true);
         eeg = new Eeg();
 
-        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
-                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
-            tgDevice.connect(true);
-            tgDevice.start();
-        }
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +101,7 @@ public class SavePatterns extends AppCompatActivity {
             updateNr = nrOfTimes;
             databaseAccess.open();
             databaseAccess.addPattern("baseline", this.toString(baseline.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", this.toString(baseline.toArray()));
 
             databaseAccess.close();
             start = 2;
@@ -125,6 +122,7 @@ public class SavePatterns extends AppCompatActivity {
             updateNr = nrOfTimes;
             databaseAccess.open();
             databaseAccess.addPattern("left", this.toString(left.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", this.toString(left.toArray()));
 
             databaseAccess.close();
             start = 3;
@@ -145,6 +143,7 @@ public class SavePatterns extends AppCompatActivity {
             updateNr = nrOfTimes;
             databaseAccess.open();
             databaseAccess.addPattern("right", this.toString(right.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", this.toString(right.toArray()));
 
             databaseAccess.close();
             start = 4;
@@ -165,6 +164,7 @@ public class SavePatterns extends AppCompatActivity {
             updateNr = nrOfTimes;
             databaseAccess.open();
             databaseAccess.addPattern("forward", this.toString(forward.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", this.toString(forward.toArray()));
 
             databaseAccess.close();
             start = 5;
@@ -185,12 +185,14 @@ public class SavePatterns extends AppCompatActivity {
             updateNr = nrOfTimes;
             databaseAccess.open();
             databaseAccess.addPattern("stop", this.toString(stop.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", this.toString(stop.toArray()));
 
             databaseAccess.close();
             start = 6;
             tgDevice.stop();
             tgDevice.close();
             startActivity(new Intent(SavePatterns.this, StartActivity.class));
+            this.finish();
         }
 
     }
@@ -221,7 +223,6 @@ public class SavePatterns extends AppCompatActivity {
                                 saveBaseline(eeg);
                             } else {
                                 times = 20;
-                                break;
                             }
                             if (start == 2){
                                 direction.setText("Think Left");

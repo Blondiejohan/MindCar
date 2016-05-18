@@ -3,12 +3,10 @@ package mindcar.testing.ui;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -21,9 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.neurosky.thinkgear.TGDevice;
 
 import org.neuroph.core.NeuralNetwork;
@@ -42,27 +37,13 @@ import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
-import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.util.NeuralNetworkHelper;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.view.View;
 import android.widget.ToggleButton;
-
-import java.io.FileInputStream;
 
 
 /**
@@ -147,10 +128,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         LinkedList<double[]> patternList = new LinkedList<>();
 
         databaseAccess.open();
-        patternList.add(databaseAccess.getDirection("left"));
-        patternList.add(databaseAccess.getDirection("right"));
-        patternList.add(databaseAccess.getDirection("forward"));
-        patternList.add(databaseAccess.getDirection("stop"));
+        patternList.add(databaseAccess.getPattern("left", StartActivity.un));
+        patternList.add(databaseAccess.getPattern("right", StartActivity.un));
+        patternList.add(databaseAccess.getPattern("forward", StartActivity.un));
+        patternList.add(databaseAccess.getPattern("stop", StartActivity.un));
         patternList.add(databaseAccess.getBaseline());
         databaseAccess.close();
 

@@ -156,6 +156,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     //goes to next activity
     private void next() {
         startActivity(new Intent(this, StartActivity.class));
+        this.finish();
     }
 
     private void back() {

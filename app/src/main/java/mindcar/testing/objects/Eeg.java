@@ -28,14 +28,14 @@ public class Eeg {
         attention = 0;
         meditation = 0;
         blink = 0;
-        delta = 0;
-        theta = 0;
-        lowAlpha = 0;
-        highAlpha = 0;
-        lowBeta = 0;
-        highBeta = 0;
-        lowGamma = 0;
-        highGamma = 0;
+//        delta = 0;
+//        theta = 0;
+//        lowAlpha = 0;
+//        highAlpha = 0;
+//        lowBeta = 0;
+//        highBeta = 0;
+//        lowGamma = 0;
+//        highGamma = 0;
     }
 
     /**
@@ -124,7 +124,7 @@ public class Eeg {
      * @return true if every eeg value is assignd its correct frequenzy span
      */
     public boolean isFull() {
-        if (delta >= 0 && delta <= 3 && theta >= 4 && theta <= 7 && lowAlpha >= 8 && lowAlpha <= 9
+        if (delta > 0 && delta <= 3 && theta >= 4 && theta <= 7 && lowAlpha >= 8 && lowAlpha <= 9
                 && highAlpha >= 10 && highAlpha <= 12 && lowBeta >= 13 && lowBeta <= 17
                 && highBeta >= 18 && highBeta <= 30 && lowGamma >= 31 && lowGamma <= 40
                 && highGamma >= 41 && highGamma <= 50) {

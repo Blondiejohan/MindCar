@@ -81,12 +81,12 @@ public class DatabaseAccess {
         return cursor;
     }
 
-    public double[] getDirection(String direction) {
-        Cursor cursor = database.rawQuery("SELECT * FROM PATTERNS WHERE direction = '" + direction + "'", null);
+    public double[] getPattern(String direction, String username) {
+        Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + username + "'", null);
         String str= "";
         double[] arr = new double[800];
         if (cursor.moveToFirst()) {
-            str = cursor.getString(cursor.getColumnIndex(direction) + 3);
+            str = cursor.getString(cursor.getColumnIndex(direction));
         }
         int i = 0;
         while (str.length()!= 0 && str.charAt(0) == 's') {

@@ -67,6 +67,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
                     startActivity(new Intent(this, UserActivity.class));
+                    this.finish();
                     //startActivity(new Intent(this, oldConnection.class));
                 }
                 else {
@@ -79,10 +80,12 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
             case R.id.bSIGNUP:
                 startActivity(new Intent(this, RegistrationActivity.class));
+                this.finish();
                 break;
 
             case R.id.devView:
                 startActivity(new Intent(this, DeveloperActivity.class));
+                this.finish();
                 break;
 
         }
