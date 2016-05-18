@@ -54,7 +54,7 @@ public class SavePatterns extends AppCompatActivity {
     TextView text;
     Button test;
     DatabaseAccess databaseAccess;
-    int start = 0;
+    int start = 1;
     public boolean isConnected;
     Eeg eeg;
 
@@ -107,7 +107,7 @@ public class SavePatterns extends AppCompatActivity {
             databaseAccess.addPattern("baseline", this.toString(baseline.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
-            start = 1;
+            start = 2;
         }
 
     }
@@ -127,7 +127,7 @@ public class SavePatterns extends AppCompatActivity {
             databaseAccess.addPattern("left", this.toString(left.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
-            start = 2;
+            start = 3;
         }
 
     }
@@ -147,7 +147,7 @@ public class SavePatterns extends AppCompatActivity {
             databaseAccess.addPattern("right", this.toString(right.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
-            start = 3;
+            start = 4;
         }
 
     }
@@ -167,7 +167,7 @@ public class SavePatterns extends AppCompatActivity {
             databaseAccess.addPattern("forward", this.toString(forward.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
-            start = 4;
+            start = 5;
         }
 
     }
@@ -187,7 +187,7 @@ public class SavePatterns extends AppCompatActivity {
             databaseAccess.addPattern("stop", this.toString(stop.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
-            start = 5;
+            start = 6;
             tgDevice.stop();
             tgDevice.close();
             startActivity(new Intent(SavePatterns.this, StartActivity.class));
@@ -216,27 +216,27 @@ public class SavePatterns extends AppCompatActivity {
 
                     case TGDevice.MSG_RAW_DATA:
                         if (times == 0){
-                            if(start == 0 && eeg.isFull()){
+                            if(start == 1 && eeg.isFull()){
                                 direction.setText("Establishing baseline \n please relax");
                                 saveBaseline(eeg);
                             } else {
                                 times = 20;
                                 break;
                             }
-                            if (start == 1){
+                            if (start == 2){
                                 direction.setText("Think Left");
                                 saveLeft(eeg);
 
                             }
-                            if (start == 2){
+                            if (start == 3){
                                 direction.setText("Think Right");
                                 saveRight(eeg);
                             }
-                            if (start == 3){
+                            if (start == 4){
                                 direction.setText("Think Forward");
                                 saveForward(eeg);
                             }
-                            if (start == 4){
+                            if (start == 5){
                                 direction.setText("Think Stop");
                                 saveStop(eeg);
                             }

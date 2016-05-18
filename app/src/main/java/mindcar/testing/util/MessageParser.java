@@ -59,7 +59,7 @@ public class MessageParser {
      */
     public static void parseRawData(Message msg, Eeg eeg){
             int value = msg.arg1;
-            if (value >= 0 && value <= 3) {
+            if (value > 0 && value <= 3) {
                 eeg.setDelta(value);
             } else if (value >= 4 && value <= 7) {
                 eeg.setTheta(value);
