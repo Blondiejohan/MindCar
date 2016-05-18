@@ -36,6 +36,23 @@ public class Pattern {
         }
         list.add(eeg);
     }
+
+    /**
+     * Check if the Eeg value isFull() before adding it to the Pattern. Populates the Eeg value with
+     * a Eeg value from another pattern if isFull() is false.
+     * @param eeg
+     * @param pattern
+     */
+    public void add(Eeg eeg, Pattern pattern){
+        if(eeg.isFull()){
+            this.add(eeg);
+        } else {
+            eeg.populate(pattern.get(this.list.size()-1));
+            this.add(eeg);
+        }
+    }
+
+
     // checking if the size of the list is full
     private boolean isFull() {
         if(list.size() < capacity){
