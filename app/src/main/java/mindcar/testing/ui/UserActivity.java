@@ -86,14 +86,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     BackupControl backupControl;
     DatabaseAccess databaseAccess;
     EegBlink eegBlink;
-    String name = StartActivity.un;
-    String pw = StartActivity.pw;
+
+
 
     int times = 1000;
 
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
+    //<madisen>
     View v;
     ImageView iv;
     TextView username;
@@ -101,6 +102,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     ImageView userPic;
     Bitmap finalPic;
     ToggleButton toggle;
+    String name, password = null;
+    //<\madisen>
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice bluetoothDevice;
@@ -125,7 +128,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         backupControl = new BackupControl();
         eegBlink = new EegBlink();
         databaseAccess = DatabaseAccess.getInstance(this);
+
+
+        //<madisen>
         iv = (ImageView) findViewById(R.id.profile_image_view);
+        getUNPW();
+        //<\madisen>
+
         
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -213,6 +222,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //                }
 //            }
 //        }); // end patterns
+    }
+
+    public void getUNPW(){
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        name = sharedPref.getString("username", "");
+        password = sharedPref.getString("password","");
+
+
     }
 
 
