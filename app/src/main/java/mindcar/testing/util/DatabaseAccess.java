@@ -164,17 +164,10 @@ public class DatabaseAccess {
         return cursor.getCount() == 1;
     }
 
-    public void addDirection(String direction, String pattern) {
+    public void addPattern(String direction, String pattern, String username) {
         ContentValues direc = new ContentValues();
-        direc.put("direction", direction);
-        direc.put("pattern", pattern);
-        database.insert("PATTERNS", null, direc);
-    }
-
-    public void addBaseline(String pattern) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("baseline", pattern);
-        database.update("Users", contentValues, "username = 'Sanja'", null);
+        direc.put(direction, pattern);
+        database.update("Users", direc,"username = '" + username + "';", null);
     }
 
     public double[] getBaseline() {

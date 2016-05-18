@@ -104,7 +104,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addBaseline(this.toString(baseline.toArray()));
+            databaseAccess.addPattern("baseline", this.toString(baseline.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
             start = 1;
@@ -124,7 +124,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("left", this.toString(left.toArray()));
+            databaseAccess.addPattern("left", this.toString(left.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
             start = 2;
@@ -144,7 +144,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("right", this.toString(right.toArray()));
+            databaseAccess.addPattern("right", this.toString(right.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
             start = 3;
@@ -164,7 +164,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("forward", this.toString(forward.toArray()));
+            databaseAccess.addPattern("forward", this.toString(forward.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
             start = 4;
@@ -184,7 +184,7 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addDirection("stop", this.toString(stop.toArray()));
+            databaseAccess.addPattern("stop", this.toString(stop.toArray()), RegistrationActivity.user_name);
 
             databaseAccess.close();
             start = 5;

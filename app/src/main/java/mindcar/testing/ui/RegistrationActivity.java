@@ -28,7 +28,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
     Button bRegister;
     EditText ET_USER_NAME, ET_PASS;
-    String user_name, user_pass;
+    static String user_name, user_pass;
 
 
     //Madisen's
