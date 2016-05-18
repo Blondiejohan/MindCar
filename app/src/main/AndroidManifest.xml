@@ -18,8 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.Intro"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,29 +35,17 @@
 
         <!--<activity android:name=".ui.SavePatterns"-->
             <!--android:theme="@style/MindCarTheme"/>-->
-        <activity android:name=".ui.StartActivity"
-            android:theme="@style/MindCarTheme" />
-        <activity android:name=".ui.UserActivity"
-            android:theme="@style/MindCarTheme" />
-        <activity android:name=".ui.RegistrationActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".ui.BluetoothActivity"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.dev.DeveloperActivity"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.dev.edit.EditCommandsActivity"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.dev.edit.EditUsersActivity"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.UserImageActivity"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.UserTakeImage"
-            android:theme="@style/MindCarTheme"/>
-        <activity android:name=".ui.SavePatterns"
-            android:theme="@style/MindCarTheme"/>
-            <activity android:name=".ui.UserSettings"
-                android:theme="@style/MindCarTheme">
-        </activity>
+        <activity android:name=".ui.StartActivity"/>
+        <activity android:name=".ui.UserActivity"/>
+        <activity android:name=".ui.RegistrationActivity"/>
+        <activity android:name=".ui.BluetoothActivity"/>
+        <activity android:name=".ui.dev.DeveloperActivity"/>
+        <activity android:name=".ui.dev.edit.EditCommandsActivity"/>
+        <activity android:name=".ui.dev.edit.EditUsersActivity"/>
+        <activity android:name=".ui.UserImageActivity"/>
+        <activity android:name=".ui.UserTakeImage"/>
+        <activity android:name=".ui.SavePatterns"/>
+        <activity android:name=".ui.UserSettings"/>
     </application>
 
 </manifest>

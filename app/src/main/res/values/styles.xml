@@ -17,7 +17,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@drawable/background</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@drawable/background</item>
+        <item name="android:background">@drawable/background</item>
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name ="android:textColorHint">@color/colorPrimary</item>

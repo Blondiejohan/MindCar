@@ -167,7 +167,7 @@ public class SavePatterns extends AppCompatActivity {
             start = 5;
             tgDevice.stop();
             tgDevice.close();
-            startActivity(new Intent(SavePatterns.this, UserActivity.class));
+            startActivity(new Intent(SavePatterns.this, StartActivity.class));
         }
 
     }

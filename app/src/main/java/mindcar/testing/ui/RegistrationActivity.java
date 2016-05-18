@@ -155,7 +155,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
                         //databaseAccess.close();
 
-                    startActivity(new Intent(this, StartActivity.class));
+                    startActivity(new Intent(this, SavePatterns.class));
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;
