@@ -283,8 +283,9 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     connectedDevices.add(device.getName());
                     toastMaker("Connected to: "+ device.getName());
                     bar.setVisibility(View.GONE);
-                    mylist.remove("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
-                    mylist.notifyDataSetChanged();
+//                    mylist.remove("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
+//                    mylist.notifyDataSetChanged();
+//                    listView.setAdapter(mylist);
                 }
                 if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
                     tgDevice.stop();

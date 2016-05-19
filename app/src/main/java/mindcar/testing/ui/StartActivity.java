@@ -67,7 +67,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
                     startActivity(new Intent(this, UserActivity.class));
-                    this.finish();
                     //startActivity(new Intent(this, oldConnection.class));
                 }
                 else {

@@ -3,7 +3,7 @@ package mindcar.testing.objects;
 import java.util.LinkedList;
 
 /**
- * this class takes values from eeg and patterns them in a linked list
+ * this class takes values from eeg and patterns them in a linked list restricted by a capacity value
  * Created by sarahaldelame and Mattias Landkvist on 19/04/16.
  */
 
@@ -53,7 +53,10 @@ public class Pattern {
     }
 
 
-    // checking if the size of the list is full
+    /**
+     * Checking if the size of the list is full
+     * @return true if Pattern is full
+     */
     private boolean isFull() {
         if(list.size() < capacity){
             return false;
@@ -62,11 +65,19 @@ public class Pattern {
     }
 
 
-
+    /**
+     *
+     * @param i
+     * @return Eeg at position i in this Pattern
+     */
     public Eeg get(int i) {
         return list.get(i);
     }
 
+    /**
+     * Converts this Pattern to an array of doubles ordered by Eeg object
+     * @return double[]
+     */
     public double[] toArray(){
         double[] doubles = new double[capacity * 8];
         int i = 0;

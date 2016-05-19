@@ -85,10 +85,14 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + username + "'", null);
         String str= "";
         double[] arr = new double[800];
-        if (cursor.moveToFirst()) {
-            str = cursor.getString(cursor.getColumnIndex(direction));
-        }
+        cursor.moveToFirst();
+        str = cursor.getString(5);
+
         int i = 0;
+        Log.i("String", username + " " + cursor.getString(6).toString());
+        Log.i("String", username + " " + cursor.getString(7).toString());
+        Log.i("String", username + " " + cursor.getString(8).toString());
+        Log.i("String", username + " " + cursor.getString(9).toString());
         while (str.length()!= 0 && str.charAt(0) == 's') {
             String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
             arr[i] = Double.parseDouble(s);

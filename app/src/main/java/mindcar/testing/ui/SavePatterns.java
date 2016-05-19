@@ -57,6 +57,7 @@ public class SavePatterns extends AppCompatActivity {
     int start = 1;
     public boolean isConnected;
     Eeg eeg;
+    Eeg tmp;
 
 
     @Override
@@ -70,7 +71,11 @@ public class SavePatterns extends AppCompatActivity {
         isConnected = false;
         databaseAccess = DatabaseAccess.getInstance(this);
         tgDevice = new TGDevice(spAdapter, tgHandler);
-        tgDevice.connect(true);
+
+        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+            tgDevice.connect(true);
+        }
         eeg = new Eeg();
 
         test.setOnClickListener(new View.OnClickListener() {
@@ -218,11 +223,15 @@ public class SavePatterns extends AppCompatActivity {
 
                     case TGDevice.MSG_RAW_DATA:
                         if (times == 0){
-                            if(start == 1 && eeg.isFull()){
+                            if(start == 1){
                                 direction.setText("Establishing baseline \n please relax");
-                                saveBaseline(eeg);
-                            } else {
-                                times = 20;
+                                if(eeg.isFull()) {
+                                    saveBaseline(eeg);
+                                    tmp = eeg;
+                                } else if(baseline != null && baseline.get(0) != null){
+                                    eeg.populate(tmp);
+                                    saveBaseline(eeg);
+                                }
                             }
                             if (start == 2){
                                 direction.setText("Think Left");
