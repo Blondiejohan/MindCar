@@ -93,6 +93,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE);
         registerReceiver(discoveryResult, filter);
 
         //when discovery starts, discovery could also be cancelled

@@ -11,9 +11,9 @@ import java.io.OutputStream;
  */
 
 public class Connected extends Thread {
-    private final BluetoothSocket mmSocket;
-    private final InputStream mmInStream;
-    static OutputStream mmOutStream;
+    private final BluetoothSocket bluetoothSocket;
+    private final InputStream bluetoothInStream;
+    static OutputStream bluetoothOutStream;
 
 
     // Constructor for creating a new connected object.
@@ -23,7 +23,7 @@ public class Connected extends Thread {
      * @param socket
      */
     public Connected(BluetoothSocket socket) {
-        mmSocket = socket;
+        bluetoothSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
         try {
@@ -31,8 +31,8 @@ public class Connected extends Thread {
             tmpOut = socket.getOutputStream();
         } catch (IOException e) {
         }
-        mmInStream = tmpIn;
-        mmOutStream = tmpOut;
+        bluetoothInStream = tmpIn;
+        bluetoothOutStream = tmpOut;
     }
 
     // Dont know how mutch of this method is needed. Might need to clean it up.
@@ -43,7 +43,7 @@ public class Connected extends Thread {
         int bytes = 0;
         while (true) {
             try {
-                bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
+                bytes += bluetoothInStream.read(buffer, bytes, buffer.length - bytes);
                 for (int i = begin; i < bytes; i++) {
                     if (buffer[i] == "#".getBytes()[0]) {
                         // mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
@@ -71,7 +71,7 @@ public class Connected extends Thread {
     public static void write(String message) {
         try {
             byte[] bytes = message.getBytes();
-            mmOutStream.write(bytes);
+            bluetoothOutStream.write(bytes);
         } catch (IOException e) {
         }
     }
@@ -79,7 +79,7 @@ public class Connected extends Thread {
     // Closes the socket.
     public void cancel() {
         try {
-            mmSocket.close();
+            bluetoothSocket.close();
         } catch (IOException e) {
         }
     }
