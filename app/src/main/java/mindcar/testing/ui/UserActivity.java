@@ -257,6 +257,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
                         String send = compPatt.compare(databaseAccess);
                         Log.i("Send message ", send);
+                        if(send != "w"){
+                            Connected.write("f");
+                        }
                         Connected.write(send);
 
                         eeg = new Eeg();
@@ -266,37 +269,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         times--;
                     }
                     break;
-                case TGDevice.MSG_BLINK:
-                    Log.i("test", msg.arg1 + "");
-                    //SmartCar smartCar = new SmartCar();
-                    eegBlink.setBlink(msg.arg1);
-
-                    while (eegBlink.getAttention() > 40) {
-                        x = Command.f;
-                        Log.i("test", "Forward");
-                        if (eegBlink.leftBlink()) {
-                            Log.i("test", "Left");
-                            x = Command.l;
-                            car.setCommand(x);
-                        }
-
-
-                        if (eegBlink.rightBlink()) {
-                            Log.i("test", "Right");
-                            x = Command.r;
-                            car.setCommand(x);
-                        }
-
-                    }
-                    break;
-
-                case TGDevice.MSG_ATTENTION:
-                    eegBlink.setAttention(msg.arg1);
-                    if (eegBlink.getAttention() > 40) {
-                        x = Command.f;
-                        car.setCommand(x);
-                    }
-                    break;
+//                case TGDevice.MSG_BLINK:
+//                    //Log.i("test", msg.arg1 + "");
+//                    //SmartCar smartCar = new SmartCar();
+//                    eegBlink.setBlink(msg.arg1);
+//
+//                    while (eegBlink.getAttention() > 40) {
+//                        x = Command.f;
+//                       // Log.i("test", "Forward");
+//                        if (eegBlink.leftBlink()) {
+//                          //  Log.i("test", "Left");
+//                            x = Command.l;
+//                            car.setCommand(x);
+//                        }
+//
+//
+//                        if (eegBlink.rightBlink()) {
+//                           // Log.i("test", "Right");
+//                            x = Command.r;
+//                            car.setCommand(x);
+//                        }
+//
+//                    }
+//                    break;
+//
+//                case TGDevice.MSG_ATTENTION:
+//                    eegBlink.setAttention(msg.arg1);
+//                    if (eegBlink.getAttention() > 40) {
+//                        x = Command.f;
+//                        car.setCommand(x);
+//                    }
+//                    break;
             }
         }
     };
