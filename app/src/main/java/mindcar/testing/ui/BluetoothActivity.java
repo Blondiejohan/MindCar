@@ -34,7 +34,7 @@ import mindcar.testing.objects.Connection;
 
 /**
  * Created by Sarah And Johan, refactored and commented by Sarah on 2016-05-01.
- * This class starts the bluetooth adapter, then pairs and connects the adapter to Nemesis system.
+ * This class starts the bluetooth adapter, then pairs the adapter to Nemesis system.
  */
 
 public class BluetoothActivity extends Activity implements AdapterView.OnItemClickListener {
@@ -57,7 +57,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private ArrayList<String> connectedDevices;
     public static TGDevice tgDevice;
     boolean isConnected = false;
-
+    //private ArrayList<String> delete;
 
     // Below starts the connection handler:
    public Handler mHandler = new Handler() {
@@ -97,7 +97,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
         //when discovery starts, discovery could also be cancelled
         mProgressDlg = new ProgressDialog(this);
-        mProgressDlg.setMessage("Scanning...");
+        mProgressDlg.setMessage("Scanning For Devices...");
         mProgressDlg.setCancelable(false);
         mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -111,7 +111,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
     public void setupUI() {
 
-        connectedDevices = new ArrayList<String>();
+        //delete = new ArrayList<>();
+        connectedDevices = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.listView);//the list with the paired items
 
@@ -121,7 +122,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
         listView.setAdapter(mylist);//pouring myList into the listView
 
-        mylist.notifyDataSetChanged();
+        //mylist.notifyDataSetChanged();
 
         bar = (ProgressBar) findViewById(R.id.progressBar2);// bar indicator of pairing and connection status
 
@@ -163,18 +164,32 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         startActivity(new Intent(this, BluetoothActivity.class));
     }
 
+
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 
         if (theAdapter.isDiscovering()) { // checking to Cancel discovery if on at connecting
             cancelDisc();
         }
 
+        //String item = delete.get(position);
+
         BluetoothDevice selectedDevice = mDeviceList.get(position); //getting the position in mDeviceList
-        if(selectedDevice.getName().equals("Group 2")){
+
+        if (selectedDevice.getName().equals("Group 2")){
 
             Connection connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
             connect.start();
             bar.setVisibility(View.VISIBLE);
+            //delete.remove(position);
+            //mylist.remove(selectedDevice.getName());
+            //mylist.notifyDataSetChanged();
+
+            //mylist.remove(delete.get(position));
+            //view.setEnabled(false);
+            //view.setOnClickListener(null);
+            //Log.i("whats in", mDeviceList.size() + "");
+
 
         } else if (selectedDevice.getName().equals("MindWave Mobile")){
             tgDevice = new TGDevice(theAdapter,mHandler);
@@ -182,10 +197,10 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
                 tgDevice.connect(true);
                 bar.setVisibility(View.VISIBLE);
-
+                //view.setEnabled(false);
+                //view.setOnClickListener(null);
             }
         }
-
 
     }
 
@@ -227,6 +242,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                         mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
                         deviceTwo = true;
+
                     }
 
                     listView.setAdapter(mylist);
@@ -269,8 +285,9 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             }
 
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                toastMaker("Discovery started...");
+                //toastMaker("Discovery started...");
                 mProgressDlg.show();
+                bar.setVisibility(View.GONE);
             }
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
@@ -279,13 +296,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             }
 
             if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                if (!device.getName().equals("Null") && (device.getName().equals("Group 2") || device.getName().equals("MindWave Mobile"))) {
+                if ((!device.getName().equals(null) && (device.getName().equals("Group 2") || device.getName().equals("MindWave Mobile")))) {
                     connectedDevices.add(device.getName());
-                    toastMaker("Connected to: "+ device.getName());
+                    //mDeviceList.remove(device);
+                    toastMaker("Connected to: " + device.getName());
                     bar.setVisibility(View.GONE);
-//                    mylist.remove("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
-//                    mylist.notifyDataSetChanged();
-//                    listView.setAdapter(mylist);
+
                 }
                 if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
                     tgDevice.stop();
@@ -331,6 +347,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             theAdapter.cancelDiscovery();
         }
     }
+
 }
 
 
