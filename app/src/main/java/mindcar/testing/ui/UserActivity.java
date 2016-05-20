@@ -301,6 +301,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+
+
     public void testComparePatterns() {
         LinkedList<double[]> patternList = new LinkedList<>();
 
