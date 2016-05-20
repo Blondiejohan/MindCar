@@ -16,8 +16,8 @@ import java.util.UUID;
  */
 public class Connection extends Thread {
 
-    private final BluetoothSocket aSocket;
-    private final BluetoothDevice aDevice;
+    private final BluetoothSocket bluetoothSocket;
+    private final BluetoothDevice bluetoothDevice;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 
@@ -29,27 +29,27 @@ public class Connection extends Thread {
 
     public Connection(BluetoothDevice device) {
         BluetoothSocket tmp = null;
-        aDevice = device;
+        bluetoothDevice = device;
 
 
         try {
             tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
         } catch (IOException e) {
         }
-        aSocket = tmp;
+        bluetoothSocket = tmp;
     }
 
     // run method that creates a new connected and starts the connection to the socket.
     public void run() {
 
-        Connected aConnected = new Connected(aSocket);
-        aConnected.start();
+        Connected connected = new Connected(bluetoothSocket);
+        connected.start();
 
         try {
-            aSocket.connect();
+            bluetoothSocket.connect();
         } catch (IOException connectException) {
             try {
-                aSocket.close();
+                bluetoothSocket.close();
             } catch (IOException closeException) {
             }
             return;
@@ -59,7 +59,7 @@ public class Connection extends Thread {
     // Closes the connection to the socket.
     public void cancel() {
         try {
-            aSocket.close();
+            bluetoothSocket.close();
         } catch (IOException e) {
         }
     }

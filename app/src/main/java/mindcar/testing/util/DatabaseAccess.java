@@ -86,13 +86,12 @@ public class DatabaseAccess {
         String str= "";
         double[] arr = new double[800];
         cursor.moveToFirst();
-        str = cursor.getString(5);
+        //str = cursor.getString(0);
+
 
         int i = 0;
-        Log.i("String", username + " " + cursor.getString(6).toString());
-        Log.i("String", username + " " + cursor.getString(7).toString());
-        Log.i("String", username + " " + cursor.getString(8).toString());
-        Log.i("String", username + " " + cursor.getString(9).toString());
+        //Log.i("String",username+str);
+        Log.i("String1", username + " " + cursor.getString(cursor.getColumnIndex(direction)).toString());
         while (str.length()!= 0 && str.charAt(0) == 's') {
             String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
             arr[i] = Double.parseDouble(s);
@@ -104,7 +103,7 @@ public class DatabaseAccess {
         for (int j = 0; j < arr.length;j++){
             log.append(arr[j]+" ");
         }
-        Log.i("String2",log.toString()+"");
+        //Log.i("String2",log.toString()+"");
         return arr;
     }
 
@@ -122,6 +121,11 @@ public class DatabaseAccess {
         values.put("username", username);
         values.put("password", password);
         values.put("photo", photo);
+        values.put("baseline","baseline");
+        values.put("left","left");
+        values.put("right","right");
+        values.put("forward","forward");
+        values.put("stop","stop");
 
         database.insert("USERS", null, values);
     }
@@ -168,14 +172,15 @@ public class DatabaseAccess {
         return cursor.getCount() == 1;
     }
 
+
     public void addPattern(String direction, String pattern, String username) {
         ContentValues direc = new ContentValues();
         direc.put(direction, pattern);
-        database.update("Users", direc,"username = '" + username + "';", null);
+            database.update("Users", direc, username, null);
     }
 
-    public double[] getBaseline() {
-        Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = 'Sanja'", null);
+    public double[] getBaseline(String username) {
+        Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '"+username+"'", null);
         String str= "";
         double[] arr = new double[800];
         if (cursor.moveToFirst()) {
@@ -193,7 +198,7 @@ public class DatabaseAccess {
         for (int j = 0; j < arr.length;j++){
             log.append(arr[j]+" ");
         }
-        Log.i("String2",log.toString()+"");
+        //Log.i("String2",log.toString()+"");
         return arr;
     }
 }

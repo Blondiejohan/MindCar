@@ -3,14 +3,13 @@ package mindcar.testing.ui;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.neurosky.thinkgear.TGDevice;
 
@@ -41,10 +42,6 @@ import mindcar.testing.objects.SmartCar;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.util.NeuralNetworkHelper;
-
-import android.widget.ImageView;
-
-import android.widget.ToggleButton;
 
 
 /**
@@ -133,7 +130,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         patternList.add(databaseAccess.getPattern("right", StartActivity.un));
         patternList.add(databaseAccess.getPattern("forward", StartActivity.un));
         patternList.add(databaseAccess.getPattern("stop", StartActivity.un));
-        patternList.add(databaseAccess.getBaseline());
+        patternList.add(databaseAccess.getBaseline(StartActivity.un));
         databaseAccess.close();
 
         TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
