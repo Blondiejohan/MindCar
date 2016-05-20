@@ -61,38 +61,38 @@ public class ComparePatterns extends Activity {
         double line = 0;
         double limit = 0.04;
 
-        if (res[0] > 0.9 && res[0] <= 1) {
+        if (res[0] == 1 && res[1] == 0 && res[2] == 0 && res[3] == 0) {
             line = linearRegressionLeft.R2();
             Log.i("Linear ", line + "");
-            if (line > limit) {
+            //if (line > limit) {
                 result = "l";
-            } else {
-                result = "q";
-            }
-        } else if (res[1] > 0.9 && res[1] <= 1) {
+            //} else {
+            //    result = "q";
+           // }
+        } else if (res[0] == 0 && res[1] == 1 && res[2] == 0 && res[3] == 0) {
             line = linearRegressionRight.R2();
             Log.i("Linear ", line + "");
-            if (line > limit) {
+           // if (line > limit) {
                 result = "r";
-            } else {
-                result = "q";
-            }
-        } else if (res[2] > 0.9 && res[2] <= 1) {
+           // } else {
+           //     result = "q";
+           // }
+        } else if (res[0] == 0 && res[1] == 0 && res[2] == 1 && res[3] == 0) {
             line = linearRegressionForward.R2();
             Log.i("Linear ", line + "");
-            if (line > limit) {
+           // if (line > limit) {
                 result = "f";
-            } else {
-                result = "q";
-            }
-        } else if (res[3] > 0.9 && res[3] <= 1) {
+           // } else {
+           //     result = "q";
+           // }
+        } else if (res[0] == 0 && res[1] == 0 && res[2] == 0 && res[3] == 1) {
             line = linearRegressionStop.R2();
             Log.i("Linear ", line + "");
-            if (line > limit) {
+           // if (line > limit) {
                 result = "s";
-            } else {
-                result = "q";
-            }
+           // } else {
+           //     result = "q";
+           // }
         }
         Log.i("Line ", line + "");
         return result;
