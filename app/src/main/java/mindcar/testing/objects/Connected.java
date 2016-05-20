@@ -1,6 +1,7 @@
 package mindcar.testing.objects;
 
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +74,7 @@ public class Connected extends Thread {
             byte[] bytes = message.getBytes();
             bluetoothOutStream.write(bytes);
         } catch (IOException e) {
+            Log.i("this", e.getMessage());
         }
     }
 

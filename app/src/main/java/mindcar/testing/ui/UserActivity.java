@@ -84,6 +84,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice bluetoothDevice;
     Connection connection;
+    //Connected connected;
 
 
     @Override
@@ -117,7 +118,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Log.i("stuff2", bl.getName().toString());
                     bluetoothDevice = bl;
                     connection = new Connection(bluetoothDevice);
-                    connection.start();
+
+                    //Connected.write("l");
+
                 }
             }
         }
@@ -152,6 +155,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (toggle.isChecked()) {
                     tgDevice.start();
+                    connection.start();
+                    Connected.write("f");
                 } else {
                     tgDevice.stop();
                 }
@@ -257,7 +262,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), neuralNetwork);
                         String send = compPatt.compare(databaseAccess);
                         Log.i("Send message ", send);
-                        if(send != "w"){
+                        if(send == "w"){
                             Connected.write("f");
                         }
                         Connected.write(send);

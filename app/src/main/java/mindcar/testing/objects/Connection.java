@@ -47,6 +47,7 @@ public class Connection extends Thread {
 
         try {
             bluetoothSocket.connect();
+
         } catch (IOException connectException) {
             try {
                 bluetoothSocket.close();
