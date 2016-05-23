@@ -159,8 +159,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     StartActivity.un = ET_USER_NAME.getText().toString();
                     StartActivity.pw = ET_PASS.getText().toString();
 
-                    startActivity(new Intent(this, SavePatterns.class));
-                    this.finish();
+                    startActivity(new Intent(this, RegisterPatternActivity.class));
+                    //this.finish();
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;

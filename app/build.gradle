@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -35,4 +35,5 @@ dependencies {
     compile files('libs/neuroph.jar')
     compile files('libs/JOCL-0.1.3a-beta.jar')
     compile files('libs/encog-engine-2.5.0.jar')
+    compile files('libs/guava-19.0.jar')
 }

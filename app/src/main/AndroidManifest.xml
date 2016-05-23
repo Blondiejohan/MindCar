@@ -47,6 +47,7 @@
         <activity android:name=".ui.SavePatterns"/>
         <activity android:name=".ui.UserSettings"/>
         <activity android:name=".ui.StartActivity"/>
+        <activity android:name=".ui.RegisterPatternActivity"/>
     </application>
 
 </manifest>

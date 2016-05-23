@@ -134,11 +134,6 @@ public class DatabaseAccess {
         values.put("username", username);
         values.put("password", password);
         values.put("photo", photo);
-        values.put("baseline","baseline");
-        values.put("left","left");
-        values.put("right","right");
-        values.put("forward","forward");
-        values.put("stop","stop");
 
         database.insert("USERS", null, values);
     }

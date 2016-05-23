@@ -24,8 +24,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.common.io.Files;
 import com.neurosky.thinkgear.TGDevice;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -82,6 +84,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
     // mind control variables
     int times = 1000;
+    int nrTimes = 0;
     private Pattern pattern;
     private Eeg eeg;
 
@@ -111,60 +114,74 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 //MIND CONTROL
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
-                        MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
-                        RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
+                     MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                      RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
                         if (RegisterPatternActivity.tmpPattern.isFull()) {
+                            Log.i("Something: ", RegisterPatternActivity.tmpPattern.toArray().toString());
 
                             if (!RegisterPatternActivity.isFull(RegisterPatternActivity.baseline)) {
                                 RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
+                                break;
 
                             } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.left)) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
+                                break;
 
                             } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.right)) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
+                                break;
 
                             } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.forward)) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
-                                RegisterPatternActivity. populateArray(RegisterPatternActivity.forward);
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
+                                break;
 
                             } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.stop)) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
+                                break;
 
-                            } else {
+
+                        } else {
                                 RegisterPatternActivity.populateInputs();
                                 RegisterPatternActivity.extendTrainingSet();
-                                RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
 
-                                if (times < 5) {
+                                if (nrTimes < 5) {
                                     RegisterPatternActivity.initializeArrays();
                                     RegisterPatternActivity.inputs = new LinkedList<>();
-                                    times++;
+
+                                    nrTimes++;
+                                    break;
                                 } else {
+                                    RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
                                     try {
 
-                                        RandomAccessFile nnet = new RandomAccessFile(RegistrationActivity.user_name + ".nnet", "r");
-                                        byte[] b = new byte[(int)nnet.length()];
-                                        nnet.read(b);
+
+                                        RegisterPatternActivity.neuralNetwork.save("ta" + ".nnet");
+
+                                        File nnet = new File("ta" + ".nnet","r");
+                                        byte[] b = Files.toByteArray(nnet);
+                                        //byte[] b = new byte[(int)nnet.length()];
+                                        //nnet.read(b);
 
                                         databaseAccess.open();
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("neuralnetwork", b);
                                         databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
                                         databaseAccess.close();
-
+                                        startLearning=false;
                                         next();
+                                        break;
 
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
 
                                 }
-                            }
+                                }
                         }
                     }
                     else{// MIND CONTROL IN USERACTIVITY

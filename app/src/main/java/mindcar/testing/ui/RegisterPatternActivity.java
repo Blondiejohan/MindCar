@@ -50,6 +50,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     public static  double[] forward;
     public static  double[] stop;
 
+    private static int counter= 100;
     private static final int INPUT_SIZE = 800;
     private static final int OUTPUT_SIZE = 4;
 
@@ -98,6 +99,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
+        BluetoothActivity.startLearning=true;
         registerPatternReady.setEnabled(false);
     }
 
@@ -164,10 +166,16 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     }
 
     public static boolean isFull(double[] array) {
-        if (array[INPUT_SIZE - 1] != 0) {
+        if (counter==0) {
+            counter=100;
             return true;
+        }else{
+            counter--;
+
+            Log.i("something2",counter+"");
+            return false;
         }
-        return false;
+
     }
 
 }
