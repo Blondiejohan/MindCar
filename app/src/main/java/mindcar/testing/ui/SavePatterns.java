@@ -28,36 +28,33 @@ import mindcar.testing.util.MessageParser;
  */
 public class SavePatterns extends AppCompatActivity {
 
+    //private BluetoothAdapter spAdapter;// this class intitilizes bt hardware on a device
+    public static Pattern baseline;
+    public static boolean baseBool = true;
 
-    TGDevice tgDevice;
+    public static Pattern right;
+    public static boolean rightBool = true;
 
-    private BluetoothAdapter spAdapter;// this class intitilizes bt hardware on a device
-    Pattern baseline;
-    boolean baseBool = true;
+    public static Pattern forward;
+    public static boolean forwardBool = true;
 
-    Pattern right;
-    boolean rightBool = true;
+    public static Pattern left;
+    public static boolean leftBool = true;
 
-    Pattern forward;
-    boolean forwardBool = true;
+    public static Pattern stop;
+    public static boolean stopBool = true;
 
-    Pattern left;
-    boolean leftBool = true;
-
-    Pattern stop;
-    boolean stopBool = true;
-
-    int nrOfTimes = 100;
-    int updateNr = 100;
+    public static int nrOfTimes = 100;
+    public static int updateNr = 100;
     int times = 20;
-    TextView direction;
-    TextView text;
-    Button test;
-    DatabaseAccess databaseAccess;
-    int start = 1;
+    public static TextView direction;
+    public static TextView text;
+    public static DatabaseAccess databaseAccess;
+    public static int start = 0;
     public boolean isConnected;
-    Eeg eeg;
-    Eeg tmp;
+    public static Eeg eeg;
+    public static Eeg tmp;
+    private static Button moveOn;
 
 
     @Override
@@ -66,33 +63,31 @@ public class SavePatterns extends AppCompatActivity {
         setContentView(R.layout.activity_save_patterns);
         direction = (TextView) findViewById(R.id.direction);
         text = (TextView) findViewById(R.id.emptyText);
-        test = (Button) findViewById(R.id.test);
-        spAdapter = BluetoothAdapter.getDefaultAdapter();
+        moveOn = (Button) findViewById(R.id.moveOn);
+        //spAdapter = BluetoothAdapter.getDefaultAdapter();
         isConnected = false;
         databaseAccess = DatabaseAccess.getInstance(this);
-        tgDevice = new TGDevice(spAdapter, tgHandler);
+        //tgDevice = new TGDevice(spAdapter, tgHandler);
 
-        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
-                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
-            tgDevice.connect(true);
-        }
+        //if (tgDevice.getState() != TGDevice.STATE_CONNECTING
+        //        && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+        //    tgDevice.connect(true);
+        //}
         eeg = new Eeg();
 
-        test.setOnClickListener(new View.OnClickListener() {
+        moveOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tgDevice.stop();
-                if (tgDevice.getState() != TGDevice.STATE_CONNECTING
-                        && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
-                    tgDevice.connect(true);
-                    tgDevice.start();
-                }
+                nextWindow();
             }
         }); // end patterns
 
+        start = 1;
+        int times = 20;
+        BluetoothActivity.startLearning = true;
     }
 
-    public void saveBaseline(Eeg eeg) {
+    public static void saveBaseline(Eeg eeg) {
         if (baseBool) {
 
             baseline = new Pattern(eeg);
@@ -105,8 +100,8 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addPattern("baseline", this.toString(baseline.toArray()), RegistrationActivity.user_name);
-            Log.i("Pattern", this.toString(baseline.toArray()));
+            databaseAccess.addPattern("baseline", toString(baseline.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", toString(baseline.toArray()));
 
             databaseAccess.close();
             start = 2;
@@ -114,7 +109,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveLeft(Eeg eeg) {
+    public static void saveLeft(Eeg eeg) {
         if (leftBool) {
             left = new Pattern(eeg);
             leftBool = false;
@@ -126,8 +121,8 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addPattern("left", this.toString(left.toArray()), RegistrationActivity.user_name);
-            Log.i("Pattern", this.toString(left.toArray()));
+            databaseAccess.addPattern("left", toString(left.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", toString(left.toArray()));
 
             databaseAccess.close();
             start = 3;
@@ -135,7 +130,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveRight(Eeg eeg) {
+    public static void saveRight(Eeg eeg) {
         if (rightBool) {
             right = new Pattern(eeg);
             rightBool = false;
@@ -147,8 +142,8 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addPattern("right", this.toString(right.toArray()), RegistrationActivity.user_name);
-            Log.i("Pattern", this.toString(right.toArray()));
+            databaseAccess.addPattern("right", toString(right.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", toString(right.toArray()));
 
             databaseAccess.close();
             start = 4;
@@ -156,7 +151,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveForward(Eeg eeg) {
+    public static void saveForward(Eeg eeg) {
         if (forwardBool) {
             forward = new Pattern(eeg);
             forwardBool = false;
@@ -168,8 +163,8 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addPattern("forward", this.toString(forward.toArray()), RegistrationActivity.user_name);
-            Log.i("Pattern", this.toString(forward.toArray()));
+            databaseAccess.addPattern("forward", toString(forward.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", toString(forward.toArray()));
 
             databaseAccess.close();
             start = 5;
@@ -177,7 +172,7 @@ public class SavePatterns extends AppCompatActivity {
 
     }
 
-    public void saveStop(Eeg eeg) {
+    public static void saveStop(Eeg eeg) {
         if (stopBool) {
             stop = new Pattern(eeg);
             stopBool = false;
@@ -189,16 +184,19 @@ public class SavePatterns extends AppCompatActivity {
         } else {
             updateNr = nrOfTimes;
             databaseAccess.open();
-            databaseAccess.addPattern("stop", this.toString(stop.toArray()), RegistrationActivity.user_name);
-            Log.i("Pattern", this.toString(stop.toArray()));
+            databaseAccess.addPattern("stop", toString(stop.toArray()), RegistrationActivity.user_name);
+            Log.i("Pattern", toString(stop.toArray()));
 
             databaseAccess.close();
             start = 6;
-            tgDevice.stop();
-            tgDevice.close();
-            startActivity(new Intent(SavePatterns.this, StartActivity.class));
-            this.finish();
+            moveOn.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void nextWindow () {
+        BluetoothActivity.startLearning=false;
+        startActivity(new Intent(this, StartActivity.class));
+        this.finish();
 
     }
 
@@ -206,63 +204,29 @@ public class SavePatterns extends AppCompatActivity {
      * Handler that creates the pattern for left, it first creates a Pattern, then updates it several times
      * to get the low and high for each wave. It then sends the result to the database.
      */
-    public final Handler tgHandler = new Handler() {
-        @Override
-            public void handleMessage (Message msg){
+//    public final Handler tgHandler = new Handler() {
+//        @Override
+//            public void handleMessage (Message msg){
+//
+//            switch (msg.what) {
+//                    case TGDevice.MSG_STATE_CHANGE:
+//                        switch (msg.arg1) {
+//                            case TGDevice.STATE_CONNECTED:
+//                                isConnected = true;
+//                                tgDevice.start();
+//                                Log.i("wave", "Connecting");
+//                                break;
+//                        }
+//                        break;
+//
+//                    case TGDevice.MSG_RAW_DATA:
+//
+//                        break;
+//                }
+//            }
+//    };
 
-            switch (msg.what) {
-                    case TGDevice.MSG_STATE_CHANGE:
-                        switch (msg.arg1) {
-                            case TGDevice.STATE_CONNECTED:
-                                isConnected = true;
-                                tgDevice.start();
-                                Log.i("wave", "Connecting");
-                                break;
-                        }
-                        break;
-
-                    case TGDevice.MSG_RAW_DATA:
-                        if (times == 0){
-                            if(start == 1){
-                                direction.setText("Establishing baseline \n please relax");
-                                if(eeg.isFull()) {
-                                    saveBaseline(eeg);
-                                    tmp = eeg;
-                                } else if(baseline != null && baseline.get(0) != null){
-                                    eeg.populate(tmp);
-                                    saveBaseline(eeg);
-                                }
-                            }
-                            if (start == 2){
-                                direction.setText("Think Left");
-                                saveLeft(eeg);
-
-                            }
-                            if (start == 3){
-                                direction.setText("Think Right");
-                                saveRight(eeg);
-                            }
-                            if (start == 4){
-                                direction.setText("Think Forward");
-                                saveForward(eeg);
-                            }
-                            if (start == 5){
-                                direction.setText("Think Stop");
-                                saveStop(eeg);
-                            }
-                            eeg = new Eeg();
-                            times = 20;
-                            break;
-                        } else {
-                            MessageParser.parseRawData(msg, eeg);
-                            times--;
-                            break;
-                        }
-                }
-            }
-    };
-
-    public String toString(double[] doubles){
+    public static String toString(double[] doubles){
         StringBuilder str = new StringBuilder();
         for(double d: doubles){
             str.append("s" + d + "e");

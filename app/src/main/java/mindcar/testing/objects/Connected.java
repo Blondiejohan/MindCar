@@ -72,6 +72,7 @@ public class Connected extends Thread {
     public static void write(String message) {
         try {
             byte[] bytes = message.getBytes();
+            Log.i("Send Command: ", message);
             bluetoothOutStream.write(bytes);
         } catch (IOException e) {
             Log.i("this", e.getMessage());

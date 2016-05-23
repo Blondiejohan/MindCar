@@ -27,9 +27,20 @@ import com.neurosky.thinkgear.TGDevice;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import mindcar.testing.R;
+
+import mindcar.testing.objects.Command;
+import mindcar.testing.objects.Connected;
+import mindcar.testing.objects.EegBlink;
+import mindcar.testing.objects.SmartCar;
+import mindcar.testing.util.MessageParser;
+import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connection;
+import mindcar.testing.objects.Eeg;
+import mindcar.testing.objects.Pattern;
+
 
 
 /**
@@ -47,7 +58,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private ListView listView;//shows paired items
     private ProgressDialog mProgressDlg;//for discovery progress
     private ProgressBar bar;// waiting indicator for pairing and connecting
-    public BluetoothAdapter theAdapter = BluetoothAdapter.getDefaultAdapter(); //the bluetooth adapter
+    public static BluetoothAdapter theAdapter = BluetoothAdapter.getDefaultAdapter(); //the bluetooth adapter
     private Set<BluetoothDevice> paired_devices; //a set of bonded devices
     private ArrayAdapter<String> mylist; //viewed in the list view, the paired devices
     private ArrayList<BluetoothDevice> mDeviceList;// discovery list for adding requiered devices
@@ -58,25 +69,203 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     public static TGDevice tgDevice;
     boolean isConnected = false;
     //private ArrayList<String> delete;
+    public static Connection connect;
+    public static Connected connected;
+    int attentionLevel = 0;
+    final int ATTENTIONLIMIT = 40;
+    public static Boolean startLearning = false;
+
+    // mind control variables
+    int times = 1000;
+    private Pattern pattern;
+    private Eeg eeg;
+
+    //Blink control variables
+    public EegBlink eegBlink = new EegBlink();
+    private Command command;
+    private SmartCar car;
+    private Boolean sendCommand = false;
+    long lastBlink = 0;
+    int blinkCount = 0;
 
     // Below starts the connection handler:
    public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             switch (msg.what) {
                 case TGDevice.MSG_STATE_CHANGE:
                     switch (msg.arg1) {
                         case TGDevice.STATE_CONNECTED:
                             isConnected = true;
                             tgDevice.start();
-                            Log.i("wave", "Connecting");
+                            Log.i("wave", "Connected");
                             break;
                     }
                     break;
+                //MIND CONTROL
+                case TGDevice.MSG_RAW_DATA:
+                    if (startLearning) { //REGISTRATION LEARNING DATA
+                        if (times == 0) {
+                            if (SavePatterns.start == 1) {
+                                SavePatterns.direction.setText("Establishing baseline \n please relax");
+                                if (SavePatterns.eeg.isFull()) {
+                                    SavePatterns.saveBaseline(SavePatterns.eeg);
+                                    SavePatterns.tmp = SavePatterns.eeg;
+                                } else if (SavePatterns.baseline != null && SavePatterns.baseline.get(0) != null) {
+                                    SavePatterns.eeg.populate(SavePatterns.tmp);
+                                    SavePatterns.saveBaseline(SavePatterns.eeg);
+                                }
+                            }
+                            if (SavePatterns.start == 2) {
+                                SavePatterns.direction.setText("Think Left");
+                                SavePatterns.saveLeft(SavePatterns.eeg);
+
+                            }
+                            if (SavePatterns.start == 3) {
+                                SavePatterns.direction.setText("Think Right");
+                                SavePatterns.saveRight(SavePatterns.eeg);
+                            }
+                            if (SavePatterns.start == 4) {
+                                SavePatterns.direction.setText("Think Forward");
+                                SavePatterns.saveForward(SavePatterns.eeg);
+                            }
+                            if (SavePatterns.start == 5) {
+                                SavePatterns.direction.setText("Think Stop");
+                                SavePatterns.saveStop(SavePatterns.eeg);
+                            }
+                            SavePatterns.eeg = new Eeg();
+                            times = 20;
+                            break;
+                        } else {
+                            MessageParser.parseRawData(msg, SavePatterns.eeg);
+                            times--;
+                            break;
+                        }
+                    }
+                    else{// MIND CONTROL IN USERACTIVITY
+                        if (UserActivity.appRunning) {
+                            if (UserActivity.mindControl){
+                                MessageParser.parseRawData(msg, eeg);
+                                if (times <= 0) {
+                                    Log.i("Time start ", System.currentTimeMillis() + "");
+                                    pattern.add(eeg);
+                                    ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), UserActivity.neuralNetwork);
+                                    String send = compPatt.compare(UserActivity.databaseAccess);
+                                    Log.i("Send message ", send);
+                                    if (send == "w") {
+                                        connected.write("f");
+                                    } else {
+                                        connected.write(send);
+                                    }
+                                    eeg = new Eeg();
+                                    times = 1000;
+                                    Log.i("Time stop ", System.currentTimeMillis() + "");
+                                } else {
+                                    times--;
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                    //BLINK CONTROL, NIKOS STYLE
+//                case TGDevice.MSG_BLINK:
+//                    eegBlink.setBlink(msg.arg1);
+//                    System.out.println("Blink: " + msg.arg1);
+//                    if (eegBlink.getAttention() > 40) {
+//                        //command = Command.f;
+//
+//                        if (eegBlink.leftBlink()) {
+//                            //command = Command.l;
+//                            //car.setCommand(command);
+//                            UserActivity.connected.write("l");
+//                        }else if (eegBlink.rightBlink()) {
+//                            //command = Command.r;
+//                            //car.setCommand(command);
+//                            UserActivity.connected.write("r");
+//                        }else {
+//                            UserActivity.connected.write("f");
+//                        }
+//
+//                    }
+//                    else
+//                        UserActivity.connected.write("STOP");
+//                    break;
+//                case TGDevice.MSG_ATTENTION:
+//                    System.out.println("Attention: " + msg.arg1);
+//                    eegBlink.setAttention(msg.arg1);
+//
+//              BLINK COUNT FOR BLINK CONTROL
+                case TGDevice.MSG_BLINK:
+                    //Count blinks
+                    if (UserActivity.appRunning && UserActivity.blinkControl && attentionLevel > ATTENTIONLIMIT) {
+                        if ((System.currentTimeMillis() - lastBlink) < 1000 && (System.currentTimeMillis() - lastBlink) > 100)
+                            blinkCount++;
+                        else
+                            blinkCount = 1;
+                        //remember when last blink occured
+                        lastBlink = System.currentTimeMillis(); // remember when last blink occured
+                    } else
+                        blinkCount = 0; // reset when application is paused
+                    break;
+
+                case TGDevice.MSG_ATTENTION:
+                    if (UserActivity.appRunning) {
+                        attentionLevel = msg.arg1;
+                        if (UserActivity.blinkControl) {
+                            //BLINK FOR DIRECTION, ATTENTION FOR ACTIVATION
+                            //Log.i("Attention: ", String.valueOf(msg.arg1));
+                            if (attentionLevel > ATTENTIONLIMIT) {
+                                //if no blinks for 1000ms, execute command
+                                if ((System.currentTimeMillis() - lastBlink) >= 1000) {
+                                    //Log.i("BlinkCount: ", String.valueOf(blinkCount));
+                                    if (blinkCount >= 2 && blinkCount <= 4) { // left is 3 +-1
+                                        connected.write("l");
+                                        synchronized (this) { // pause app until turn is finnished
+                                            try {
+                                                this.wait(1200);
+                                            } catch (Exception e) {
+                                            }
+                                        }
+                                        connected.write("f");
+                                        blinkCount = 0;
+                                    } else if (blinkCount >= 5) { // right is 5+, aim for 6 +-1
+                                        connected.write("r");
+                                        synchronized (this) { // pause app until turn is finnished
+                                            try {
+                                                this.wait(1200);
+                                            } catch (Exception e) {
+                                            }
+                                        }
+                                        connected.write("f");
+                                        blinkCount = 0;
+                                    } else {
+                                        connected.write("f");
+                                        blinkCount = 0;
+                                    }
+                                }
+                            } else {
+                                connected.write("STOP");
+                                blinkCount = 0;
+                            }
+                        } else if(UserActivity.attentionControl) {
+                            //ATTENTION ONLY CONTROL
+                            //Log.i("Attention: ", String.valueOf(msg.arg1));
+                            if (attentionLevel > ATTENTIONLIMIT) {
+                                connected.write("f");
+                            } else
+                                connected.write("STOP");
+                        }
+
+                    }
+                    break;
             }
+
         }
     };
+
+    public BluetoothActivity() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,17 +286,25 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         registerReceiver(discoveryResult, filter);
 
         //when discovery starts, discovery could also be cancelled
-        mProgressDlg = new ProgressDialog(this);
-        mProgressDlg.setMessage("Scanning For Devices...");
-        mProgressDlg.setCancelable(false);
-        mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                theAdapter.cancelDiscovery();
-            }
-        });
+        //mProgressDlg = new ProgressDialog(this);
+        //mProgressDlg.setMessage("Scanning For Devices...");
+        //mProgressDlg.setCancelable(false);
+        //mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+        //    @Override
+        //    public void onClick(DialogInterface dialog, int which) {
+        //        dialog.dismiss();
+        //        theAdapter.cancelDiscovery();
+        //    }
+        //});
 
+        //CREATE MIND CONTROL OBJECTS
+        eeg = new Eeg();
+        pattern = new Pattern();
+
+        //CREATE BLINK CONTROL OBJECTS
+        //EegBlink eegBlink = new EegBlink();
+        car = new SmartCar();
+        command = car.getCommands();
     }
 
     public void setupUI() {
@@ -140,11 +337,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 if (!theAdapter.isEnabled()) {
                     setBluetooth(true);
                     bar.setVisibility(View.VISIBLE);
+                    activate.setText("Cancel Pairing");
                 } else {
                     bar.setVisibility(View.GONE);
+                    activate.setText("Discover and Pair");
                     checkItems();
                 }
-            }
+           }
         });
 
 
@@ -157,8 +356,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
     //goes to next activity
     private void next() {
-        startActivity(new Intent(this, StartActivity.class));
-        this.finish();
+        //startActivity(new Intent(this, StartActivity.class));
+//        if (StartActivity.registration){
+//            startActivity(new Intent(this, RegistrationActivity.class));
+//        }else{
+            startActivity(new Intent(this, StartActivity.class));
+       // }
     }
 
     private void back() {
@@ -173,15 +376,20 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             cancelDisc();
         }
 
+
+
         //String item = delete.get(position);
 
         BluetoothDevice selectedDevice = mDeviceList.get(position); //getting the position in mDeviceList
 
         if (selectedDevice.getName().equals("Group 2")){
 
-            Connection connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
+            //Connection connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
+            connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
+            activate.setText("Cancel Pairing");
             connect.start();
             bar.setVisibility(View.VISIBLE);
+            connected = new Connected(connect.bluetoothSocket);
             //delete.remove(position);
             //mylist.remove(selectedDevice.getName());
             //mylist.notifyDataSetChanged();
@@ -193,9 +401,11 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
 
         } else if (selectedDevice.getName().equals("MindWave Mobile")){
+            //tgDevice = new TGDevice(theAdapter,mHandler);
             tgDevice = new TGDevice(theAdapter,mHandler);
             if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                     && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
+                activate.setText("Cancel Pairing");
                 tgDevice.connect(true);
                 bar.setVisibility(View.VISIBLE);
                 //view.setEnabled(false);
@@ -243,7 +453,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                         mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
                         deviceTwo = true;
-
                     }
 
                     listView.setAdapter(mylist);
@@ -252,6 +461,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             if (!deviceOne || !deviceTwo) {
                 theAdapter.startDiscovery();
             } else {
+                activate.setText("Discover and Pair");
                 bar.setVisibility(View.GONE);
             }
         } else {
@@ -288,7 +498,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 //toastMaker("Discovery started...");
                 mProgressDlg.show();
-                bar.setVisibility(View.GONE);
+                bar.setVisibility(View.VISIBLE);
+                activate.setText("Cancel pairing");
             }
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
@@ -302,11 +513,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     //mDeviceList.remove(device);
                     toastMaker("Connected to: " + device.getName());
                     bar.setVisibility(View.GONE);
+                    activate.setText("Discover and Pair");
 
                 }
                 if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
-                    tgDevice.stop();
-                    tgDevice.close();
+                    //tgDevice.stop();
+                    //tgDevice.close();
                    next();
                 }
             }
@@ -346,8 +558,14 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private void cancelDisc() {
         if (theAdapter.getState() == BluetoothAdapter.STATE_ON) {
             theAdapter.cancelDiscovery();
+
         }
     }
+
+    void handlePatterns() {
+
+    }
+
 
 }
 

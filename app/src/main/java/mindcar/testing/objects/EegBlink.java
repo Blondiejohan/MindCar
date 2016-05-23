@@ -45,7 +45,7 @@ public class EegBlink {
     }
 
     public boolean rightBlink() {
-        if (blink <40 && blink > 30){
+        if (blink <40 && blink > 50){
             return true;}
         else
         {return false;}

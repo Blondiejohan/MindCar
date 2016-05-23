@@ -1,6 +1,7 @@
 package mindcar.testing.ui;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.neurosky.thinkgear.TGDevice;
+
 import mindcar.testing.R;
+import mindcar.testing.objects.Connection;
 import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
 
@@ -21,10 +25,16 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button bSIGNUP;
     TextView devView;
 
+    //variables from BluetoothActivity
+    //public static TGDevice tgDevice = BluetoothActivity.tgDevice;
+    //public static BluetoothAdapter theAdapter = BluetoothActivity.theAdapter;
+    //public static Connection connect = BluetoothActivity.connect;
+
     //nikos
     Button userSettings;
 
     public static String un, pw;
+    public static boolean registration;
 
 
     @Override
@@ -58,8 +68,11 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     un = ET_USER_NAME.getText().toString();
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
+                    //startActivity(new Intent(this, UserActivity.class));
+                    registration=false;
                     startActivity(new Intent(this, UserActivity.class));
                     //startActivity(new Intent(this, oldConnection.class));
+                    this.finish();
                 }
                 else {
 
@@ -70,8 +83,8 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.bSIGNUP:
+              //  registration=true;
                 startActivity(new Intent(this, RegistrationActivity.class));
-               // this.finish();
                 break;
 
             case R.id.devView:

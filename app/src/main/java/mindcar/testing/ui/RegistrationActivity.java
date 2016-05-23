@@ -155,7 +155,12 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
                         //databaseAccess.close();
 
+                    //Remember username and password to avoid re login
+                    StartActivity.un = ET_USER_NAME.getText().toString();
+                    StartActivity.pw = ET_PASS.getText().toString();
+
                     startActivity(new Intent(this, SavePatterns.class));
+                    this.finish();
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;

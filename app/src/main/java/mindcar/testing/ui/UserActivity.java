@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -50,25 +52,31 @@ import mindcar.testing.util.NeuralNetworkHelper;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SmartCar car;
-    private TGDevice tgDevice;
+    //private TGDevice tgDevice;
     private Pattern pattern;
     private Command x;
     boolean isConnected = false;
+    public static Boolean appRunning = false;
     Button restart;
 
     //nikos
     Button userSettings;
 
     Button start;
-    NeuralNetwork neuralNetwork;
-    Eeg eeg;
+    public static NeuralNetwork neuralNetwork;
+    //Eeg eeg;
     BackupControl backupControl;
-    DatabaseAccess databaseAccess;
-    EegBlink eegBlink;
+    public static DatabaseAccess databaseAccess;
+    //EegBlink eegBlink;
+
+    //Variables from StartsActivity
     String name = StartActivity.un;
     String pw = StartActivity.pw;
+    //public static TGDevice tgDevice = BluetoothActivity.tgDevice;
 
-    int times = 1000;
+    //public static Connection connection = BluetoothActivity.connect;
+
+    //int times = 1000;
 
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
@@ -80,11 +88,19 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     ImageView userPic;
     Bitmap finalPic;
     ToggleButton toggle;
+    RadioButton mindoption;
+    RadioButton attentionoption;
+    RadioButton blinkoption;
+    TextView blinkInstructions, attentionInstructions;
+
+    public static boolean mindControl=true;
+    public static boolean attentionControl=false;
+    public static boolean blinkControl=false;
 
     BluetoothAdapter bluetoothAdapter;
-    BluetoothDevice bluetoothDevice;
-    Connection connection;
-    //Connected connected;
+    //BluetoothDevice bluetoothDevice;
+    //Connection connection;
+    //public static Connected connected = new Connected(connection.bluetoothSocket);
 
 
     @Override
@@ -97,33 +113,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //nikos
         userSettings = (Button) findViewById(R.id.userSettings);
         logout = (Button) findViewById(R.id.logout);
-        restart = (Button) findViewById(R.id.toggleButton);
-
+        mindoption= (RadioButton) findViewById(R.id.mindoption);
+        attentionoption= (RadioButton) findViewById(R.id.attentionoption);
+        blinkoption= (RadioButton) findViewById(R.id.blinksoption);
+        toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        blinkInstructions = (TextView) findViewById(R.id.blinkInstructions);
+        attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
         userSettings.setOnClickListener(this);
 
-        isConnected = false;
-        eeg = new Eeg();
+        //isConnected = false;
+        //eeg = new Eeg();
         backupControl = new BackupControl();
-        eegBlink = new EegBlink();
+        //eegBlink = new EegBlink();
         databaseAccess = DatabaseAccess.getInstance(this);
         iv = (ImageView) findViewById(R.id.profile_image_view);
 
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
-        if (devices.size() > 0) {
-            for (BluetoothDevice bl : devices) {
-                Log.i("stuff", bl.getName().toString());
-                if (bl.getName().equals("Group 2")) {
-                    Log.i("stuff2", bl.getName().toString());
-                    bluetoothDevice = bl;
-                    connection = new Connection(bluetoothDevice);
-
-                    //Connected.write("l");
-
-                }
-            }
-        }
+        //bluetoothAdapter = BluetoothActivity.theAdapter;
+//        Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
+//        if (devices.size() > 0) {
+//            for (BluetoothDevice bl : devices) {
+//                Log.i("stuff", bl.getName().toString());
+//                if (bl.getName().equals("Group 2")) {
+//                    Log.i("stuff2", bl.getName().toString());
+//                    bluetoothDevice = bl;
+//                    connection = new Connection(bluetoothDevice);
+//
+//                    //Connected.write("l");
+//
+//                }
+//            }
+//        }
 
 
         LinkedList<double[]> patternList = new LinkedList<>();
@@ -140,25 +160,30 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
 
 
-        pattern = new Pattern();
-        car = new SmartCar();
-        x = car.getCommands();
+        //pattern = new Pattern();
+        //car = new SmartCar();
+        //x = car.getCommands();
 
 
-        toggle = (ToggleButton) findViewById(R.id.toggleButton);
 
-        tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
-        tgDevice.connect(true);
+
+        //tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
+        //tgDevice.connect(true);
 
 
         toggle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (toggle.isChecked()) {
-                    tgDevice.start();
-                    connection.start();
-                    Connected.write("f");
+                    //BluetoothActivity.tgDevice.connect(true);
+                    //BluetoothActivity.tgDevice.start();
+                    appRunning = true;
+                    //BluetoothActivity.connection.start();
+                    //BluetoothActivity.connected.write("f");
                 } else {
-                    tgDevice.stop();
+                    //BluetoothActivity.tgDevice.stop();
+                    //BluetoothActivity.connection.stop();
+                    appRunning = false;
+                    BluetoothActivity.connected.write("STOP");
                 }
 
             }
@@ -213,6 +238,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         databaseAccess.close();
+        System.out.println("Finnished photo stuff");
     }
 
     // convert from byte array to bitmap
@@ -223,12 +249,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout:
-                tgDevice.stop();
-                tgDevice.close();
+                BluetoothActivity.tgDevice.stop();
+                BluetoothActivity.tgDevice.close();
                 startActivity(new Intent(this, StartActivity.class));
+                this.finish();
                 break;
             case R.id.userSettings:
                 startActivity(new Intent(this, UserSettings.class));
+                break;
+            case R.id.mindoption:
+                mindControl = true;
+                attentionControl=false;
+                blinkControl=false;
+                mindoption.setChecked(true);
+                attentionInstructions.setVisibility(View.INVISIBLE);
+                blinkInstructions.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.attentionoption:
+                mindControl = false;
+                attentionControl=true;
+                blinkControl=false;
+                attentionoption.setChecked(true);
+                attentionInstructions.setVisibility(View.VISIBLE);
+                blinkInstructions.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.blinksoption:
+                mindControl = false;
+                attentionControl=false;
+                blinkControl=true;
+                blinkoption.setChecked(true);
+                attentionInstructions.setVisibility(View.VISIBLE);
+                blinkInstructions.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -237,7 +288,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Handles messages from TGDevice
      */
-    private final Handler handler = new Handler() {
+    /*public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -252,7 +303,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
 
-                case TGDevice.MSG_RAW_DATA:
+                *//*case TGDevice.MSG_RAW_DATA:
 
                     MessageParser.parseRawData(msg, eeg);
 
@@ -263,17 +314,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         String send = compPatt.compare(databaseAccess);
                         Log.i("Send message ", send);
                         if(send == "w"){
-                            Connected.write("f");
+                            connected.write("f");
                         }
-                        Connected.write(send);
+                        connected.write(send);
 
                         eeg = new Eeg();
                         times = 1000;
                         Log.i("Time stop ", System.currentTimeMillis() + "");
                     } else {
                         times--;
-                    }
-                    break;
+                    }*//*
+                    //break;
 //                case TGDevice.MSG_BLINK:
 //                    //Log.i("test", msg.arg1 + "");
 //                    //SmartCar smartCar = new SmartCar();
@@ -298,72 +349,77 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //                    }
 //                    break;
 //
-//                case TGDevice.MSG_ATTENTION:
-//                    eegBlink.setAttention(msg.arg1);
-//                    if (eegBlink.getAttention() > 40) {
-//                        x = Command.f;
-//                        car.setCommand(x);
-//                    }
-//                    break;
+                case TGDevice.MSG_ATTENTION:
+                    eegBlink.setAttention(msg.arg1);
+                    System.out.println(msg.arg1);
+                    if (eegBlink.getAttention() > 40) {
+                        //x = Command.f;
+                        //car.setCommand(x);
+                        connected.write("f");
+                    }
+                    else{
+                        connected.write("STOP");
+                    }
+                    break;
             }
         }
     };
+*/
 
 
-
-    public void testComparePatterns() {
-        LinkedList<double[]> patternList = new LinkedList<>();
-
-        double[] d1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
-        double[] d2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
-        double[] d3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
-        double[] d4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
-
-        patternList.add(d1);
-        patternList.add(d2);
-        patternList.add(d3);
-        patternList.add(d4);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        //      Action viewAction = Action.newAction(
-        //             Action.TYPE_VIEW, // TODO: choose an action type.
-        //             "User Page", // TODO: Define a title for the content shown.
-        // TODO: If you have web page content that matches this app activity's content,
-        // make sure this auto-generated web page URL is correct.
-        // Otherwise, set the URL to null.
-        //             Uri.parse("http://host/path"),
-        // TODO: Make sure this auto-generated app URL is correct.
-        //           Uri.parse("android-app://mindcar.testing.ui/http/host/path")
-        // );
-        // AppIndex.AppIndexApi.end(client, viewAction);
-        //client.disconnect();
-        // }
-
-        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
-        NeuralNetwork testNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
-
-        start.setText("Stop");
-        for (int i = 0; i < 10000000; i++) {
-            continue;
-        }
-
-        double[] t1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
-        double[] t2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
-        double[] t3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
-        double[] t4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
-
-        ComparePatterns test1 = new ComparePatterns(t1, testNetwork);
-        Log.i("Test", test1.compare(databaseAccess));
-
-        ComparePatterns test2 = new ComparePatterns(t2, testNetwork);
-        Log.i("Test", test2.compare(databaseAccess));
-        ComparePatterns test3 = new ComparePatterns(t3, testNetwork);
-        Log.i("Test", test3.compare(databaseAccess));
-        ComparePatterns test4 = new ComparePatterns(t4, testNetwork);
-        Log.i("Test", test4.compare(databaseAccess));
-        start.setText("Start");
-
-    }
+//    public void testComparePatterns() {
+//        LinkedList<double[]> patternList = new LinkedList<>();
+//
+//        double[] d1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+//        double[] d2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+//        double[] d3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+//        double[] d4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+//
+//        patternList.add(d1);
+//        patternList.add(d2);
+//        patternList.add(d3);
+//        patternList.add(d4);
+//
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        //      Action viewAction = Action.newAction(
+//        //             Action.TYPE_VIEW, // TODO: choose an action type.
+//        //             "User Page", // TODO: Define a title for the content shown.
+//        // TODO: If you have web page content that matches this app activity's content,
+//        // make sure this auto-generated web page URL is correct.
+//        // Otherwise, set the URL to null.
+//        //             Uri.parse("http://host/path"),
+//        // TODO: Make sure this auto-generated app URL is correct.
+//        //           Uri.parse("android-app://mindcar.testing.ui/http/host/path")
+//        // );
+//        // AppIndex.AppIndexApi.end(client, viewAction);
+//        //client.disconnect();
+//        // }
+//
+//        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
+//        NeuralNetwork testNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
+//
+//        start.setText("Stop");
+//        for (int i = 0; i < 10000000; i++) {
+//            continue;
+//        }
+//
+//        double[] t1 = {1, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8};
+//        double[] t2 = {2, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9, 3, 4, 5, 6, 7, 8, 9};
+//        double[] t3 = {3, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10};
+//        double[] t4 = {4, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11, 5, 6, 7, 8, 9, 10, 11};
+//
+//        ComparePatterns test1 = new ComparePatterns(t1, testNetwork);
+//        Log.i("Test", test1.compare(databaseAccess));
+//
+//        ComparePatterns test2 = new ComparePatterns(t2, testNetwork);
+//        Log.i("Test", test2.compare(databaseAccess));
+//        ComparePatterns test3 = new ComparePatterns(t3, testNetwork);
+//        Log.i("Test", test3.compare(databaseAccess));
+//        ComparePatterns test4 = new ComparePatterns(t4, testNetwork);
+//        Log.i("Test", test4.compare(databaseAccess));
+//        start.setText("Start");
+//
+//    }
 
 }

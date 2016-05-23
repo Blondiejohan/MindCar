@@ -5,7 +5,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@drawable/intro</item>
         <item name="android:windowBackground">@drawable/intro</item>
@@ -13,9 +13,9 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name ="android:textColorHint">@color/colorPrimary</item>
     </style>
-    <style name="MindCarTheme" parent="Theme.AppCompat.Light.NoActionBar" >
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@drawable/background</item>
+    <style name="MindCarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:background">@drawable/background</item>
         <item name="android:textSize">15dp</item>
