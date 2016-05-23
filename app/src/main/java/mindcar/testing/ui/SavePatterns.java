@@ -58,6 +58,7 @@ public class SavePatterns extends AppCompatActivity {
     public boolean isConnected;
     Eeg eeg;
     Eeg tmp;
+    private int timesSaved = 0;
 
 
     @Override
@@ -95,7 +96,7 @@ public class SavePatterns extends AppCompatActivity {
     public void saveBaseline(Eeg eeg) {
         if (baseBool) {
 
-            baseline = new Pattern(eeg);
+            baseline = new Pattern(eeg, 500);
             baseBool = false;
         }
         if (updateNr >= 0) {
@@ -116,7 +117,7 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveLeft(Eeg eeg) {
         if (leftBool) {
-            left = new Pattern(eeg);
+            left = new Pattern(eeg,500);
             leftBool = false;
         }
         if (updateNr >= 0) {
@@ -137,7 +138,7 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveRight(Eeg eeg) {
         if (rightBool) {
-            right = new Pattern(eeg);
+            right = new Pattern(eeg,500);
             rightBool = false;
         }
         if (updateNr > 0) {
@@ -158,7 +159,7 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveForward(Eeg eeg) {
         if (forwardBool) {
-            forward = new Pattern(eeg);
+            forward = new Pattern(eeg,500);
             forwardBool = false;
         }
         if (updateNr > 0) {
@@ -179,7 +180,7 @@ public class SavePatterns extends AppCompatActivity {
 
     public void saveStop(Eeg eeg) {
         if (stopBool) {
-            stop = new Pattern(eeg);
+            stop = new Pattern(eeg,500);
             stopBool = false;
         }
         if (updateNr > 0) {
@@ -193,11 +194,18 @@ public class SavePatterns extends AppCompatActivity {
             Log.i("Pattern", this.toString(stop.toArray()));
 
             databaseAccess.close();
-            start = 6;
-            tgDevice.stop();
-            tgDevice.close();
-            startActivity(new Intent(SavePatterns.this, StartActivity.class));
-            this.finish();
+
+            if(timesSaved < 5){
+                start = 1;
+                timesSaved++;
+                startValueSetup();
+
+            } else {
+                tgDevice.stop();
+                tgDevice.close();
+                startActivity(new Intent(SavePatterns.this, StartActivity.class));
+                this.finish();
+            }
         }
 
     }
@@ -268,5 +276,11 @@ public class SavePatterns extends AppCompatActivity {
             str.append("s" + d + "e");
         }
         return str.toString();
+    }
+
+    public void startValueSetup(){
+        updateNr = 100;
+        nrOfTimes = 100;
+        times = 20;
     }
 }

@@ -157,6 +157,10 @@ public class DatabaseAccess {
         database.update(table, values, "_id = " + id, null);
     }
 
+    public void update(String table, ContentValues values, String username) {
+        database.update(table, values, "username = " + username, null);
+    }
+
     public void updateUsername (String oldUsername, String newUsername) {
         String sql = "UPDATE Users SET username = '" +newUsername+ "' where username = '"+oldUsername+"';";
         database.execSQL(sql);
