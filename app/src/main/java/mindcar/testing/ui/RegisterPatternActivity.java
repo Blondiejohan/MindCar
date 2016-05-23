@@ -44,30 +44,29 @@ import mindcar.testing.util.NeuralNetworkHelper;
 
 public class RegisterPatternActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private double[] baseline;
-    private double[] left;
-    private double[] right;
-    private double[] forward;
-    private double[] stop;
+    public static  double[] baseline;
+    public static  double[] left;
+    public static  double[] right;
+    public static  double[] forward;
+    public static  double[] stop;
 
-    private final int INPUT_SIZE = 800;
-    private final int OUTPUT_SIZE = 4;
+    private static final int INPUT_SIZE = 800;
+    private static final int OUTPUT_SIZE = 4;
 
 
-    private LinkedList<double[]> inputs = new LinkedList<>();
-    private LinkedList<double[]> outputs = new LinkedList<>();
+    public static  LinkedList<double[]> inputs = new LinkedList<>();
+    public static  LinkedList<double[]> outputs = new LinkedList<>();
 
     private DatabaseAccess databaseAccess;
 
-    private Pattern tmpPattern;
-    private Eeg tmpEeg;
+    public static Pattern tmpPattern;
+    public static Eeg tmpEeg;
 
-    private TGDevice tgDevice;
-    private TrainingSet trainingSet;
-    private NeuralNetwork neuralNetwork;
+    public static  TrainingSet trainingSet;
+    public static  NeuralNetwork neuralNetwork;
 
     private int times;
-    private TextView registerPatternsText;
+    public static TextView registerPatternsText;
     private Button registerPatternReady;
 
     @Override
@@ -89,12 +88,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         neuralNetwork.setLearningRule(new MomentumBackpropagation());
         neuralNetwork.setLabel(RegistrationActivity.user_name);
 
-        tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
-        if (tgDevice.getState() != TGDevice.STATE_CONNECTING
-                && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
-            tgDevice.connect(true);
-        }
-
         registerPatternsText = (TextView) findViewById(R.id.registerPatternText);
 
         registerPatternReady = (Button) findViewById(R.id.registerPatternReady);
@@ -105,86 +98,10 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        tgDevice.start();
         registerPatternReady.setEnabled(false);
     }
 
-
-    public final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-            switch (msg.what) {
-                case TGDevice.MSG_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case TGDevice.STATE_CONNECTED:
-                            tgDevice.start();
-                            Log.i("wave", "Connecting");
-                            break;
-                    }
-                    break;
-
-                case TGDevice.MSG_RAW_DATA:
-                    MessageParser.parseRawData(msg, tmpEeg);
-                    tmpPattern.add(tmpEeg);
-                    if (tmpPattern.isFull()) {
-
-                        if (!isFull(baseline)) {
-                            registerPatternsText.setText("Establishing baseline /n please relax");
-                            populateArray(baseline);
-
-                        } else if (!isFull(left)) {
-                            registerPatternsText.setText("Think about going left /n now saving");
-                            populateArray(left);
-
-                        } else if (!isFull(right)) {
-                            registerPatternsText.setText("Think about going right /n now saving");
-                            populateArray(right);
-
-                        } else if (!isFull(forward)) {
-                            registerPatternsText.setText("Think about going forward /n now saving");
-                            populateArray(forward);
-
-                        } else if (!isFull(stop)) {
-                            registerPatternsText.setText("Think about stopping /n now saving");
-                            populateArray(stop);
-
-                        } else {
-                            populateInputs();
-                            extendTrainingSet();
-                            neuralNetwork.learnInNewThread(trainingSet);
-
-                            if (times < 5) {
-                                initializeArrays();
-                                inputs = new LinkedList<>();
-                                times++;
-                            } else {
-                                try {
-
-                                    RandomAccessFile nnet = new RandomAccessFile(RegistrationActivity.user_name + ".nnet", "r");
-                                    byte[] b = new byte[(int)nnet.length()];
-                                    nnet.read(b);
-
-                                    databaseAccess.open();
-                                    ContentValues contentValues = new ContentValues();
-                                    contentValues.put("neuralnetwork", b);
-                                    databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
-                                    databaseAccess.close();
-
-                                    startActivity(new Intent(RegisterPatternActivity.this, StartActivity.class));
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }
-                    }
-            }
-        }
-    };
-
-    private void initializeArrays() {
+    public static void initializeArrays() {
         baseline = new double[INPUT_SIZE];
         left = new double[INPUT_SIZE];
         right = new double[INPUT_SIZE];
@@ -192,7 +109,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         stop = new double[INPUT_SIZE];
     }
 
-    private void extendTrainingSet() {
+    public static void extendTrainingSet() {
         trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(0)));
         trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(1)));
         trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(2)));
@@ -212,12 +129,12 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(15)));
     }
 
-    private void populateArray(double[] array) {
+    public static void populateArray(double[] array) {
         array = tmpPattern.toArray();
         tmpPattern = new Pattern();
     }
 
-    public void populateInputs() {
+    public static void populateInputs() {
         inputs.add(left);
         inputs.add(right);
         inputs.add(forward);
@@ -226,7 +143,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         inputs.add(baseline);
     }
 
-    private void populateOutputs() {
+    public static void populateOutputs() {
         outputs.add(new double[]{1, 0, 0, 0});  //  0
         outputs.add(new double[]{0, 1, 0, 0});  //  1
         outputs.add(new double[]{0, 0, 1, 0});  //  2
@@ -246,7 +163,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         outputs.add(new double[]{1, 1, 1, 1});  //  15
     }
 
-    private boolean isFull(double[] array) {
+    public static boolean isFull(double[] array) {
         if (array[INPUT_SIZE - 1] != 0) {
             return true;
         }

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -91,9 +92,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton blinkoption;
     TextView blinkInstructions, attentionInstructions;
 
-    public static boolean mindControl=true;
-    public static boolean attentionControl=false;
-    public static boolean blinkControl=false;
+    public static boolean mindControl = true;
+    public static boolean attentionControl = false;
+    public static boolean blinkControl = false;
 
     BluetoothAdapter bluetoothAdapter;
     //BluetoothDevice bluetoothDevice;
@@ -111,9 +112,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //nikos
         userSettings = (Button) findViewById(R.id.userSettings);
         logout = (Button) findViewById(R.id.logout);
-        mindoption= (RadioButton) findViewById(R.id.mindoption);
-        attentionoption= (RadioButton) findViewById(R.id.attentionoption);
-        blinkoption= (RadioButton) findViewById(R.id.blinksoption);
+        mindoption = (RadioButton) findViewById(R.id.mindoption);
+        attentionoption = (RadioButton) findViewById(R.id.attentionoption);
+        blinkoption = (RadioButton) findViewById(R.id.blinksoption);
         toggle = (ToggleButton) findViewById(R.id.toggleButton);
         blinkInstructions = (TextView) findViewById(R.id.blinkInstructions);
         attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
@@ -143,24 +144,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //            }
 //        }
 
-                    //Connected.write("l");
-
-                }
-            }
-        }
+        //Connected.write("l");
 
 
         neuralNetwork = databaseAccess.getNetwork(StartActivity.un);
 
 
-
-       
-
         //pattern = new Pattern();
         //car = new SmartCar();
         //x = car.getCommands();
-
-
 
 
         //tgDevice = new TGDevice(BluetoothAdapter.getDefaultAdapter(), handler);
@@ -255,24 +247,24 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.mindoption:
                 mindControl = true;
-                attentionControl=false;
-                blinkControl=false;
+                attentionControl = false;
+                blinkControl = false;
                 mindoption.setChecked(true);
                 attentionInstructions.setVisibility(View.INVISIBLE);
                 blinkInstructions.setVisibility(View.INVISIBLE);
                 break;
             case R.id.attentionoption:
                 mindControl = false;
-                attentionControl=true;
-                blinkControl=false;
+                attentionControl = true;
+                blinkControl = false;
                 attentionoption.setChecked(true);
                 attentionInstructions.setVisibility(View.VISIBLE);
                 blinkInstructions.setVisibility(View.INVISIBLE);
                 break;
             case R.id.blinksoption:
                 mindControl = false;
-                attentionControl=false;
-                blinkControl=true;
+                attentionControl = false;
+                blinkControl = true;
                 blinkoption.setChecked(true);
                 attentionInstructions.setVisibility(View.VISIBLE);
                 blinkInstructions.setVisibility(View.VISIBLE);
@@ -280,7 +272,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+}
     /**
      * Handles messages from TGDevice
      */
@@ -417,5 +409,3 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //        start.setText("Start");
 //
 //    }
-
-}

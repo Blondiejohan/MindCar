@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +26,10 @@ import android.widget.Toast;
 
 import com.neurosky.thinkgear.TGDevice;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +39,7 @@ import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.SmartCar;
+import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connection;
@@ -88,6 +93,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     long lastBlink = 0;
     int blinkCount = 0;
 
+    private DatabaseAccess databaseAccess;
     // Below starts the connection handler:
    public Handler mHandler = new Handler() {
         @Override
@@ -105,41 +111,60 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 //MIND CONTROL
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
-                        if (times == 0) {
-                            if (SavePatterns.start == 1) {
-                                SavePatterns.direction.setText("Establishing baseline \n please relax");
-                                if (SavePatterns.eeg.isFull()) {
-                                    SavePatterns.saveBaseline(SavePatterns.eeg);
-                                    SavePatterns.tmp = SavePatterns.eeg;
-                                } else if (SavePatterns.baseline != null && SavePatterns.baseline.get(0) != null) {
-                                    SavePatterns.eeg.populate(SavePatterns.tmp);
-                                    SavePatterns.saveBaseline(SavePatterns.eeg);
+                        MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                        RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
+                        if (RegisterPatternActivity.tmpPattern.isFull()) {
+
+                            if (!RegisterPatternActivity.isFull(RegisterPatternActivity.baseline)) {
+                                RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
+
+                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.left)) {
+                                RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
+
+                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.right)) {
+                                RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
+
+                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.forward)) {
+                                RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
+                                RegisterPatternActivity. populateArray(RegisterPatternActivity.forward);
+
+                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.stop)) {
+                                RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
+
+                            } else {
+                                RegisterPatternActivity.populateInputs();
+                                RegisterPatternActivity.extendTrainingSet();
+                                RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
+
+                                if (times < 5) {
+                                    RegisterPatternActivity.initializeArrays();
+                                    RegisterPatternActivity.inputs = new LinkedList<>();
+                                    times++;
+                                } else {
+                                    try {
+
+                                        RandomAccessFile nnet = new RandomAccessFile(RegistrationActivity.user_name + ".nnet", "r");
+                                        byte[] b = new byte[(int)nnet.length()];
+                                        nnet.read(b);
+
+                                        databaseAccess.open();
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put("neuralnetwork", b);
+                                        databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+                                        databaseAccess.close();
+
+                                        next();
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }
-                            if (SavePatterns.start == 2) {
-                                SavePatterns.direction.setText("Think Left");
-                                SavePatterns.saveLeft(SavePatterns.eeg);
-
-                            }
-                            if (SavePatterns.start == 3) {
-                                SavePatterns.direction.setText("Think Right");
-                                SavePatterns.saveRight(SavePatterns.eeg);
-                            }
-                            if (SavePatterns.start == 4) {
-                                SavePatterns.direction.setText("Think Forward");
-                                SavePatterns.saveForward(SavePatterns.eeg);
-                            }
-                            if (SavePatterns.start == 5) {
-                                SavePatterns.direction.setText("Think Stop");
-                                SavePatterns.saveStop(SavePatterns.eeg);
-                            }
-                            SavePatterns.eeg = new Eeg();
-                            times = 20;
-                            break;
-                        } else {
-                            MessageParser.parseRawData(msg, SavePatterns.eeg);
-                            times--;
-                            break;
                         }
                     }
                     else{// MIND CONTROL IN USERACTIVITY
