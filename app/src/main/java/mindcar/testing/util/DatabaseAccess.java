@@ -12,6 +12,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.nnet.MultiLayerPerceptron;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+
+import mindcar.testing.ui.StartActivity;
+
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private static SQLiteDatabase database;
@@ -204,5 +217,23 @@ public class DatabaseAccess {
         }
         //Log.i("String2",log.toString()+"");
         return arr;
+    }
+
+    public NeuralNetwork getNetwork(String username) {
+        Cursor cursor = database.rawQuery("select * from users where username = '" + username + "'", null);
+        cursor.moveToFirst();
+
+        byte[] bytes = cursor.getBlob(cursor.getColumnIndex("neuralnetwork"));
+        RandomAccessFile randomAccessFile;
+
+        try {
+            randomAccessFile = new RandomAccessFile(StartActivity.un + ".nnet", "w");
+            randomAccessFile.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        NeuralNetwork neuralNetwork = NeuralNetwork.load(StartActivity.un + ".nnet");
+        return neuralNetwork;
     }
 }

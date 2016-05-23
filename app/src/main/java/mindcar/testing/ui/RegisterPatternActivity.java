@@ -2,6 +2,7 @@ package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -31,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.sql.Blob;
 import java.util.LinkedList;
 
 import mindcar.testing.R;
@@ -74,7 +76,8 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_register_pattern);
 
         times = 0;
-
+        tmpEeg = new Eeg();
+        tmpPattern = new Pattern(100);
         databaseAccess = DatabaseAccess.getInstance(this);
 
         populateOutputs();
@@ -167,6 +170,8 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
                                     contentValues.put("neuralnetwork", b);
                                     databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
                                     databaseAccess.close();
+
+                                    startActivity(new Intent(RegisterPatternActivity.this, StartActivity.class));
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
