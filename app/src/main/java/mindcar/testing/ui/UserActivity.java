@@ -18,8 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -145,20 +143,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //            }
 //        }
 
+                    //Connected.write("l");
 
-        LinkedList<double[]> patternList = new LinkedList<>();
+                }
+            }
+        }
 
-        databaseAccess.open();
-        patternList.add(databaseAccess.getPattern("left", StartActivity.un));
-        patternList.add(databaseAccess.getPattern("right", StartActivity.un));
-        patternList.add(databaseAccess.getPattern("forward", StartActivity.un));
-        patternList.add(databaseAccess.getPattern("stop", StartActivity.un));
-        patternList.add(databaseAccess.getBaseline(StartActivity.un));
-        databaseAccess.close();
 
-        TrainingSet dataSet = NeuralNetworkHelper.createTrainingSet(patternList, patternList.get(0).length, 4);
-        neuralNetwork = NeuralNetworkHelper.createNetwork(dataSet, patternList.get(0).length, 4);
+        neuralNetwork = databaseAccess.getNetwork(StartActivity.un);
 
+
+
+       
 
         //pattern = new Pattern();
         //car = new SmartCar();
