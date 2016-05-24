@@ -2,6 +2,7 @@ package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -22,11 +23,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.common.io.Files;
 import com.neurosky.thinkgear.TGDevice;
 
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.TrainingSet;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -169,11 +173,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     appRunning = true;
                     //BluetoothActivity.connection.start();
                     //BluetoothActivity.connected.write("f");
+                    if(mindoption.isChecked() && !neuralNetwork.getLearningThread().isAlive()){
+                        neuralNetwork.resumeLearning();
+                    }
+
                 } else {
                     //BluetoothActivity.tgDevice.stop();
                     //BluetoothActivity.connection.stop();
                     appRunning = false;
                     BluetoothActivity.connected.write("STOP");
+
+                    if(mindoption.isChecked()){
+                        neuralNetwork.stopLearning();
+                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, StartActivity.un);
+
+                        try {
+                            File nnet = UserActivity.this.getFileStreamPath(StartActivity.un + ".nnet");
+                            byte[] b = Files.toByteArray(nnet);
+
+                            databaseAccess.open();
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("neuralnetwork", b);
+                            databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+                            databaseAccess.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        //byte[] b = new byte[(int)nnet.length()];
+                        //nnet.read(b);
+
+
+                    }
                 }
 
             }

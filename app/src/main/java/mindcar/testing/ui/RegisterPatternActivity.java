@@ -52,14 +52,17 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     public static double[] forward;
     public static double[] stop;
 
-    private static int counter = 100;
+
     private static final int INPUT_SIZE = 800;
+    private static final int HIDDEN_SIZE = 397;
     private static final int OUTPUT_SIZE = 4;
+
+    public static final int PATTERN_SIZE = 100;
 
 
     public static LinkedList<double[]> inputs = new LinkedList<>();
     public static LinkedList<double[]> outputs = new LinkedList<>();
-    public static boolean baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean;
+    public static boolean  startBoolean, baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean;
 
     private DatabaseAccess databaseAccess;
 
@@ -79,11 +82,11 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_pattern);
 
-        baselineBoolean = true;
+        startBoolean = true;
 
         times = 0;
         tmpEeg = new Eeg();
-        tmpPattern = new Pattern(100);
+        tmpPattern = new Pattern(PATTERN_SIZE);
         databaseAccess = DatabaseAccess.getInstance(this);
 
         populateOutputs();
@@ -91,7 +94,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         initializeArrays();
 
         trainingSet = new TrainingSet(INPUT_SIZE, OUTPUT_SIZE);
-        neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.STEP, INPUT_SIZE, 400, OUTPUT_SIZE);
+        neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.STEP, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
         neuralNetwork.setLearningRule(new MomentumBackpropagation());
         neuralNetwork.setLabel(RegistrationActivity.user_name);
 
@@ -139,7 +142,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     public static void populateArray(double[] array) {
         array = tmpPattern.toArray();
-        tmpPattern = new Pattern(100);
+        tmpPattern = new Pattern(PATTERN_SIZE);
     }
 
     public static void populateInputs() {
@@ -172,5 +175,25 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     }
 
 
-
+    public static void nextValue() {
+        if(startBoolean){
+            startBoolean = false;
+            baselineBoolean = true;
+        } else if (baselineBoolean) {
+            baselineBoolean = false;
+            leftBoolean = true;
+        } else if (leftBoolean){
+            leftBoolean = false;
+            rightBoolean = true;
+        } else if (rightBoolean) {
+            rightBoolean = false;
+            forwardBoolean = true;
+        } else if (forwardBoolean) {
+            forwardBoolean = false;
+            stopBoolean = true;
+        } else {
+            stopBoolean = false;
+            startBoolean = true;
+        }
+    }
 }

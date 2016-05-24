@@ -94,6 +94,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     int blinkCount = 0;
 
     private DatabaseAccess databaseAccess;
+    private int patternCounter = 0;
     // Below starts the connection handler:
     public Handler mHandler = new Handler() {
         @Override
@@ -111,101 +112,94 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 //MIND CONTROL
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
-                        if (RegisterPatternActivity.tmpPattern.isFull()) {
 
-                            if (RegisterPatternActivity.baselineBoolean) {
-                                RegisterPatternActivity.baselinePattern = RegisterPatternActivity.tmpPattern;
-                                RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
-                                RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
-
-
-                                RegisterPatternActivity.baselineBoolean = false;
-                                RegisterPatternActivity.leftBoolean = true;
-
-                                //break;
-
-                            } else if (RegisterPatternActivity.leftBoolean) {
-                                RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
-                                RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
-
-                                RegisterPatternActivity.leftBoolean= false;
-                                RegisterPatternActivity.rightBoolean = true;
-
-                                //break;
-
-                            } else if (RegisterPatternActivity.rightBoolean) {
-                                RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
-                                RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
-
-                                RegisterPatternActivity.rightBoolean = false;
-                                RegisterPatternActivity.forwardBoolean = true;
-
-                                //break;
-
-                            } else if (RegisterPatternActivity.forwardBoolean) {
-                                RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
-                                RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
-
-                                RegisterPatternActivity.forwardBoolean = false;
-                                RegisterPatternActivity.stopBoolean = true;
-
-                                //break;
-
-                            } else if (RegisterPatternActivity.stopBoolean) {
-                                RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
-                                RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
-
-                                RegisterPatternActivity.populateInputs();
-                                RegisterPatternActivity.extendTrainingSet();
-
-
-                                RegisterPatternActivity.stopBoolean = false;
-
-                                if(nrTimes < 5) {
-                                    Log.i("Something", nrTimes + "");
-                                    RegisterPatternActivity.baselinePattern = null;
-                                    RegisterPatternActivity.baselineBoolean = true;
-
-                                    RegisterPatternActivity.initializeArrays();
-                                    RegisterPatternActivity.inputs = new LinkedList<>();
-
-                                    nrTimes++;
-                                    //break;
-                                } else {
-                                    Log.i("Something", "final else");
-
-                                    RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
-
-                                    try {
-
-                                        NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, "ta.nnet");
-
-                                        File nnet = BluetoothActivity.this.getFileStreamPath("ta.nnet");
-                                        byte[] b = Files.toByteArray(nnet);
-                                        //byte[] b = new byte[(int)nnet.length()];
-                                        //nnet.read(b);
-
-                                        databaseAccess.open();
-                                        ContentValues contentValues = new ContentValues();
-                                        contentValues.put("neuralnetwork", b);
-                                        databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
-                                        databaseAccess.close();
-                                        startLearning = false;
-                                        next();
-                                        //break;
-
-                                    } catch (IOException e) {
-                                        Log.i("Something", e.getMessage());
-                                    }
-
-                                }
-                            }
+                        MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                        if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
+                            Log.i("Some", patternCounter + " ");
+                            RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
+                            patternCounter++;
                             break;
-                        } else {
-                            MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
-                            RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg, RegisterPatternActivity.baselinePattern);
-                            break;
+                        } else if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
+                            RegisterPatternActivity.nextValue();
+                            patternCounter = 0;
                         }
+
+
+                        if (RegisterPatternActivity.baselineBoolean) {
+                            RegisterPatternActivity.baselinePattern = RegisterPatternActivity.tmpPattern;
+                            RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
+
+                            //break;
+
+                        } else if (RegisterPatternActivity.leftBoolean) {
+                            RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
+
+                            //break;
+
+                        } else if (RegisterPatternActivity.rightBoolean) {
+                            RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
+                            //break;
+
+                        } else if (RegisterPatternActivity.forwardBoolean) {
+                            RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
+                            //break;
+
+                        } else if (RegisterPatternActivity.stopBoolean) {
+                            RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
+
+                            RegisterPatternActivity.populateInputs();
+                            RegisterPatternActivity.extendTrainingSet();
+
+                            if (nrTimes < 5) {
+                                Log.i("Something", nrTimes + "");
+                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.baseline));
+                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.left));
+                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.right));
+                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.forward));
+                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.stop));
+                                RegisterPatternActivity.baselinePattern = null;
+
+                                RegisterPatternActivity.initializeArrays();
+                                RegisterPatternActivity.inputs = new LinkedList<>();
+
+                                nrTimes++;
+                                //break;
+                            } else {
+                                Log.i("Something", "final else");
+
+                                RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
+
+                                try {
+
+                                    NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, "ta.nnet");
+
+                                    File nnet = BluetoothActivity.this.getFileStreamPath("ta.nnet");
+                                    byte[] b = Files.toByteArray(nnet);
+                                    //byte[] b = new byte[(int)nnet.length()];
+                                    //nnet.read(b);
+
+                                    databaseAccess.open();
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put("neuralnetwork", b);
+                                    databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+                                    databaseAccess.close();
+                                    startLearning = false;
+                                    next();
+                                    //break;
+
+                                } catch (IOException e) {
+                                    Log.i("Something", e.getMessage());
+                                }
+
+                            }
+                        }
+                        break;
+
                     } else {// MIND CONTROL IN USERACTIVITY
                         if (UserActivity.appRunning) {
                             if (UserActivity.mindControl) {
@@ -217,7 +211,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                     String send = compPatt.compare(UserActivity.databaseAccess);
                                     Log.i("Send message ", send);
                                     if (send == "w") {
-                                        connected.write("f");
+                                        connected.write("s");
                                     } else {
                                         connected.write(send);
                                     }
@@ -363,7 +357,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
         //CREATE MIND CONTROL OBJECTS
         eeg = new Eeg();
-        pattern = new Pattern();
+        pattern = new Pattern(100);
         databaseAccess = DatabaseAccess.getInstance(this);
 
         //CREATE BLINK CONTROL OBJECTS

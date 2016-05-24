@@ -20,7 +20,7 @@ public class Pattern {
 
     public Pattern(Eeg eeg, int capacity) {
         this.list = new LinkedList<>();
-        this.capacity = 100;
+        this.capacity = capacity;
         add(eeg);
     }
 
@@ -61,7 +61,7 @@ public class Pattern {
      * @return true if Pattern is full
      */
     public boolean isFull() {
-        if (list.size() < capacity) {
+        if (list.size() != capacity-1) {
             return false;
         }
         return true;
