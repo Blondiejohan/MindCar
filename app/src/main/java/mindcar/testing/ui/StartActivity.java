@@ -1,7 +1,6 @@
 package mindcar.testing.ui;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,33 +11,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.neurosky.thinkgear.TGDevice;
-
 import mindcar.testing.R;
-import mindcar.testing.objects.Connection;
 import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.util.DatabaseAccess;
 
+//Sanja & Mattias
+    //This class handles login, allows the options to register a new account
+    // and enter a developer view.
 public class StartActivity extends Activity implements View.OnClickListener {
 
+    //Sanja
+        //Connection to the layout xml
     Button bLogin;
     EditText ET_USER_NAME, ET_PASSWORD;
     Button bSIGNUP;
     TextView devView;
 
-    //variables from BluetoothActivity
-    //public static TGDevice tgDevice = BluetoothActivity.tgDevice;
-    //public static BluetoothAdapter theAdapter = BluetoothActivity.theAdapter;
-    //public static Connection connect = BluetoothActivity.connect;
-
-    //nikos
-    Button userSettings;
-
     public static String un, pw;
-    public static boolean registration;
 
-
+    //Sanja
+        //Creates all buttons and fields
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,49 +48,56 @@ public class StartActivity extends Activity implements View.OnClickListener {
         devView.setOnClickListener(this);
     }
 
+    //Sanja
+        // Handles the different button clicks.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            //Sanja
+                //Log in button clicked
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
                 if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                    //databaseAccess.close();
 
                     //This value will be passed to User activity to fetch the name and photo
                     //of whoever logs in to the app
                     saveInfo();
+
+                    //Sanja
+                        //Play positive sound when successful login.
+                        //User is sent to the main use screen
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
-                    //startActivity(new Intent(this, UserActivity.class));
-                    registration=false;
                     startActivity(new Intent(this, UserActivity.class));
-                    //startActivity(new Intent(this, oldConnection.class));
                     this.finish();
                 }
                 else {
-
+                    //Sanja
+                     //Play negative sound when failed to login.
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                     MediaPlayer mp2 = MediaPlayer.create(this, R.raw.no);
                     mp2.start();
                 }
                 break;
-
+            //Sanja
+                //New registration clicked
             case R.id.bSIGNUP:
-              //  registration=true;
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
 
+            //Mattias
+                //Developer view selected
             case R.id.devView:
                 startActivity(new Intent(this, DeveloperActivity.class));
                 this.finish();
                 break;
-
         }
 
     }
-
+    //The author??
+     //What does it do??
     public void saveInfo(){
         SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();

@@ -1,9 +1,8 @@
 package mindcar.testing.util;
 
 /**
- * Created by colak on 03/04/16.
+ * Created by Sanja Colak on 03/04/16.
  */
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -30,27 +29,17 @@ import mindcar.testing.ui.BluetoothActivity;
 import mindcar.testing.ui.RegisterPatternActivity;
 import mindcar.testing.ui.StartActivity;
 
+//Sanja & Mattias & Johan
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private static SQLiteDatabase database;
     private static DatabaseAccess instance;
 
-
-    /**
-     * Private constructor to aboid object creation from outside classes.
-     *
-     * @param context
-     */
+     //Private constructor to aboid object creation from outside classes.
     private DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
-
-    /**
-     * Return a singleton instance of DatabaseAccess.
-     *
-     * @param context the Context
-     * @return the instance of DabaseAccess
-     */
+     //Return a singleton instance of DatabaseAccess.
     public static DatabaseAccess getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseAccess(context);
@@ -58,37 +47,31 @@ public class DatabaseAccess {
         return instance;
     }
 
-    /**
-     * Open the database connection.
-     */
+    //Sanja
+     //Open the database connection.
     public void open() {
         this.database = openHelper.getWritableDatabase();
     }
 
-    /**
-     * Close the database connection.
-     */
+    //Sanja
+        //Close the database connection.
     public void close() {
         if (database != null) {
             this.database.close();
         }
     }
 
-    /**
-     * Read all quotes from the database.
-     *
-     * @return a List of quotes
-     */
+    //Sanja
+        //Read all quotes from the database.
     public boolean checkUser(String userName, String password) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "' AND password = '" + password + "'", null);
         return cursor.getCount() == 1;
     }
-
+    //Sanja
     public boolean checkAvailability(String userName) {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
         return cursor.getCount() == 0;
     }
-
     public int getNumberOfRows(String table){
         Cursor cursor = database.rawQuery("select id from " + table + ";",null);
         return cursor.getCount();
@@ -108,7 +91,6 @@ public class DatabaseAccess {
 
 
         int i = 0;
-        //Log.i("String",username+str);
         Log.i("String1", username + " " + cursor.getString(cursor.getColumnIndex(direction)).toString());
         while (str.length()!= 0 && str.charAt(0) == 's') {
             String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
@@ -121,7 +103,6 @@ public class DatabaseAccess {
         for (int j = 0; j < arr.length;j++){
             log.append(arr[j]+" ");
         }
-        //Log.i("String2",log.toString()+"");
         return arr;
     }
 

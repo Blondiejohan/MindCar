@@ -10,28 +10,28 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
-
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.R;
 
+//Sanja & Madisen
+    //This handles registration of new users
 public class RegistrationActivity extends Activity implements View.OnClickListener {
 
+    //Sanja
+        //Connection to the layout xml for the registration of new users
     Button bRegister;
     EditText ET_USER_NAME, ET_PASS;
     static String user_name, user_pass;
 
 
-    //Madisen's
+    //Madisen
         //Choosing and taking the Image
     private static final int SELECTED_PICTURE = 1;
     Button chooseImage, takePhoto;
@@ -48,19 +48,19 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         bRegister = (Button) findViewById(R.id.bRegister);
         bRegister.setOnClickListener(this);
 
-        //Madisen's shit for choosing a photo
+        //Madisen's code for choosing a photo
             //Instantiate button, image view and listen for a button click.
         chooseImage = (Button) findViewById(R.id.chooseImage);
-
         chooseImage.setOnClickListener(this);
 
-        //Madisen's shit for taking a new photo
-            //Instantiate button, image view and listen for a button click.
+        //Madisen's code for taking a new photo
+             //Instantiate button, image view and listen for a button click.
         takePhoto = (Button) findViewById(R.id.takePhoto);
         imgPhoto = (ImageView) findViewById(R.id.imgPicture);
         takePhoto.setOnClickListener(this);
     }
-
+        //Sanja
+            //Variables for extracting user name and password from the input fields
     public void userReg(View view) {
         user_name = ET_USER_NAME.getText().toString();
         user_pass = ET_PASS.getText().toString();
@@ -69,15 +69,13 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         myPic = stream.toByteArray();
         return myPic;
     }
 
-
-    //Madisen's shit
+    //Madisen
         //Method for telling the takePhoto and chooseImage buttons what to do.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -130,7 +128,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
         }
     }
-
+    //Sanja & Madisen
+    // Registration handling
     @Override
     public void onClick(View v) {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
@@ -152,19 +151,15 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     else if ((takenPic == null) || (chosenPic == null)){
                         databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), null);
                     }
-
-                        //databaseAccess.close();
-
                     //Remember username and password to avoid re login
                     StartActivity.un = ET_USER_NAME.getText().toString();
                     StartActivity.pw = ET_PASS.getText().toString();
 
                     startActivity(new Intent(this, RegisterPatternActivity.class));
-                    //this.finish();
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;
-            //Madisen's shit
+            //Madisen
             //If the button chooseImage is clicked, access external data and go to next method
             case R.id.chooseImage:
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

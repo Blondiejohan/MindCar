@@ -60,10 +60,6 @@ public class Connected extends Thread {
             }
         }
     }
-
-
-
-
     /**
      * Sends an array of bytes through the outstream to the chosen device.
      *
