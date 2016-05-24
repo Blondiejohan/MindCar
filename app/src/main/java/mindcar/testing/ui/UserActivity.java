@@ -94,8 +94,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     //EegBlink eegBlink;
 
     //Variables from StartsActivity
-    String name = StartActivity.un;
-    String pw = StartActivity.pw;
+    String name = null;
+    String password = null;
     //public static TGDevice tgDevice = BluetoothActivity.tgDevice;
 
     //public static Connection connection = BluetoothActivity.connect;
@@ -117,7 +117,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton attentionoption;
     RadioButton blinkoption;
     TextView blinkInstructions, attentionInstructions;
-    String name, password = null;
     //<\madisen>
 
     public static boolean mindControl = true;
@@ -182,9 +181,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //Connected.write("l");
 
 
-        byte[] bytes = databaseAccess.getNetwork(UserActivity.this, StartActivity.un);
+        byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
         neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
-        neuralNetwork.resumeLearning();
 
 
         //pattern = new Pattern();
