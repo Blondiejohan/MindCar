@@ -173,7 +173,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     appRunning = true;
                     //BluetoothActivity.connection.start();
                     //BluetoothActivity.connected.write("f");
-                    if(mindoption.isChecked() && !neuralNetwork.getLearningThread().isAlive()){
+                    if(mindoption.isChecked()) {
                         neuralNetwork.resumeLearning();
                     }
 

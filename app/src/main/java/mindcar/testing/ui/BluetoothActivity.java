@@ -95,6 +95,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
     private DatabaseAccess databaseAccess;
     private int patternCounter = 0;
+    private int eegTimes = 0;
     // Below starts the connection handler:
     public Handler mHandler = new Handler() {
         @Override
@@ -113,43 +114,50 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
 
-                        MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
-                        if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
-                            Log.i("Some", patternCounter + " ");
-                            RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
-                            patternCounter++;
-                            break;
-                        } else if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
-                            RegisterPatternActivity.nextValue();
-                            patternCounter = 0;
-                        }
+                            if (eegTimes < 20) {
+                                MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                                eegTimes++;
+                                break;
+                            }
+                            if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
+                                Log.i("Some", patternCounter + " ");
+                                RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
+                                RegisterPatternActivity.tmpEeg = new Eeg();
+                                eegTimes = 0;
+                                patternCounter++;
+                                break;
+                            }
+                            if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
+                                Log.i("Some", "next value");
+                                RegisterPatternActivity.nextValue();
+                                patternCounter = 0;
+                            }
 
 
                         if (RegisterPatternActivity.baselineBoolean) {
-                            RegisterPatternActivity.baselinePattern = RegisterPatternActivity.tmpPattern;
-                            RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
+                            Log.i("Some", "hello1");
                             RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
 
                             //break;
 
                         } else if (RegisterPatternActivity.leftBoolean) {
-                            RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
+                            Log.i("Some", "hello2");
                             RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
 
                             //break;
 
                         } else if (RegisterPatternActivity.rightBoolean) {
-                            RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
+                            Log.i("Some", "hello3");
                             RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
                             //break;
 
                         } else if (RegisterPatternActivity.forwardBoolean) {
-                            RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
+                            Log.i("Some", "hello4");
                             RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
                             //break;
 
                         } else if (RegisterPatternActivity.stopBoolean) {
-                            RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
+                            Log.i("Some", "hello5");
                             RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
 
                             RegisterPatternActivity.populateInputs();

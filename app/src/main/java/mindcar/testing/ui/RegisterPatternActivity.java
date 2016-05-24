@@ -179,18 +179,28 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         if(startBoolean){
             startBoolean = false;
             baselineBoolean = true;
+            registerPatternsText.setText("Establishing baseline /n please relax");
+
         } else if (baselineBoolean) {
             baselineBoolean = false;
             leftBoolean = true;
+            registerPatternsText.setText("Think about going left /n now saving");
+
         } else if (leftBoolean){
             leftBoolean = false;
             rightBoolean = true;
+            registerPatternsText.setText("Think about going right /n now saving");
+
         } else if (rightBoolean) {
             rightBoolean = false;
             forwardBoolean = true;
+            registerPatternsText.setText("Think about going forward /n now saving");
+
         } else if (forwardBoolean) {
             forwardBoolean = false;
             stopBoolean = true;
+            registerPatternsText.setText("Think about stopping /n now saving");
+
         } else {
             stopBoolean = false;
             startBoolean = true;
