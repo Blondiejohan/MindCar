@@ -63,9 +63,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                     //databaseAccess.close();
+
                     //This value will be passed to User activity to fetch the name and photo
                     //of whoever logs in to the app
-                    un = ET_USER_NAME.getText().toString();
+                    saveInfo();
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
                     //startActivity(new Intent(this, UserActivity.class));
@@ -94,5 +95,15 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
         }
 
+    }
+
+    public void saveInfo(){
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", ET_USER_NAME.getText().toString());
+        editor.putString("password", ET_PASSWORD.getText().toString());
+        editor.apply();
+
+        Toast.makeText(this, "User Info Saved", Toast.LENGTH_LONG).show();
     }
 }

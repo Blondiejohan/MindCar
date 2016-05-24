@@ -10,7 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,9 +47,27 @@ import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.objects.SmartCar;
+import mindcar.testing.util.CommandUtils;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.util.NeuralNetworkHelper;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.view.View;
+import android.widget.ToggleButton;
+
+import java.io.FileInputStream;
 
 
 /**
@@ -84,6 +105,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
+    //<madisen>
     View v;
     ImageView iv;
     TextView username;
@@ -95,6 +117,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton attentionoption;
     RadioButton blinkoption;
     TextView blinkInstructions, attentionInstructions;
+    String name, password = null;
+    //<\madisen>
 
     public static boolean mindControl = true;
     public static boolean attentionControl = false;
@@ -129,7 +153,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         backupControl = new BackupControl();
         //eegBlink = new EegBlink();
         databaseAccess = DatabaseAccess.getInstance(this);
+
+
+        //<madisen>
         iv = (ImageView) findViewById(R.id.profile_image_view);
+        getUNPW();
+        //<\madisen>
+
+        
 
 
         //bluetoothAdapter = BluetoothActivity.theAdapter;
@@ -232,6 +263,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 //                }
 //            }
 //        }); // end patterns
+    }
+
+    public void getUNPW(){
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        name = sharedPref.getString("username", "");
+        password = sharedPref.getString("password","");
+
+
     }
 
 
