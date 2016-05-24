@@ -2,6 +2,7 @@ package mindcar.testing.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.sql.Blob;
 import java.util.LinkedList;
@@ -44,27 +46,29 @@ import mindcar.testing.util.NeuralNetworkHelper;
 
 public class RegisterPatternActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static  double[] baseline;
-    public static  double[] left;
-    public static  double[] right;
-    public static  double[] forward;
-    public static  double[] stop;
+    public static double[] baseline;
+    public static double[] left;
+    public static double[] right;
+    public static double[] forward;
+    public static double[] stop;
 
-    private static int counter= 100;
+    private static int counter = 100;
     private static final int INPUT_SIZE = 800;
     private static final int OUTPUT_SIZE = 4;
 
 
-    public static  LinkedList<double[]> inputs = new LinkedList<>();
-    public static  LinkedList<double[]> outputs = new LinkedList<>();
+    public static LinkedList<double[]> inputs = new LinkedList<>();
+    public static LinkedList<double[]> outputs = new LinkedList<>();
+    public static boolean baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean;
 
     private DatabaseAccess databaseAccess;
 
+    public static Pattern baselinePattern = null;
     public static Pattern tmpPattern;
     public static Eeg tmpEeg;
 
-    public static  TrainingSet trainingSet;
-    public static  NeuralNetwork neuralNetwork;
+    public static TrainingSet trainingSet;
+    public static NeuralNetwork neuralNetwork;
 
     private int times;
     public static TextView registerPatternsText;
@@ -74,6 +78,8 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_pattern);
+
+        baselineBoolean = true;
 
         times = 0;
         tmpEeg = new Eeg();
@@ -99,7 +105,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        BluetoothActivity.startLearning=true;
+        BluetoothActivity.startLearning = true;
         registerPatternReady.setEnabled(false);
     }
 
@@ -133,7 +139,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     public static void populateArray(double[] array) {
         array = tmpPattern.toArray();
-        tmpPattern = new Pattern();
+        tmpPattern = new Pattern(100);
     }
 
     public static void populateInputs() {
@@ -165,17 +171,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         outputs.add(new double[]{1, 1, 1, 1});  //  15
     }
 
-    public static boolean isFull(double[] array) {
-        if (counter==0) {
-            counter=100;
-            return true;
-        }else{
-            counter--;
 
-            Log.i("something2",counter+"");
-            return false;
-        }
-
-    }
 
 }

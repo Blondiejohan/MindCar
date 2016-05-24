@@ -147,7 +147,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //Connected.write("l");
 
 
-        neuralNetwork = databaseAccess.getNetwork(StartActivity.un);
+        byte[] bytes = databaseAccess.getNetwork(UserActivity.this, StartActivity.un);
+        neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
+        neuralNetwork.resumeLearning();
 
 
         //pattern = new Pattern();

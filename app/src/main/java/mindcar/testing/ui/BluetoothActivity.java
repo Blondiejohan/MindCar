@@ -8,7 +8,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -29,11 +28,9 @@ import com.neurosky.thinkgear.TGDevice;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import mindcar.testing.R;
 
@@ -47,7 +44,7 @@ import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connection;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
-
+import mindcar.testing.util.NeuralNetworkHelper;
 
 
 /**
@@ -98,7 +95,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
     private DatabaseAccess databaseAccess;
     // Below starts the connection handler:
-   public Handler mHandler = new Handler() {
+    public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -114,55 +111,76 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 //MIND CONTROL
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
-                     MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
-                      RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
                         if (RegisterPatternActivity.tmpPattern.isFull()) {
-                            Log.i("Something: ", RegisterPatternActivity.tmpPattern.toArray().toString());
 
-                            if (!RegisterPatternActivity.isFull(RegisterPatternActivity.baseline)) {
+                            if (RegisterPatternActivity.baselineBoolean) {
+                                RegisterPatternActivity.baselinePattern = RegisterPatternActivity.tmpPattern;
                                 RegisterPatternActivity.registerPatternsText.setText("Establishing baseline /n please relax");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
-                                break;
 
-                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.left)) {
+
+                                RegisterPatternActivity.baselineBoolean = false;
+                                RegisterPatternActivity.leftBoolean = true;
+
+                                //break;
+
+                            } else if (RegisterPatternActivity.leftBoolean) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going left /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
-                                break;
 
-                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.right)) {
+                                RegisterPatternActivity.leftBoolean= false;
+                                RegisterPatternActivity.rightBoolean = true;
+
+                                //break;
+
+                            } else if (RegisterPatternActivity.rightBoolean) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going right /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
-                                break;
 
-                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.forward)) {
+                                RegisterPatternActivity.rightBoolean = false;
+                                RegisterPatternActivity.forwardBoolean = true;
+
+                                //break;
+
+                            } else if (RegisterPatternActivity.forwardBoolean) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about going forward /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
-                                break;
 
-                            } else if (!RegisterPatternActivity.isFull(RegisterPatternActivity.stop)) {
+                                RegisterPatternActivity.forwardBoolean = false;
+                                RegisterPatternActivity.stopBoolean = true;
+
+                                //break;
+
+                            } else if (RegisterPatternActivity.stopBoolean) {
                                 RegisterPatternActivity.registerPatternsText.setText("Think about stopping /n now saving");
                                 RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
-                                break;
 
-
-                        } else {
                                 RegisterPatternActivity.populateInputs();
                                 RegisterPatternActivity.extendTrainingSet();
 
-                                if (nrTimes < 5) {
+
+                                RegisterPatternActivity.stopBoolean = false;
+
+                                if(nrTimes < 5) {
+                                    Log.i("Something", nrTimes + "");
+                                    RegisterPatternActivity.baselinePattern = null;
+                                    RegisterPatternActivity.baselineBoolean = true;
+
                                     RegisterPatternActivity.initializeArrays();
                                     RegisterPatternActivity.inputs = new LinkedList<>();
 
                                     nrTimes++;
-                                    break;
+                                    //break;
                                 } else {
+                                    Log.i("Something", "final else");
+
                                     RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
+
                                     try {
 
+                                        NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, "ta.nnet");
 
-                                        RegisterPatternActivity.neuralNetwork.save("ta" + ".nnet");
-
-                                        File nnet = new File("ta" + ".nnet","r");
+                                        File nnet = BluetoothActivity.this.getFileStreamPath("ta.nnet");
                                         byte[] b = Files.toByteArray(nnet);
                                         //byte[] b = new byte[(int)nnet.length()];
                                         //nnet.read(b);
@@ -172,21 +190,25 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                         contentValues.put("neuralnetwork", b);
                                         databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
                                         databaseAccess.close();
-                                        startLearning=false;
+                                        startLearning = false;
                                         next();
-                                        break;
+                                        //break;
 
                                     } catch (IOException e) {
-                                        e.printStackTrace();
+                                        Log.i("Something", e.getMessage());
                                     }
 
                                 }
-                                }
+                            }
+                            break;
+                        } else {
+                            MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                            RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg, RegisterPatternActivity.baselinePattern);
+                            break;
                         }
-                    }
-                    else{// MIND CONTROL IN USERACTIVITY
+                    } else {// MIND CONTROL IN USERACTIVITY
                         if (UserActivity.appRunning) {
-                            if (UserActivity.mindControl){
+                            if (UserActivity.mindControl) {
                                 MessageParser.parseRawData(msg, eeg);
                                 if (times <= 0) {
                                     Log.i("Time start ", System.currentTimeMillis() + "");
@@ -210,7 +232,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     }
                     break;
 
-                    //BLINK CONTROL, NIKOS STYLE
+                //BLINK CONTROL, NIKOS STYLE
 //                case TGDevice.MSG_BLINK:
 //                    eegBlink.setBlink(msg.arg1);
 //                    System.out.println("Blink: " + msg.arg1);
@@ -290,7 +312,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                 connected.write("STOP");
                                 blinkCount = 0;
                             }
-                        } else if(UserActivity.attentionControl) {
+                        } else if (UserActivity.attentionControl) {
                             //ATTENTION ONLY CONTROL
                             //Log.i("Attention: ", String.valueOf(msg.arg1));
                             if (attentionLevel > ATTENTIONLIMIT) {
@@ -342,6 +364,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         //CREATE MIND CONTROL OBJECTS
         eeg = new Eeg();
         pattern = new Pattern();
+        databaseAccess = DatabaseAccess.getInstance(this);
 
         //CREATE BLINK CONTROL OBJECTS
         //EegBlink eegBlink = new EegBlink();
@@ -385,7 +408,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     activate.setText("Discover and Pair");
                     checkItems();
                 }
-           }
+            }
         });
 
 
@@ -402,8 +425,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 //        if (StartActivity.registration){
 //            startActivity(new Intent(this, RegistrationActivity.class));
 //        }else{
-            startActivity(new Intent(this, StartActivity.class));
-       // }
+        startActivity(new Intent(this, StartActivity.class));
+        // }
     }
 
     private void back() {
@@ -419,12 +442,11 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         }
 
 
-
         //String item = delete.get(position);
 
         BluetoothDevice selectedDevice = mDeviceList.get(position); //getting the position in mDeviceList
 
-        if (selectedDevice.getName().equals("Group 2")){
+        if (selectedDevice.getName().equals("Group 2")) {
 
             //Connection connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
             connect = new Connection(selectedDevice); //passing in the selectedDevice and connecting it
@@ -442,9 +464,9 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
             //Log.i("whats in", mDeviceList.size() + "");
 
 
-        } else if (selectedDevice.getName().equals("MindWave Mobile")){
+        } else if (selectedDevice.getName().equals("MindWave Mobile")) {
             //tgDevice = new TGDevice(theAdapter,mHandler);
-            tgDevice = new TGDevice(theAdapter,mHandler);
+            tgDevice = new TGDevice(theAdapter, mHandler);
             if (tgDevice.getState() != TGDevice.STATE_CONNECTING
                     && tgDevice.getState() != TGDevice.STATE_CONNECTED) {
                 activate.setText("Cancel Pairing");
@@ -491,7 +513,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                 } else if (device.getName().equals("MindWave Mobile")) {
                     if (!mDeviceList.contains(device)) {
-                       // String s = "(Paired)";
+                        // String s = "(Paired)";
                         mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);
                         deviceTwo = true;
@@ -531,8 +553,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 }
 
             }
-            if(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)){
-                if(theAdapter.getState()== BluetoothAdapter.STATE_OFF){
+            if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
+                if (theAdapter.getState() == BluetoothAdapter.STATE_OFF) {
                     toastMaker("BlueTooth Is Now Off");
                 }
             }
@@ -561,13 +583,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
                     //tgDevice.stop();
                     //tgDevice.close();
-                   next();
+                    next();
                 }
             }
 
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 connectedDevices.remove(device.getName());
-                toastMaker("Disconnected From: "+device.getName());
+                toastMaker("Disconnected From: " + device.getName());
                 if (device.getName().equals("Group 2")) {
                     //back();
 

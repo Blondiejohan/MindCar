@@ -9,29 +9,30 @@ import java.util.LinkedList;
 
 public class Pattern {
     // the list to contain the eeg values
-    private LinkedList<Eeg>list ;
+    private LinkedList<Eeg> list;
     private final int capacity;
 
     // constructor of the list and a capacity limit to the list
-    public Pattern(){
+    public Pattern() {
         this.list = new LinkedList<>();
         this.capacity = 100;
     }
 
-    public Pattern(Eeg eeg, int capacity){
+    public Pattern(Eeg eeg, int capacity) {
         this.list = new LinkedList<>();
         this.capacity = 100;
         add(eeg);
     }
+
     // another constructor with the capacity set to the limit
-    public Pattern(int capacity){
+    public Pattern(int capacity) {
         this.list = new LinkedList<>();
         this.capacity = capacity;
     }
 
     // values are added to the pattern list and are limited to the size of the list
     public void add(Eeg eeg) {
-        if(isFull()) {
+        if (isFull()) {
             list.removeFirst();
         }
         list.add(eeg);
@@ -40,14 +41,15 @@ public class Pattern {
     /**
      * Check if the Eeg value isFull() before adding it to the Pattern. Populates the Eeg value with
      * a Eeg value from another pattern if isFull() is false.
+     *
      * @param eeg
      * @param pattern
      */
-    public void add(Eeg eeg, Pattern pattern){
-        if(eeg.isFull()){
+    public void add(Eeg eeg, Pattern pattern) {
+        if (eeg.isFull() || pattern == null) {
             this.add(eeg);
         } else {
-            eeg.populate(pattern.get(this.list.size()-1));
+            eeg.populate(pattern.get(this.list.size()));
             this.add(eeg);
         }
     }
@@ -55,10 +57,11 @@ public class Pattern {
 
     /**
      * Checking if the size of the list is full
+     *
      * @return true if Pattern is full
      */
     public boolean isFull() {
-        if(list.size() < capacity){
+        if (list.size() < capacity) {
             return false;
         }
         return true;
@@ -66,7 +69,6 @@ public class Pattern {
 
 
     /**
-     *
      * @param i
      * @return Eeg at position i in this Pattern
      */
@@ -76,18 +78,24 @@ public class Pattern {
 
     /**
      * Converts this Pattern to an array of doubles ordered by Eeg object
+     *
      * @return double[]
      */
-    public double[] toArray(){
+    public double[] toArray() {
         double[] doubles = new double[capacity * 8];
         int i = 0;
-        for(Eeg eeg : list){
+        for (Eeg eeg : list) {
             double[] tmp = eeg.toDoubleArray();
-            for(double d: tmp){
+            for (double d : tmp) {
                 doubles[i] = d;
                 i++;
-            };
+            }
+            ;
         }
         return doubles;
+    }
+
+    public int length() {
+        return list.size();
     }
 }

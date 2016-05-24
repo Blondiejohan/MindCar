@@ -15,14 +15,19 @@ import android.util.Log;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.nnet.MultiLayerPerceptron;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 
+import mindcar.testing.ui.BluetoothActivity;
+import mindcar.testing.ui.RegisterPatternActivity;
 import mindcar.testing.ui.StartActivity;
 
 public class DatabaseAccess {
@@ -134,6 +139,7 @@ public class DatabaseAccess {
         values.put("username", username);
         values.put("password", password);
         values.put("photo", photo);
+        values.put("neuralnetwork", new byte[]{});
 
         database.insert("USERS", null, values);
     }
@@ -214,21 +220,11 @@ public class DatabaseAccess {
         return arr;
     }
 
-    public NeuralNetwork getNetwork(String username) {
+    public byte[] getNetwork(Context context, String username) {
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "'", null);
         cursor.moveToFirst();
 
         byte[] bytes = cursor.getBlob(cursor.getColumnIndex("neuralnetwork"));
-        RandomAccessFile randomAccessFile;
-
-        try {
-            randomAccessFile = new RandomAccessFile(StartActivity.un + ".nnet", "w");
-            randomAccessFile.write(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        NeuralNetwork neuralNetwork = NeuralNetwork.load(StartActivity.un + ".nnet");
-        return neuralNetwork;
+        return bytes;
     }
 }

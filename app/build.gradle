@@ -36,4 +36,5 @@ dependencies {
     compile files('libs/JOCL-0.1.3a-beta.jar')
     compile files('libs/encog-engine-2.5.0.jar')
     compile files('libs/guava-19.0.jar')
+    compile 'com.google.guava:guava:19.0'
 }
