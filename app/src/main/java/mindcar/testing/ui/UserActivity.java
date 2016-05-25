@@ -63,6 +63,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean attentionControl = false;
     public static boolean blinkControl = false;
 
+    public static boolean loaded = false;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
+
+        loaded = true;
     }
 
     //Madisen
