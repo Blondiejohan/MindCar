@@ -84,6 +84,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //Mattias
         byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
         neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
+        neuralNetwork.resumeLearning();
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
