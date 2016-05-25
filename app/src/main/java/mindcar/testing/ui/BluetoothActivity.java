@@ -175,13 +175,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                 RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
 
                                 try {
-                                    NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, "ta.nnet");
-                                    File nnet = BluetoothActivity.this.getFileStreamPath("ta.nnet");
+                                    NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");
+                                    File nnet = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".nnet");
                                     byte[] b = Files.toByteArray(nnet);
                                     databaseAccess.open();
                                     ContentValues contentValues = new ContentValues();
                                     contentValues.put("neuralnetwork", b);
-                                    databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+                                    databaseAccess.update("Users", contentValues, RegisterPatternActivity.name);
                                     databaseAccess.close();
                                     startLearning = false;
                                     next();

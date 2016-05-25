@@ -1,7 +1,9 @@
 package mindcar.testing.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -152,8 +154,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                         databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), null);
                     }
                     //Remember username and password to avoid re login
-                    StartActivity.un = ET_USER_NAME.getText().toString();
-                    StartActivity.pw = ET_PASS.getText().toString();
+                    saveInfo();
 
                     startActivity(new Intent(this, RegisterPatternActivity.class));
                 } else
@@ -173,5 +174,15 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
         }
 
+    }
+
+    public void saveInfo(){
+        SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", ET_USER_NAME.getText().toString());
+        editor.putString("password", ET_PASS.getText().toString());
+        editor.apply();
+
+        Toast.makeText(this, "User Info Saved", Toast.LENGTH_LONG).show();
     }
 }
