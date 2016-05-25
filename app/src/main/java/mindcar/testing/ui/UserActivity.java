@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -89,6 +90,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         getUNPW();
 
         //Mattias
+        Log.i("learning", name);
         byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
         neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
         neuralNetwork.resumeLearning();
