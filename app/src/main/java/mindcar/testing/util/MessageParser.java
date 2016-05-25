@@ -2,13 +2,10 @@ package mindcar.testing.util;
 
 import android.os.Message;
 
-import com.neurosky.thinkgear.TGDevice;
 import com.neurosky.thinkgear.TGEegPower;
 
-import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
-import mindcar.testing.objects.SmartCar;
 
 /**
  * this class parses msgs and updates the smart car object
@@ -32,34 +29,6 @@ public class MessageParser {
         eeg.setHighAlpha(tgEegPower.highBeta);
         eeg.setLowGamma(tgEegPower.lowGamma);
         eeg.setHighGamma(tgEegPower.midGamma);
-    }
-
-    /**
-     * Assigning commands by comparing patterns
-     *
-     * @param pattern
-     * @param car
-     */
-    public static void assignCommand(Pattern pattern, SmartCar car) {
-
-        //TODO - Connect with saved patterns
-        Pattern rightPattern = null;
-        Pattern leftPattern = null;
-        Pattern forwardPattern = null;
-        Pattern backwardPattern = null;
-        Pattern stopPattern = null;
-
-        if (pattern.equals(rightPattern)) {
-            car.setCommand(Command.r);
-        } else if (pattern.equals(leftPattern)) {
-            car.setCommand(Command.l);
-        } else if (pattern.equals(forwardPattern)) {
-            car.setCommand(Command.f);
-        } else if (pattern.equals(backwardPattern)) {
-            car.setCommand(Command.s);
-        } else if (pattern.equals(stopPattern)) {
-            car.setCommand(Command.STOP);
-        }
     }
 
 
@@ -91,6 +60,14 @@ public class MessageParser {
             ;
         }
 
+    }
+
+    public static String toString(double[] doubles){
+        StringBuilder str = new StringBuilder();
+        for(double d: doubles){
+            str.append(d);
+        }
+        return str.toString();
     }
 
 }
