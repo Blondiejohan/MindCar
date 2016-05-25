@@ -8,9 +8,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by Johan Laptop on 2016-02-29.
+ * This class is used to communicate with the car.
+ * Created by Johan on 2016-02-29.
+ *
  */
-
+// Johan
 public class Connected extends Thread {
     private final BluetoothSocket bluetoothSocket;
     private final InputStream bluetoothInStream;

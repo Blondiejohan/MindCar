@@ -14,6 +14,7 @@ import java.util.UUID;
  * This class takes a BluetoothActivity Device as input and creates a connection between the phone and the
  * chosen device.
  */
+//Johan
 public class Connection extends Thread {
 
     public BluetoothSocket bluetoothSocket;
