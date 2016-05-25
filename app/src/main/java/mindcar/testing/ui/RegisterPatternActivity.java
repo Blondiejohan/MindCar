@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.neurosky.thinkgear.TGDevice;
@@ -83,18 +84,28 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     public static TextView registerPatternsText;
     private Button registerPatternReady;
 
+    //Sanja
+    static ImageView forwardIcon;
+    static ImageView rightIcon;
+    static ImageView leftIcon;
+    static ImageView stopIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_pattern);
 
-        startBoolean = true;
+        //create image view for saving patterns
+        ImageView forwardIcon = (ImageView) findViewById(R.id.forwartIcon);
+        ImageView rightIcon = (ImageView) findViewById(R.id.rightIcon);
+        ImageView leftIcon = (ImageView) findViewById(R.id.leftIcon);
+        ImageView stopIcon = (ImageView) findViewById(R.id.stopIcon);
 
+        startBoolean = true;
         times = 0;
         tmpEeg = new Eeg();
         tmpPattern = new Pattern(PATTERN_SIZE);
         databaseAccess = DatabaseAccess.getInstance(this);
-
         populateOutputs();
 
         initializeArrays();
@@ -199,25 +210,28 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             baselineBoolean = true;
             registerPatternsText.setText("Establishing baseline /n please relax");
 
+
         } else if (baselineBoolean) {
             baselineBoolean = false;
             leftBoolean = true;
             registerPatternsText.setText("Think about going left /n now saving");
+            leftIcon.setVisibility(View.VISIBLE);
 
         } else if (leftBoolean){
             leftBoolean = false;
             rightBoolean = true;
             registerPatternsText.setText("Think about going right /n now saving");
-
+            rightIcon.setVisibility(View.VISIBLE);
         } else if (rightBoolean) {
             rightBoolean = false;
             forwardBoolean = true;
             registerPatternsText.setText("Think about going forward /n now saving");
-
+            forwardIcon.setVisibility(View.VISIBLE);
         } else if (forwardBoolean) {
             forwardBoolean = false;
             stopBoolean = true;
             registerPatternsText.setText("Think about stopping /n now saving");
+            stopIcon.setVisibility(View.VISIBLE);
 
         } else {
             stopBoolean = false;

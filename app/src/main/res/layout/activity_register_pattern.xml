@@ -20,13 +20,14 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/buttonWidth"
+        android:layout_height="@dimen/buttonHeight"
         android:text="Ready!"
         android:id="@+id/registerPatternReady"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="61dp" />
+        android:layout_marginBottom="61dp"
+        style="@style/button"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,4 +38,43 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="54dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/forwartIcon"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/registerPatternReady"
+        android:layout_alignStart="@+id/registerPatternReady"
+        android:src="@drawable/forward"
+        android:visibility="invisible" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leftIcon"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/registerPatternReady"
+        android:layout_alignStart="@+id/registerPatternReady"
+        android:src="@drawable/left"
+        android:visibility="invisible" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rightIcon"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/registerPatternReady"
+        android:layout_alignStart="@+id/registerPatternReady"
+        android:src="@drawable/right"
+        android:visibility="invisible" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stopIcon"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/registerPatternReady"
+        android:layout_alignStart="@+id/registerPatternReady"
+        android:src="@drawable/stop"
+        android:visibility="invisible" />
+
+
 </RelativeLayout>

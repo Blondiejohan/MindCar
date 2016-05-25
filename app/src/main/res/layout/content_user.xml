@@ -84,29 +84,33 @@
         android:id="@+id/radio"
         android:layout_below="@+id/profile_image_view"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/transparent">
         <RadioButton android:id="@+id/mindoption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
             android:text="Mind controller"
             android:onClick="onClick"
             android:textColor="@color/colorPrimary"
-            android:buttonTintMode = "@color/colorPrimary"
+            android:buttonTint = "@color/colorPrimary"
+            android:background="@color/transparent"
             android:checked="true" />
         <RadioButton android:id="@+id/attentionoption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
             android:text="Attention controller"
             android:onClick="onClick"
             android:textColor="@color/colorPrimary"
-            android:buttonTint = "@color/colorPrimary"/>
+            android:buttonTint = "@color/colorPrimary"
+            android:background="@color/transparent"/>
         <RadioButton android:id="@+id/blinksoption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
             android:text="Blink controller"
             android:textColor="@color/colorPrimary"
             android:buttonTint = "@color/colorPrimary"
-            android:onClick="onClick" />
+            android:onClick="onClick"
+            android:background="@color/transparent"/>
     </RadioGroup>
 
     <TextView
