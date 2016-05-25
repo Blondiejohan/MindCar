@@ -68,7 +68,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_user);
 
         //Nikos & Madisen & Sanja & Johan
         userSettings = (Button) findViewById(R.id.userSettings);
@@ -90,10 +90,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         getUNPW();
 
         //Mattias
-        Log.i("learning", name);
+        Log.i("Learning", name);
+        databaseAccess.open();
         byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
         neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
         neuralNetwork.resumeLearning();
+        databaseAccess.close();
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -135,7 +137,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
 
-        setContentView(R.layout.activity_user);
+        loaded = true;
     }
 
     //Madisen

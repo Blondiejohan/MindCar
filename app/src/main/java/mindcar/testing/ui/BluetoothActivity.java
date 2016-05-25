@@ -241,7 +241,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     //Counts blinks for both Blink & Attention Control and Attention Only Control
                 case TGDevice.MSG_BLINK:
                     //Count blinks
-                    if (UserActivity.appRunning && UserActivity.blinkControl && attentionLevel > ATTENTIONLIMIT) {
+                    if (UserActivity.appRunning && UserActivity.blinkControl) {
                         if ((System.currentTimeMillis() - lastBlink) < 1000 && (System.currentTimeMillis() - lastBlink) > 100)
                             blinkCount++;
                         else

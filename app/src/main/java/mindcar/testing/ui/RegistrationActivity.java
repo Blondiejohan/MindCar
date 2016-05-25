@@ -139,8 +139,6 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.bRegister:
                 if (databaseAccess.checkAvailability(ET_USER_NAME.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "Welcome " + ET_USER_NAME.getText().toString() + " " + ET_PASS.getText().toString(), Toast.LENGTH_SHORT).show();
                    if (takenPic != null){
                                 //databaseAccess.addPhoto(takenPic);
                         databaseAccess.addRegistration(ET_USER_NAME.getText().toString(), ET_PASS.getText().toString(), myPic);
@@ -182,7 +180,5 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         editor.putString("username", ET_USER_NAME.getText().toString());
         editor.putString("password", ET_PASS.getText().toString());
         editor.apply();
-
-        Toast.makeText(this, "User Info Saved", Toast.LENGTH_LONG).show();
     }
 }

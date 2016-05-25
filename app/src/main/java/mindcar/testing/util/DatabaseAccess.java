@@ -28,6 +28,8 @@ import java.io.RandomAccessFile;
 import mindcar.testing.ui.BluetoothActivity;
 import mindcar.testing.ui.RegisterPatternActivity;
 import mindcar.testing.ui.StartActivity;
+import mindcar.testing.ui.UserActivity;
+import mindcar.testing.ui.UserSettings;
 
 //Sanja & Mattias & Johan
 public class DatabaseAccess {
@@ -208,4 +210,14 @@ public class DatabaseAccess {
         byte[] bytes = cursor.getBlob(cursor.getColumnIndex("neuralnetwork"));
         return bytes;
     }
+
+    //public boolean update1(String username) {
+        //Cursor cursor = database.rawQuery("UPDATE USERS SET username = '" + username + "' where username ='" + UserSettings.loggedUsername + "'", null);
+        //return cursor.getCount() == 0;
+    //}
+
+    //public boolean update2(String password) {
+        //Cursor cursor = database.rawQuery("UPDATE USERS SET password = '" + password + "' where username ='" + UserSettings.loggedUsername + "'", null);
+        //return cursor.getCount() == 0;
+    //}
 }

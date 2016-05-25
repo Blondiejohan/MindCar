@@ -98,10 +98,10 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_register_pattern);
 
         //create image view for saving patterns
-        ImageView forwardIcon = (ImageView) findViewById(R.id.forwartIcon);
-        ImageView rightIcon = (ImageView) findViewById(R.id.rightIcon);
-        ImageView leftIcon = (ImageView) findViewById(R.id.leftIcon);
-        ImageView stopIcon = (ImageView) findViewById(R.id.stopIcon);
+        forwardIcon = (ImageView) findViewById(R.id.forwartIcon);
+        rightIcon = (ImageView) findViewById(R.id.rightIcon);
+        leftIcon = (ImageView) findViewById(R.id.leftIcon);
+        stopIcon = (ImageView) findViewById(R.id.stopIcon);
 
         startBoolean = true;
         times = 0;
