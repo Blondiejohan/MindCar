@@ -2,10 +2,7 @@ package mindcar.testing;
 
 import junit.framework.Assert;import junit.framework.TestCase;
 
-import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Eeg;
-import mindcar.testing.objects.EegBlink;
-import mindcar.testing.objects.SmartCar;
 
 /**
  * Created by Mattias Landkvist & Nikos Sasopoulos on 3/3/16.

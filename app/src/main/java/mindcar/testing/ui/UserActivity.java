@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 
 import mindcar.testing.R;
-import mindcar.testing.objects.BackupControl;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.NeuralNetworkHelper;
 
@@ -37,7 +36,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     Button userSettings;
     public static NeuralNetwork neuralNetwork;
-    BackupControl backupControl;
     public static DatabaseAccess databaseAccess;
 
     //Variables from StartsActivity
@@ -69,7 +67,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_intro);
 
         //Nikos & Madisen & Sanja & Johan
         userSettings = (Button) findViewById(R.id.userSettings);
@@ -83,7 +81,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         direction = (ImageView) findViewById(R.id.direction);
         attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
         userSettings.setOnClickListener(this);
-        backupControl = new BackupControl();
         databaseAccess = DatabaseAccess.getInstance(this);
 
 
@@ -136,7 +133,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
 
-        loaded = true;
+        setContentView(R.layout.activity_user);
     }
 
     //Madisen

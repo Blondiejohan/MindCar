@@ -31,10 +31,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
 import mindcar.testing.R;
-import mindcar.testing.objects.Command;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
-import mindcar.testing.objects.SmartCar;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.objects.ComparePatterns;
@@ -84,8 +82,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     //Nikos && Sanja
         //Blink control variables
     public EegBlink eegBlink = new EegBlink();
-    private Command command;
-    private SmartCar car;
     private Boolean sendCommand = false;
     long lastBlink = 0;
     int blinkCount = 0;
@@ -367,9 +363,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         pattern = new Pattern(100);
         databaseAccess = DatabaseAccess.getInstance(this);
 
-        //CREATE BLINK CONTROL OBJECTS
-        car = new SmartCar();
-        command = car.getCommands();
     }
 
     //Sarah && Johan
