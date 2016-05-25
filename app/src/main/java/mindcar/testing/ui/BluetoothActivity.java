@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -56,7 +57,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     private ListView listView;//shows paired items
     private ProgressDialog mProgressDlg;//for discovery progress
     private ProgressBar bar;// waiting indicator for pairing and connecting
-    public static BluetoothAdapter theAdapter = BluetoothAdapter.getDefaultAdapter(); //the bluetooth adapter
+    public static BluetoothAdapter theAdapter; //the bluetooth adapter
     private Set<BluetoothDevice> paired_devices; //a set of bonded devices
     private ArrayAdapter<String> mylist; //viewed in the list view, the paired devices
     private ArrayList<BluetoothDevice> mDeviceList;// discovery list for adding requiered devices
@@ -115,14 +116,14 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     if (startLearning) { //REGISTRATION LEARNING DATA
 
                             if (eegTimes < 20) {
-                                MessageParser.parseRawData(msg, RegisterPatternActivity.tmpEeg);
+                                MessageParser.parseRawData(msg, eeg);
                                 eegTimes++;
                                 break;
                             }
                             if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
                                 Log.i("Some", patternCounter + " ");
-                                RegisterPatternActivity.tmpPattern.add(RegisterPatternActivity.tmpEeg);
-                                RegisterPatternActivity.tmpEeg = new Eeg();
+                                RegisterPatternActivity.tmpPattern.add(eeg);
+                                eeg = new Eeg();
                                 eegTimes = 0;
                                 patternCounter++;
                                 break;
@@ -135,23 +136,23 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                         if (RegisterPatternActivity.baselineBoolean) {
                             Log.i("Some", "hello1");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.baseline);
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.BASELINE);
 
                         } else if (RegisterPatternActivity.leftBoolean) {
                             Log.i("Some", "hello2");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.left);
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.LEFT);
 
                         } else if (RegisterPatternActivity.rightBoolean) {
                             Log.i("Some", "hello3");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.right);
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.RIGHT);
 
                         } else if (RegisterPatternActivity.forwardBoolean) {
                             Log.i("Some", "hello4");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.forward);
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.FORWARD);
 
                         } else if (RegisterPatternActivity.stopBoolean) {
                             Log.i("Some", "hello5");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.stop);
+                            RegisterPatternActivity.populateArray(RegisterPatternActivity.STOP);
 
                             RegisterPatternActivity.populateInputs();
                             RegisterPatternActivity.extendTrainingSet();
@@ -294,7 +295,10 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
+        theAdapter = BluetoothAdapter.getDefaultAdapter();
         setupUI();
+
+
 
         //below are actions registered in the receiver
         filter = new IntentFilter();
@@ -307,6 +311,18 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE);
         registerReceiver(discoveryResult, filter);
+
+        //when discovery starts, discovery could also be cancelled
+        mProgressDlg = new ProgressDialog(this);
+        mProgressDlg.setMessage("Scanning For Devices...");
+        mProgressDlg.setCancelable(false);
+        mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                theAdapter.cancelDiscovery();
+            }
+        });
 
         //CREATE MIND CONTROL OBJECTS
         eeg = new Eeg();
@@ -344,6 +360,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 }
             }
         });
+
+        // ArrayList for connecting to a bluetooth device through the ListView. This ArrayList will
+        // keep device items in the same position as the ListView. For example, position 1 is clicked
+        // on the ListView, position 1 in the ArrayList mDeviceList holds this specific item shown
+        // on the UI via the ListView.
+        mDeviceList = new ArrayList<BluetoothDevice>();
     }
     //Sarah
         //goes to next activity
@@ -401,6 +423,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     }
                     listView.setAdapter(mylist);
                 } else if (device.getName().equals("MindWave Mobile")) {
+                    Log.i("Fuck", device.getName() + " " + mDeviceList.toString());
                     if (!mDeviceList.contains(device)) {
                         mylist.add("Click To Connect: " + device.getName() + " " + " " + "\n" + "Address: " + device.getAddress());
                         mDeviceList.add(device);

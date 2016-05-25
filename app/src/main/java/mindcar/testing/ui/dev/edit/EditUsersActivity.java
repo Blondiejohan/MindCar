@@ -127,17 +127,6 @@ public class EditUsersActivity extends Activity implements EditActivity{
         text2.setTransformationMethod(PasswordTransformationMethod.getInstance());
         text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
 
-        updateDevStatus = (Switch) findViewById(R.id.updateDevStatus);
-        updateDevStatus.setVisibility(View.VISIBLE);
-
-        if(aSwitch.isChecked()){
-            devBoolean = 1;
-        }
-
-
-
-        updateAddImage = (Button) findViewById(R.id.updateAddImage);
-        updateAddImage.setVisibility(View.VISIBLE);
 
         final Button update = (Button) dialog.findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {

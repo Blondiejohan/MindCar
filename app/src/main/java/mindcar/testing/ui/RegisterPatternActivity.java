@@ -59,6 +59,12 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     public static final int PATTERN_SIZE = 100;
 
+    public static final int BASELINE    =   0;
+    public static final int LEFT        =   1;
+    public static final int RIGHT       =   2;
+    public static final int FORWARD     =   3;
+    public static final int STOP        =   4;
+
 
     public static LinkedList<double[]> inputs = new LinkedList<>();
     public static LinkedList<double[]> outputs = new LinkedList<>();
@@ -140,8 +146,20 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(15)));
     }
 
-    public static void populateArray(double[] array) {
-        array = tmpPattern.toArray();
+
+    public static void populateArray(int i) {
+        if(i == BASELINE){
+            baseline = tmpPattern.toArray();
+        } else if (i == LEFT) {
+            left = tmpPattern.toArray();
+        } else if (i == RIGHT) {
+            right = tmpPattern.toArray();
+        } else if (i == FORWARD) {
+            forward = tmpPattern.toArray();
+        } else if (i == STOP) {
+            stop = tmpPattern.toArray();
+        }
+
         tmpPattern = new Pattern(PATTERN_SIZE);
     }
 

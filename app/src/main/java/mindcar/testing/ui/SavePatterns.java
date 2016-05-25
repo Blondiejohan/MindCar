@@ -229,7 +229,7 @@ public class SavePatterns extends AppCompatActivity {
     public static String toString(double[] doubles){
         StringBuilder str = new StringBuilder();
         for(double d: doubles){
-            str.append("s" + d + "e");
+            str.append(d);
         }
         return str.toString();
     }

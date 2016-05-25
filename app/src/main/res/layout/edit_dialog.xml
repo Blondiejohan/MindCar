@@ -54,22 +54,6 @@
         android:layout_alignParentStart="true"
         style="@style/TextView"/>
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Developer"
-        android:id="@+id/updateDevStatus"
-        android:checked="false"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="visible"
-        android:layout_below="@+id/text2"
-        android:layout_alignRight="@+id/text2"
-        android:layout_alignEnd="@+id/text2"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginTop="20dp"
-        style="@style/EditText"/>
-
     <Button
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="@dimen/buttonHeight"
@@ -80,16 +64,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="122dp" />
-    <Button
-        android:layout_width="@dimen/buttonWidth"
-        android:layout_height="@dimen/buttonHeight"
-        android:text="Update image"
-        android:id="@+id/updateAddImage"
-        android:visibility="visible"
-        style="@style/button"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/text2"
-        android:layout_alignEnd="@+id/text2" />
+
 
     <Button
         android:layout_width="@dimen/buttonWidth"
@@ -98,8 +73,8 @@
         android:id="@+id/delete"
         style="@style/button"
         android:layout_alignTop="@+id/update"
-        android:layout_alignLeft="@+id/updateAddImage"
-        android:layout_alignStart="@+id/updateAddImage" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 
