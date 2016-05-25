@@ -96,7 +96,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
         }
 
     }
-    //The author??
+    //Madisen
      //What does it do??
     public void saveInfo(){
         SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);

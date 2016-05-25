@@ -1,6 +1,8 @@
 package mindcar.testing.ui;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,16 +16,18 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import com.google.common.io.Files;
+
 import org.neuroph.core.NeuralNetwork;
+
 import java.io.File;
 import java.io.IOException;
+
 import mindcar.testing.R;
 import mindcar.testing.objects.BackupControl;
 import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.NeuralNetworkHelper;
-import android.content.Context;
-import android.content.SharedPreferences;
 
 // Madisen & Nikos & Sanja & Mattias
 //This class handles the main view while controlling the car
@@ -45,6 +49,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     TextView username;
     Button logout;
     ImageView userPic;
+    static ImageView direction;
+    static TextView directionText;
     Bitmap finalPic;
     ToggleButton toggle;
     //Nikos
@@ -57,13 +63,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean attentionControl = false;
     public static boolean blinkControl = false;
 
+    public static boolean loaded = false;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        //Nikos & Madisen & Sanja
+        //Nikos & Madisen & Sanja & Johan
         userSettings = (Button) findViewById(R.id.userSettings);
         logout = (Button) findViewById(R.id.logout);
         mindoption = (RadioButton) findViewById(R.id.mindoption);
@@ -71,6 +79,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         blinkoption = (RadioButton) findViewById(R.id.blinksoption);
         toggle = (ToggleButton) findViewById(R.id.toggleButton);
         blinkInstructions = (TextView) findViewById(R.id.blinkInstructions);
+        directionText = (TextView) findViewById(R.id.directionText);
+        direction = (ImageView) findViewById(R.id.direction);
         attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
         userSettings.setOnClickListener(this);
         backupControl = new BackupControl();
@@ -125,6 +135,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
+
+        loaded = true;
     }
 
     //Madisen

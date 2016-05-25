@@ -71,6 +71,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     public static Connected connected; //Class for streaming data
     int attentionLevel = 0;
     final int ATTENTIONLIMIT = 40;
+    int directionCounter = 0;
     public static Boolean startLearning = false; //flag used to indicate mind pattern learning
 
     //Mattias
@@ -108,7 +109,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                             break;
                     }
                     break;
-                //Mattias
+                //Mattias && Johan
                      //Mind controller
                     //Handles both learning of patterns (startlearning=true)
                     //and mind pattern based control (startlearning=false)
@@ -175,13 +176,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                 RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
 
                                 try {
-                                    NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, "ta.nnet");
-                                    File nnet = BluetoothActivity.this.getFileStreamPath("ta.nnet");
+                                    NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");
+                                    File nnet = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".nnet");
                                     byte[] b = Files.toByteArray(nnet);
                                     databaseAccess.open();
                                     ContentValues contentValues = new ContentValues();
                                     contentValues.put("neuralnetwork", b);
-                                    databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+                                    databaseAccess.update("Users", contentValues, RegisterPatternActivity.name);
                                     databaseAccess.close();
                                     startLearning = false;
                                     next();
@@ -197,19 +198,41 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                             if (UserActivity.mindControl) {
                                 MessageParser.parseRawData(msg, eeg);
                                 if (times <= 0) {
-                                    Log.i("Time start ", System.currentTimeMillis() + "");
                                     pattern.add(eeg);
                                     ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), UserActivity.neuralNetwork);
                                     String send = compPatt.compare(UserActivity.databaseAccess);
                                     Log.i("Send message ", send);
                                     if (send == "w") {
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
+                                        UserActivity.directionText.setText("Stop");
                                         connected.write("s");
                                     } else {
-                                        connected.write(send);
+                                        if(send.equals("l") && directionCounter>=2){
+                                            UserActivity.direction.setImageDrawable(getDrawable(R.drawable.left));
+                                            UserActivity.directionText.setText("Left");
+                                            directionCounter = 0;
+                                            connected.write(send);
+                                        }else if(send.equals("r") && directionCounter>=2){
+                                            UserActivity.direction.setImageDrawable(getDrawable(R.drawable.right));
+                                            UserActivity.directionText.setText("Right");
+                                            directionCounter = 0;
+                                            connected.write(send);
+                                        }else if(send.equals("f") && directionCounter>=2){
+                                            UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
+                                            UserActivity.directionText.setText("Forward");
+                                            directionCounter = 0;
+                                            connected.write(send);
+                                        }else if(send.equals("s") && directionCounter>=2){
+                                            UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
+                                            UserActivity.directionText.setText("Stop");
+                                            directionCounter = 0;
+                                            connected.write(send);
+                                        }else{
+                                            directionCounter++;
+                                        }
                                     }
                                     eeg = new Eeg();
-                                    times = 1000;
-                                    Log.i("Time stop ", System.currentTimeMillis() + "");
+                                    times = 200;
                                 } else {
                                     times--;
                                 }
@@ -232,7 +255,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     } else
                         blinkCount = 0; // reset when application is paused
                     break;
-
                 //Nikos & Sanja & Johan
                     //Main Blink & Attention handler
                 case TGDevice.MSG_ATTENTION:
@@ -243,6 +265,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                 //if no blinks for 1000ms, execute command
                                 if ((System.currentTimeMillis() - lastBlink) >= 1000) {
                                     if (blinkCount >= 2 && blinkCount <= 4) { // left is 3 +-1
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.left));
+                                        UserActivity.directionText.setText("Left");
                                         connected.write("l");
                                         synchronized (this) { // pause app until turn is finnished
                                             try {
@@ -250,9 +274,13 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                             } catch (Exception e) {
                                             }
                                         }
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
+                                        UserActivity.directionText.setText("Forward");
                                         connected.write("f");
                                         blinkCount = 0;
                                     } else if (blinkCount >= 5) { // right is 5+, aim for 6 +-1
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.right));
+                                        UserActivity.directionText.setText("Right");
                                         connected.write("r");
                                         synchronized (this) { // pause app until turn is finnished
                                             try {
@@ -260,23 +288,33 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                             } catch (Exception e) {
                                             }
                                         }
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
+                                        UserActivity.directionText.setText("Forward");
                                         connected.write("f");
                                         blinkCount = 0;
                                     } else {
+                                        UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
+                                        UserActivity.directionText.setText("Forward");
                                         connected.write("f");
                                         blinkCount = 0;
                                     }
                                 }
                             } else {
-                                connected.write("STOP");
+                                UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
+                                UserActivity.directionText.setText("Stop");
+                                connected.write("s");
                                 blinkCount = 0;
                             }
                             //Johan
                         } else if (UserActivity.attentionControl) {//ATTENTION ONLY CONTROL
                             if (attentionLevel > ATTENTIONLIMIT) {
+                                UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
+                                UserActivity.directionText.setText("Forward");
                                 connected.write("f");
                             } else
-                                connected.write("STOP");
+                                UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
+                            UserActivity.directionText.setText("Stop");
+                                connected.write("s");
                         }
                     }
                     break;
@@ -334,7 +372,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         command = car.getCommands();
     }
 
-    //Sarah
+    //Sarah && Johan
         //Create list objects and buttons
     public void setupUI() {
         connectedDevices = new ArrayList<>();
@@ -449,7 +487,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         Toast.makeText(BluetoothActivity.this, input, Toast.LENGTH_LONG).show();
     }
 
-    //Sarah
+    //Sarah && Johan
         //here is the receiver and all the actions being registered and events happen as the result proceeds.
     private final BroadcastReceiver discoveryResult = new BroadcastReceiver() {
 

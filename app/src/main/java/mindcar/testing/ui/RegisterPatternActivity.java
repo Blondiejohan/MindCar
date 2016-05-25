@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -83,6 +84,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     private int times;
     public static TextView registerPatternsText;
     private Button registerPatternReady;
+    public static String name, password;
 
     //Sanja
     static ImageView forwardIcon;
@@ -113,7 +115,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         trainingSet = new TrainingSet(INPUT_SIZE, OUTPUT_SIZE);
         neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.STEP, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
         neuralNetwork.setLearningRule(new MomentumBackpropagation());
-        neuralNetwork.setLabel(RegistrationActivity.user_name);
+        neuralNetwork.setLabel(name);
 
         registerPatternsText = (TextView) findViewById(R.id.registerPatternText);
 
@@ -237,5 +239,13 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             stopBoolean = false;
             startBoolean = true;
         }
+    }
+
+    //Madisen
+    //get user name and password from global settings
+    public void getUNPW(){
+        SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
+        name = sharedPref.getString("username", "");
+        password = sharedPref.getString("password","");
     }
 }

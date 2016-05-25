@@ -29,14 +29,15 @@
         android:linksClickable="false"
         android:clickable="false"
         android:editable="false"
-        android:layout_toLeftOf="@+id/profile_image_view" />
+        android:layout_alignRight="@+id/profile_image_view"
+        android:layout_alignEnd="@+id/profile_image_view" />
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/profile_image_view"
-        android:layout_alignTop="@+id/username"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:layout_below="@+id/username" />
 
     <ToggleButton
         style="@style/button"
@@ -139,6 +140,26 @@
         android:layout_alignEnd="@+id/blinkInstructions"
         android:layout_marginBottom="37dp"
         android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/direction"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/directionText"
+        android:layout_toRightOf="@+id/username"
+        android:layout_toEndOf="@+id/username" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/directionText"
+        android:layout_above="@+id/radio"
+        android:layout_alignRight="@+id/attentionInstructions"
+        android:layout_alignEnd="@+id/attentionInstructions"
+        android:layout_marginBottom="47dp" />
 
 
 </RelativeLayout>
