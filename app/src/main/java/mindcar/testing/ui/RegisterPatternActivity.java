@@ -217,26 +217,26 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             baselineBoolean = false;
             leftBoolean = true;
             registerPatternsText.setText("Think about going left /n now saving");
-            stopIcon.setVisibility(View.INVISIBLE);
+            stopIcon.setVisibility(View.GONE);
             leftIcon.setVisibility(View.VISIBLE);
 
         } else if (leftBoolean){
             leftBoolean = false;
             rightBoolean = true;
             registerPatternsText.setText("Think about going right /n now saving");
-            leftIcon.setVisibility(View.INVISIBLE);
+            leftIcon.setVisibility(View.GONE);
             rightIcon.setVisibility(View.VISIBLE);
         } else if (rightBoolean) {
             rightBoolean = false;
             forwardBoolean = true;
             registerPatternsText.setText("Think about going forward /n now saving");
-            rightIcon.setVisibility(View.INVISIBLE);
+            rightIcon.setVisibility(View.GONE);
             forwardIcon.setVisibility(View.VISIBLE);
         } else if (forwardBoolean) {
             forwardBoolean = false;
             stopBoolean = true;
             registerPatternsText.setText("Think about stopping /n now saving");
-            forwardIcon.setVisibility(View.INVISIBLE);
+            forwardIcon.setVisibility(View.GONE);
             stopIcon.setVisibility(View.VISIBLE);
 
         } else {
