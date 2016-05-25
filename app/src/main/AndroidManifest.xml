@@ -44,7 +44,6 @@
         <activity android:name=".ui.dev.edit.EditUsersActivity"/>
         <activity android:name=".ui.UserImageActivity"/>
         <activity android:name=".ui.UserTakeImage"/>
-        <activity android:name=".ui.SavePatterns"/>
         <activity android:name=".ui.UserSettings"/>
         <activity android:name=".ui.StartActivity"/>
         <activity android:name=".ui.RegisterPatternActivity"/>

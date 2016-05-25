@@ -156,11 +156,11 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                             if (nrTimes < 5) {
                                 Log.i("Something", nrTimes + "");
-                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.baseline));
-                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.left));
-                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.right));
-                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.forward));
-                                Log.i("Something", SavePatterns.toString(RegisterPatternActivity.stop));
+                                Log.i("Something", MessageParser.toString(RegisterPatternActivity.baseline));
+                                Log.i("Something", MessageParser.toString(RegisterPatternActivity.left));
+                                Log.i("Something", MessageParser.toString(RegisterPatternActivity.right));
+                                Log.i("Something", MessageParser.toString(RegisterPatternActivity.forward));
+                                Log.i("Something", MessageParser.toString(RegisterPatternActivity.stop));
                                 RegisterPatternActivity.baselinePattern = null;
 
                                 RegisterPatternActivity.initializeArrays();
