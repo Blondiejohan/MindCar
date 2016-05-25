@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 import com.google.common.io.Files;
 
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.TrainingSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,27 +104,27 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (toggle.isChecked()) {
                     appRunning = true;
-                    if(mindoption.isChecked()) {
-                        neuralNetwork.resumeLearning();
-                    }
+//                    if(mindoption.isChecked()) {
+//                        neuralNetwork.resumeLearning();
+//                    }
                 } else {
                     appRunning = false;
                     BluetoothActivity.connected.write("STOP");
-                    if(mindoption.isChecked()){
-                        neuralNetwork.stopLearning();
-                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, StartActivity.un);
-                        try {
-                            File nnet = UserActivity.this.getFileStreamPath(StartActivity.un + ".nnet");
-                            byte[] b = Files.toByteArray(nnet);
-                            databaseAccess.open();
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put("neuralnetwork", b);
-                            databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
-                            databaseAccess.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+//                    if(mindoption.isChecked()){
+//                        neuralNetwork.stopLearning();
+//                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, StartActivity.un);
+//                        try {
+//                            File nnet = UserActivity.this.getFileStreamPath(StartActivity.un + ".nnet");
+//                            byte[] b = Files.toByteArray(nnet);
+//                            databaseAccess.open();
+//                            ContentValues contentValues = new ContentValues();
+//                            contentValues.put("neuralnetwork", b);
+//                            databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
+//                            databaseAccess.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
 
             }
