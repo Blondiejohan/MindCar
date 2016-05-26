@@ -85,13 +85,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         userSettings.setOnClickListener(this);
         databaseAccess = DatabaseAccess.getInstance(this);
 
-
         //Madisen
         iv = (ImageView) findViewById(R.id.profile_image_view);
         getUNPW();
-
-
-
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -113,21 +109,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     appRunning = false;
                     BluetoothActivity.connected.write("STOP");
-//                    if(mindoption.isChecked()){
-//                        neuralNetwork.stopLearning();
-//                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, StartActivity.un);
-//                        try {
-//                            File nnet = UserActivity.this.getFileStreamPath(StartActivity.un + ".nnet");
-//                            byte[] b = Files.toByteArray(nnet);
-//                            databaseAccess.open();
-//                            ContentValues contentValues = new ContentValues();
-//                            contentValues.put("neuralnetwork", b);
-//                            databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
-//                            databaseAccess.close();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
                 }
 
             }
@@ -185,8 +166,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout: //logout button
-                BluetoothActivity.tgDevice.stop();
-                BluetoothActivity.tgDevice.close();
+                neuralNetwork.stopLearning();
+                try {
+                    NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, name);
+                    File nnet = UserActivity.this.getFileStreamPath(name + ".nnet");
+                    byte[] b = Files.toByteArray(nnet);
+                    databaseAccess.open();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("neuralnetwork", b);
+                    databaseAccess.update("Users", contentValues, name);
+                    databaseAccess.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                neuralNetwork = null;
                 startActivity(new Intent(this, StartActivity.class));
                 this.finish();
                 break;

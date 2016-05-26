@@ -115,6 +115,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 //and mind pattern based control (startlearning=false)
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
+                        RegisterPatternActivity.changeText();
 
                         if (eegTimes < 20) {
                             MessageParser.parseRawData(msg, eeg);
@@ -130,7 +131,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                             break;
                         }
                         if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
-                            Log.i("Some", "next value");
+                            Log.i("Some", MessageParser.toString(RegisterPatternActivity.tmpPattern.toArray()));
                             RegisterPatternActivity.nextValue();
                             patternCounter = 0;
                         }
@@ -159,7 +160,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                         } else if (RegisterPatternActivity.endBoolean) {
                             Log.i("Something", "final else");
-                            RegisterPatternActivity.neuralNetwork.learnInNewThread(RegisterPatternActivity.trainingSet);
 
                             try {
                                 NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");

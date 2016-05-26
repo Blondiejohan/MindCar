@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.neurosky.thinkgear.TGDevice;
@@ -92,6 +93,9 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     static ImageView leftIcon;
     static ImageView stopIcon;
 
+    private static ProgressBar activityProgress;
+    private static ProgressBar patternProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +107,9 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         leftIcon = (ImageView) findViewById(R.id.leftIcon);
         stopIcon = (ImageView) findViewById(R.id.stopIcon);
 
-        startBoolean = true;
+        activityProgress = (ProgressBar) findViewById(R.id.activityProgress);
+        patternProgress = (ProgressBar) findViewById(R.id.patternProgress);
+
         times = 0;
         tmpEeg = new Eeg();
         tmpPattern = new Pattern(PATTERN_SIZE);
@@ -128,6 +134,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
         BluetoothActivity.startLearning = true;
+        baselineBoolean  = true;
         registerPatternReady.setEnabled(false);
     }
 
@@ -137,26 +144,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         right = new double[INPUT_SIZE];
         forward = new double[INPUT_SIZE];
         stop = new double[INPUT_SIZE];
-    }
-
-    public static void extendTrainingSet() {
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(0)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(1)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(2)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(3)));
-
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(4)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(5)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(6)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(7)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(8)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(9)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(10)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(11)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(12)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(13)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(14)));
-        trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(15)));
     }
 
 
@@ -212,193 +199,150 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
 
     public static void nextValue() {
-        if (startBoolean) {
-            if (times >= 5) {
+        if (baselineBoolean) {
+            if (times >= 1) {
                 populateInputs(BASELINE);
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(4)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(5)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(6)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(7)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(8)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(9)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(10)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(11)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(12)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(13)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(14)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(15)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(4)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(5)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(6)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(7)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(8)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(9)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(10)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(11)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(12)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(13)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(14)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(15)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(4)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(5)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(6)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(7)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(8)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(9)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(10)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(11)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(12)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(13)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(14)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(15)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(4)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(5)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(6)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(7)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(8)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(9)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(10)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(11)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(12)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(13)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(14)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(15)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(4)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(5)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(6)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(7)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(8)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(9)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(10)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(11)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(12)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(13)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(14)));
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(15)));
-                startBoolean = false;
-                baselineBoolean = true;
+                Log.i("inputs", MessageParser.toString(inputs.get(0)));
+                for(int doubles = 0; doubles < 1;doubles++) {
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(4)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(5)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(6)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(7)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(8)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(9)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(10)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(11)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(12)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(13)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(14)));
+                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(15)));
+                }
+                baselineBoolean = false;
+                leftBoolean = true;
                 inputs = new LinkedList<>();
+                activityProgress.setProgress(activityProgress.getProgress() + 20);
+                patternProgress.setProgress(0);
                 times = 0;
             } else {
                 populateInputs(BASELINE);
                 baseline = new double[INPUT_SIZE];
-                registerPatternsText.setText("Establishing baseline");
                 times++;
-            }
-
-
-        } else if (baselineBoolean) {
-            if (times >= 5) {
-                populateInputs(LEFT);
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(0)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(0)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(0)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(0)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(0)));
-                baselineBoolean = false;
-                leftBoolean = true;
-                inputs = new LinkedList<>();
-                times = 0;
-            } else {
-                populateInputs(LEFT);
-                left = new double[INPUT_SIZE];
-                registerPatternsText.setText("Think about going left");
-                stopIcon.setVisibility(View.GONE);
-                leftIcon.setVisibility(View.VISIBLE);
-                times++;
+                patternProgress.setProgress(times * 20);
             }
 
 
         } else if (leftBoolean) {
-            if (times >= 5) {
-                populateInputs(RIGHT);
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(1)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(1)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(1)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(1)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(1)));
-
+            if (times >= 1) {
+                populateInputs(LEFT);
+                Log.i("inputs", MessageParser.toString(inputs.get(0)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(0)));
+                }
                 leftBoolean = false;
                 rightBoolean = true;
                 inputs = new LinkedList<>();
+                activityProgress.setProgress(activityProgress.getProgress() + 20);
+                patternProgress.setProgress(0);
+                times = 0;
+            } else {
+                populateInputs(LEFT);
+                left = new double[INPUT_SIZE];
+
+                stopIcon.setVisibility(View.GONE);
+                leftIcon.setVisibility(View.VISIBLE);
+                times++;
+                patternProgress.setProgress(times * 20);
+            }
+
+
+        } else if (rightBoolean) {
+            if (times >= 1) {
+                populateInputs(RIGHT);
+                Log.i("inputs", MessageParser.toString(inputs.get(0)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(1)));
+                }
+
+                rightBoolean = false;
+                forwardBoolean = true;
+                inputs = new LinkedList<>();
+                activityProgress.setProgress(activityProgress.getProgress() + 20);
+                patternProgress.setProgress(0);
                 times = 0;
             } else {
                 populateInputs(RIGHT);
                 right = new double[INPUT_SIZE];
-                registerPatternsText.setText("Think about going right");
                 leftIcon.setVisibility(View.GONE);
                 rightIcon.setVisibility(View.VISIBLE);
                 times++;
+                patternProgress.setProgress(times * 20);
             }
-        } else if (rightBoolean) {
-            if (times >= 5) {
+        } else if (forwardBoolean) {
+            if (times >= 1) {
                 populateInputs(FORWARD);
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(2)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(2)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(2)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(2)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(2)));
-                rightBoolean = false;
-                forwardBoolean = true;
+                Log.i("inputs", MessageParser.toString(inputs.get(0)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(2)));
+                }
+                forwardBoolean = false;
+                stopBoolean = true;
                 inputs = new LinkedList<>();
+                activityProgress.setProgress(activityProgress.getProgress() + 20);
+                patternProgress.setProgress(0);
                 times = 0;
             }else {
                 populateInputs(FORWARD);
                 forward = new double[INPUT_SIZE];
-                registerPatternsText.setText("Think about going forward");
                 rightIcon.setVisibility(View.GONE);
                 forwardIcon.setVisibility(View.VISIBLE);
                 times++;
+                patternProgress.setProgress(times * 20);
             }
-        } else if (forwardBoolean) {
-            if (times >= 5) {
+        } else if (stopBoolean) {
+            if (times >= 1) {
                 populateInputs(STOP);
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(0), outputs.get(3)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(1), outputs.get(3)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(2), outputs.get(3)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(3), outputs.get(3)));
-
-                trainingSet.addElement(new SupervisedTrainingElement(inputs.get(4), outputs.get(3)));
-                forwardBoolean = false;
-                stopBoolean = true;
+                Log.i("inputs", MessageParser.toString(inputs.get(0)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(3)));
+                }
+                stopBoolean = false;
+                endBoolean = true;
                 inputs = new LinkedList<>();
+                activityProgress.setProgress(activityProgress.getProgress() + 20);
+                neuralNetwork.learnInNewThread(trainingSet);
+                stopIcon.setVisibility(View.GONE);
+                changeText();
+                patternProgress.setProgress(0);
                 times = 0;
             } else {
                 populateInputs(STOP);
                 stop = new double[INPUT_SIZE];
-                registerPatternsText.setText("Think about stopping");
                 forwardIcon.setVisibility(View.GONE);
                 stopIcon.setVisibility(View.VISIBLE);
                 times++;
+                patternProgress.setProgress(times * 20);
             }
 
         } else {
-            if (times >= 5) {
-                stopBoolean = false;
-                endBoolean = true;
-            } else {
-                registerPatternsText.setText("Processing");
-                times++;
-            }
+            stopBoolean = false;
+            endBoolean = true;
+
+        }
+    }
+
+    public static void changeText(){
+        if (baselineBoolean) {
+            registerPatternsText.setText("Establishing baseline");
+        } else if (leftBoolean) {
+            registerPatternsText.setText("Think about going left");
+        } else if (rightBoolean) {
+            registerPatternsText.setText("Think about going right");
+        } else if (forwardBoolean) {
+            registerPatternsText.setText("Think about going forward");
+        } else if (stopBoolean) {
+            registerPatternsText.setText("Think about stopping");
+        } else {
+            registerPatternsText.setText("Processing");
         }
     }
 
@@ -408,5 +352,9 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
         name = sharedPref.getString("username", "");
         password = sharedPref.getString("password", "");
+    }
+
+    public void close(){
+        RegisterPatternActivity.this.finish();
     }
 }
