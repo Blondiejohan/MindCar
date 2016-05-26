@@ -90,13 +90,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         iv = (ImageView) findViewById(R.id.profile_image_view);
         getUNPW();
 
-        //Mattias
-        Log.i("Learning", name);
-        databaseAccess.open();
-        byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
-        neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
-        neuralNetwork.resumeLearning();
-        databaseAccess.close();
+
+
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -104,9 +99,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (toggle.isChecked()) {
                     appRunning = true;
-//                    if(mindoption.isChecked()) {
-//                        neuralNetwork.resumeLearning();
-//                    }
+                    if(mindoption.isChecked()) {
+                        toggle.setText("Loading");
+                        if(neuralNetwork == null){
+                            databaseAccess.open();
+                            byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
+                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes);
+                            databaseAccess.close();
+                        }
+                        neuralNetwork.resumeLearning();
+                        toggle.setText("Pause");
+                    }
                 } else {
                     appRunning = false;
                     BluetoothActivity.connected.write("STOP");
@@ -137,8 +140,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
-
-        loaded = true;
     }
 
     //Madisen
