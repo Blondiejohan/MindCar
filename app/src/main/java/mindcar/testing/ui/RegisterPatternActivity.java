@@ -1,5 +1,6 @@
 package mindcar.testing.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,7 @@ import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.util.MessageParser;
 
-public class RegisterPatternActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterPatternActivity extends Activity implements View.OnClickListener {
 
     public static double[] baseline;
     public static double[] left;
@@ -50,8 +51,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     public static LinkedList<double[]> inputs = new LinkedList<>();
     public static LinkedList<double[]> outputs = new LinkedList<>();
     public static boolean startBoolean, baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean, endBoolean;
-
-    private DatabaseAccess databaseAccess;
 
     public static Pattern baselinePattern = null;
     public static Pattern tmpPattern;
@@ -91,7 +90,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         times = 0;
         tmpEeg = new Eeg();
         tmpPattern = new Pattern(PATTERN_SIZE);
-        databaseAccess = DatabaseAccess.getInstance(this);
         populateOutputs();
 
         initializeArrays();

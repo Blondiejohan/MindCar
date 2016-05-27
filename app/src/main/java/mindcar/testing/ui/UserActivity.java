@@ -82,11 +82,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         direction = (ImageView) findViewById(R.id.direction);
         attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
         userSettings.setOnClickListener(this);
-        databaseAccess = DatabaseAccess.getInstance(this);
 
         //Madisen
         iv = (ImageView) findViewById(R.id.profile_image_view);
-        getUNPW();
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -97,16 +95,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     if(mindoption.isChecked()) {
                         toggle.setText("Loading");
                         if(neuralNetwork == null){
-                            databaseAccess.open();
-                            byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
-                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
-                            databaseAccess.close();
+                            neuralNetwork = RegisterPatternActivity.neuralNetwork;
                         }
                         if(trainingSet == null){
-                            databaseAccess.open();
-                            byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
-                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
-                            databaseAccess.close();
+                            trainingSet = RegisterPatternActivity.trainingSet;
                         }
                         if(neuralNetwork.getLearningThread() == null) {
                             neuralNetwork.learnInNewThread(trainingSet);
@@ -121,46 +113,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //Madisen
-        displayName(v);
-//        displayPhoto(iv);
+
         username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
     }
 
-    //Madisen
-        //get user name and password from global settings
-    public void getUNPW(){
-        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        name = sharedPref.getString("username", "");
-        password = sharedPref.getString("password","");
-    }
 
-    //Madisen
-    public void displayName(View view) {
-        username = (TextView) findViewById(R.id.username);
-        username.setText(name);
-    }
-
-    //Madisen
-    public void displayPhoto(ImageView p) {
-        userPic = iv;
-        byte[] image;
-        System.out.println("The username that gets sent to getPhoto from displayPhoto is " + name);
-        databaseAccess.open();
-        image = databaseAccess.getPhoto(name);
-        if (image != null) {
-            finalPic = getImage(image);
-            Drawable d = new BitmapDrawable(finalPic);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                userPic.setBackground(d);
-            }
-        }
-        databaseAccess.close();
-        System.out.println("Finnished photo stuff");
-    }
 
     //Madisen
      // convert from byte array to bitmap
@@ -174,26 +134,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.logout: //logout button
                 neuralNetwork.stopLearning();
-                try {
-                    NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, name);
-                    File nnet = UserActivity.this.getFileStreamPath(name + ".nnet");
-                    byte[] b = Files.toByteArray(nnet);
-                    databaseAccess.open();
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put("neuralnetwork", b);
-                    databaseAccess.update("Users", contentValues, name);
-                    databaseAccess.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                neuralNetwork = null;
-                trainingSet = null;
-                startActivity(new Intent(this, StartActivity.class));
                 this.finish();
-                break;
-            case R.id.userSettings: //user settings password for changing personal info
-                startActivity(new Intent(this, UserSettings.class));
                 break;
             case R.id.mindoption: //radio button options
                 mindControl = true;

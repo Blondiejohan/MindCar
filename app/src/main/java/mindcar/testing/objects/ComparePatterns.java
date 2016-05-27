@@ -32,7 +32,7 @@ public class ComparePatterns extends Activity {
      * specified saved pattern from the database. It checks if a wave is within the boundries
      * of the low and high variables of that wave.
      */
-    public String compare(DatabaseAccess databaseAccess) {
+    public String compare() {
         neuralNetwork.setInput(compare1);
         neuralNetwork.calculate();
         double[] res = neuralNetwork.getOutput();

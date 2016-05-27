@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import mindcar.testing.R;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.util.MessageParser;
@@ -88,7 +87,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     long lastBlink = 0;
     int blinkCount = 0;
 
-    private DatabaseAccess databaseAccess;
     private int patternCounter = 0;
     private int eegTimes = 0;
 
@@ -114,7 +112,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
                         RegisterPatternActivity.changeText();
-                        if(!RegisterPatternActivity.endBoolean) {
+                        if (!RegisterPatternActivity.endBoolean) {
                             if (eegTimes < 20) {
                                 MessageParser.parseRawData(msg, eeg);
                                 eegTimes++;
@@ -160,27 +158,10 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
 
                             }
                         } else {
-                            try {
-                                NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");
-                                File nnet = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".nnet");
-                                byte[] neuralNetworkBytes = Files.toByteArray(nnet);
 
-                                RegisterPatternActivity.neuralNetwork.stopLearning();
-                                NeuralNetworkHelper.saveTrainingSet(BluetoothActivity.this, RegisterPatternActivity.trainingSet, RegisterPatternActivity.name + ".tset");
-                                File tset = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".tset");
-                                byte[] trainingSetBytes = Files.toByteArray(tset);
+                            startLearning = false;
+                            next();
 
-                                databaseAccess.open();
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put("neuralnetwork", neuralNetworkBytes);
-                                contentValues.put("trainingset", trainingSetBytes);
-                                databaseAccess.update("Users", contentValues, RegisterPatternActivity.name);
-                                databaseAccess.close();
-                                startLearning = false;
-                                next();
-                            } catch (IOException e) {
-                                Log.i("Something", e.getMessage());
-                            }
                         }
                         break;
 
@@ -191,7 +172,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                 if (times <= 0) {
                                     pattern.add(eeg);
                                     ComparePatterns compPatt = new ComparePatterns(pattern.toArray(), UserActivity.neuralNetwork);
-                                    String send = compPatt.compare(UserActivity.databaseAccess);
+                                    String send = compPatt.compare();
                                     Log.i("Send message ", send);
                                     if (send == "w") {
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
@@ -356,7 +337,6 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
         //CREATE MIND CONTROL OBJECTS
         eeg = new Eeg();
         pattern = new Pattern(100);
-        databaseAccess = DatabaseAccess.getInstance(this);
 
     }
 
@@ -397,7 +377,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     //Sarah
     //goes to next activity
     private void next() {
-        startActivity(new Intent(this, StartActivity.class));
+        startActivity(new Intent(this, UserActivity.class));
     }
 
     //Sarah
