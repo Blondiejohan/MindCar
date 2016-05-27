@@ -163,8 +163,8 @@ public class DatabaseAccess {
         database.execSQL(sql);
     }
 
-    public void updatePassword (String oldPassword, String newPassword){
-        String sql = "Update Users SET password = '" +newPassword+ "' where password = '"+oldPassword+"';";
+    public void updatePassword (String username, String newPassword){
+        String sql = "Update Users SET password = '" +newPassword+ "' where username = '"+username+"';";
         database.execSQL(sql);
     }
 

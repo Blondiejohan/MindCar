@@ -5,11 +5,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.Closeable;
 
 import mindcar.testing.R;
 import mindcar.testing.util.DatabaseAccess;
@@ -35,7 +38,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
     //UserData newCredentials = new UserData();
 
-    public void getUNPW(){
+    public void userpass(){
         SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         loggedUsername = sharedPref.getString("username", "");
         loggedPassword = sharedPref.getString("password","");
@@ -68,24 +71,26 @@ public class UserSettings  extends Activity implements View.OnClickListener {
         //newCredentials.setUsername(Username);
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
-        getUNPW();
+        userpass();
 
         switch (v.getId()) {
             case R.id.usernameOK:
 
-                if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)){
-                    //ContentValues newUsername = new ContentValues();
-                    //newUsername.put("username", Username);
-                    //databaseAccess.update("Users", newUsername, StartActivity.un);
-                    databaseAccess.updateUsername(loggedUsername,Username);
-                    Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
-                    //databaseAccess.close();
-                    startActivity(new Intent(this, UserActivity.class));
-                }
 
-                else
+                    if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)) {
 
-                    Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
+                        databaseAccess.updateUsername(loggedUsername, Username);
+                        Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
+                        saveNewInfo();
+                        startActivity(new Intent(this, UserActivity.class));
+                    }
+                    else if ((databaseAccess.checkAvailability(Username) && !Username.equals(UsernameConf)) || Username.equals(loggedUsername)){
+                        Toast.makeText(getApplicationContext(), "Confirm right username", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else
+
+                        Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -93,14 +98,33 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
                 String Password = changePassword.getText().toString();
                 String PasswordConf = changePassordConf.getText().toString();
-                //newCredentials.setPassword(Password);
 
-                if (Password.equals(PasswordConf) && Password!=Username)
-                    databaseAccess.updatePassword(loggedUsername,Password);
+                if (Password.equals(PasswordConf) && !Password.equals(loggedUsername)) {
+                    databaseAccess.updatePassword(loggedUsername, Password);
+                    Toast.makeText(getApplicationContext(), "Password successfully changed to " + Password, Toast.LENGTH_LONG).show();
+                    saveNewInfo();
+                }
+                else if (Password.equals(PasswordConf) && Password.equals(loggedUsername)) {
+                    Toast.makeText(getApplicationContext(), "Password must not be same as your username ", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getApplicationContext(), "Password successfully changed to" + Password, Toast.LENGTH_LONG).show();
+            }
+                else
+                    Toast.makeText(getApplicationContext(), "Confirm the right password ", Toast.LENGTH_LONG).show();
 
                 break;
         }
+        //finish();
+
     }
+
+   public void saveNewInfo(){
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", changeUsername.getText().toString());
+        editor.putString("password", changePassword.getText().toString());
+        editor.apply();
+
+        Toast.makeText(this, "User Info Saved", Toast.LENGTH_LONG).show();
+    }
+
 }
