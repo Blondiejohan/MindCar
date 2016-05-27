@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import mindcar.testing.R;
 import mindcar.testing.ui.StartActivity;
-import mindcar.testing.ui.dev.edit.EditCommandsActivity;
 import mindcar.testing.ui.dev.edit.EditUsersActivity;
 
 /**
@@ -17,7 +16,7 @@ import mindcar.testing.ui.dev.edit.EditUsersActivity;
  */
 public class DeveloperActivity extends Activity implements View.OnClickListener {
 
-    Button devAddCommand, devEditDatabase, devBackToStart;
+    Button devEditDatabase, devBackToStart;
 
     /**
      * This method assigns listeners to buttons on create.
@@ -28,11 +27,9 @@ public class DeveloperActivity extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_developer);
 
-        devAddCommand = (Button) findViewById(R.id.devEditCommand);
         devEditDatabase = (Button) findViewById(R.id.devEditUsers);
         devBackToStart = (Button) findViewById(R.id.devBackToStart);
 
-        devAddCommand.setOnClickListener(this);
         devEditDatabase.setOnClickListener(this);
         devBackToStart.setOnClickListener(this);
     }
@@ -43,9 +40,6 @@ public class DeveloperActivity extends Activity implements View.OnClickListener 
      */
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.devEditCommand:
-                startActivity(new Intent(this, EditCommandsActivity.class));
-                break;
             case R.id.devEditUsers:
                 startActivity(new Intent(this, EditUsersActivity.class));
                 break;

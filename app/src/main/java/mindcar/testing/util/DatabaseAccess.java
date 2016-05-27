@@ -123,6 +123,7 @@ public class DatabaseAccess {
         values.put("password", password);
         values.put("photo", photo);
         values.put("neuralnetwork", new byte[]{});
+        values.put("trainingset", new byte[]{});
 
         database.insert("USERS", null, values);
     }
@@ -208,6 +209,14 @@ public class DatabaseAccess {
         cursor.moveToFirst();
 
         byte[] bytes = cursor.getBlob(cursor.getColumnIndex("neuralnetwork"));
+        return bytes;
+    }
+
+    public byte[] getTrainingSet(Context context, String username) {
+        Cursor cursor = database.rawQuery("select * from users where username = '" + username + "'", null);
+        cursor.moveToFirst();
+
+        byte[] bytes = cursor.getBlob(cursor.getColumnIndex("trainingset"));
         return bytes;
     }
 

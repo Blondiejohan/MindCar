@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 import com.google.common.io.Files;
 
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.TrainingSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     Button userSettings;
     public static NeuralNetwork neuralNetwork;
+    public static TrainingSet trainingSet;
     public static DatabaseAccess databaseAccess;
 
     //Variables from StartsActivity
@@ -84,18 +86,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         userSettings.setOnClickListener(this);
         databaseAccess = DatabaseAccess.getInstance(this);
 
-
         //Madisen
         iv = (ImageView) findViewById(R.id.profile_image_view);
         getUNPW();
-
-        //Mattias
-        Log.i("Learning", name);
-        databaseAccess.open();
-        byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
-        neuralNetwork = NeuralNetworkHelper.loadNetwork(this,bytes);
-        neuralNetwork.resumeLearning();
-        databaseAccess.close();
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -104,26 +97,27 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 if (toggle.isChecked()) {
                     appRunning = true;
                     if(mindoption.isChecked()) {
-                        neuralNetwork.resumeLearning();
+                        toggle.setText("Loading");
+                        if(neuralNetwork == null){
+                            databaseAccess.open();
+                            byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
+                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
+                            databaseAccess.close();
+                        }
+                        if(trainingSet == null){
+                            databaseAccess.open();
+                            byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
+                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
+                            databaseAccess.close();
+                        }
+                        if(neuralNetwork.getLearningThread() == null) {
+                            neuralNetwork.learnInNewThread(trainingSet);
+                        }
+                        toggle.setText("Pause");
                     }
                 } else {
                     appRunning = false;
                     BluetoothActivity.connected.write("STOP");
-                    if(mindoption.isChecked()){
-                        neuralNetwork.stopLearning();
-                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, StartActivity.un);
-                        try {
-                            File nnet = UserActivity.this.getFileStreamPath(StartActivity.un + ".nnet");
-                            byte[] b = Files.toByteArray(nnet);
-                            databaseAccess.open();
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put("neuralnetwork", b);
-                            databaseAccess.update("Users", contentValues, RegistrationActivity.user_name);
-                            databaseAccess.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
 
             }
@@ -131,13 +125,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         //Madisen
         displayName(v);
-        displayPhoto(iv);
+//        displayPhoto(iv);
         username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
-
-        loaded = true;
     }
 
     //Madisen
@@ -183,8 +175,22 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout: //logout button
-                BluetoothActivity.tgDevice.stop();
-                BluetoothActivity.tgDevice.close();
+                neuralNetwork.stopLearning();
+                try {
+                    NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, name);
+                    File nnet = UserActivity.this.getFileStreamPath(name + ".nnet");
+                    byte[] b = Files.toByteArray(nnet);
+                    databaseAccess.open();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("neuralnetwork", b);
+                    databaseAccess.update("Users", contentValues, name);
+                    databaseAccess.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                neuralNetwork = null;
+                trainingSet = null;
                 startActivity(new Intent(this, StartActivity.class));
                 this.finish();
                 break;

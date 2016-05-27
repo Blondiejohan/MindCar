@@ -17,10 +17,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/textView1"
-        android:layout_toEndOf="@+id/textView1"
         android:layout_marginTop="20dp"
-        style="@style/EditText"/>
+        style="@style/EditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,30 +29,10 @@
         android:layout_below="@+id/text1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
         android:layout_marginTop="40dp"
-        style="@style/EditText"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView1"
-        android:layout_above="@+id/text2"
+        style="@style/EditText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        style="@style/TextView"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/text1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        style="@style/TextView"/>
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="@dimen/buttonWidth"
@@ -60,10 +40,10 @@
         android:text="Update"
         android:id="@+id/update"
         style="@style/button"
+        android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="122dp" />
+        android:layout_alignParentStart="true" />
 
 
     <Button
@@ -73,9 +53,54 @@
         android:id="@+id/delete"
         style="@style/button"
         android:layout_alignTop="@+id/update"
+        android:layout_alignRight="@+id/devAddImage"
+        android:layout_alignEnd="@+id/devAddImage" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developer mode"
+        android:id="@+id/devSwitch"
+        android:checked="false"
+        android:layout_below="@+id/text2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update image"
+        android:id="@+id/devAddImage"
+        style="@style/button"
+        android:layout_below="@+id/devSwitch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/devUserImage"
+        android:layout_below="@+id/devAddImage"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/devSavedPatterns"
+        android:layout_alignRight="@+id/devAddImage"
+        android:layout_alignEnd="@+id/devAddImage" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saved patterns"
+        android:id="@+id/devSavedPatterns"
+        android:layout_above="@+id/update"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:checked="false" />
 
 
 </RelativeLayout>
