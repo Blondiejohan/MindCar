@@ -5,8 +5,6 @@ import android.util.Log;
 
 import org.neuroph.core.NeuralNetwork;
 
-import mindcar.testing.util.DatabaseAccess;
-
 /**
  * This class compares the inmcoming steam of data with the existing neural network.
  * Created by Johan Laptop on 2016-04-18.

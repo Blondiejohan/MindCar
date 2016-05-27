@@ -1,13 +1,7 @@
 package mindcar.testing.ui;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.neurosky.thinkgear.TGDevice;
-
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.SupervisedTrainingElement;
 import org.neuroph.core.learning.TrainingSet;
@@ -26,26 +18,12 @@ import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
-import java.sql.Blob;
 import java.util.LinkedList;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
-import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
-import mindcar.testing.util.NeuralNetworkHelper;
 
 public class RegisterPatternActivity extends AppCompatActivity implements View.OnClickListener {
 

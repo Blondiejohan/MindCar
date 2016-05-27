@@ -1,7 +1,5 @@
 package mindcar.testing.objects;
 
-import mindcar.testing.util.DatabaseAccess;
-
 /**
  * Object storing values from a Neurosky Mindwave Mobile
  * Created by Mattias Landkvist & Nikos Sasopoulos on 3/2/16.

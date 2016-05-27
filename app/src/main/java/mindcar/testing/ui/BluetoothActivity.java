@@ -30,13 +30,11 @@ import com.neurosky.thinkgear.TGDevice;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Set;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
-import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
 import mindcar.testing.objects.ComparePatterns;
 import mindcar.testing.objects.Connection;
