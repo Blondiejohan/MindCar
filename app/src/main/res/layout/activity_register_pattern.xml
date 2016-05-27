@@ -24,10 +24,10 @@
         android:layout_height="@dimen/buttonHeight"
         android:text="Ready!"
         android:id="@+id/registerPatternReady"
+        android:layout_marginBottom="40dp"
+        style="@style/button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="61dp"
-        style="@style/button"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,27 +81,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/patternProgress"
-        android:layout_below="@+id/forwartIcon"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:indeterminate="false"
-        android:progress="0" />
+        android:progress="0"
+        android:layout_above="@+id/activityProgress"
+        android:layout_marginBottom="25dp"
+        android:layout_alignRight="@+id/activityProgress"
+        android:layout_alignEnd="@+id/activityProgress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/activityProgress"
+        android:indeterminate="false"
+        android:progress="0"
         android:layout_above="@+id/registerPatternReady"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:indeterminate="false"
-        android:progress="0" />
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

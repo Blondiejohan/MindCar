@@ -116,58 +116,66 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
                         RegisterPatternActivity.changeText();
+                        if(!RegisterPatternActivity.endBoolean) {
+                            if (eegTimes < 20) {
+                                MessageParser.parseRawData(msg, eeg);
+                                eegTimes++;
+                                break;
+                            }
+                            if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
+                                Log.i("Some", patternCounter + " ");
+                                RegisterPatternActivity.tmpPattern.add(eeg);
+                                eeg = new Eeg();
+                                eegTimes = 0;
+                                patternCounter++;
+                                RegisterPatternActivity.patternProgress.setProgress(patternCounter);
+                                break;
+                            }
+                            if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
+                                Log.i("Some", MessageParser.toString(RegisterPatternActivity.tmpPattern.toArray()));
+                                RegisterPatternActivity.nextValue();
+                                patternCounter = 0;
+                                break;
+                            }
 
-                        if (eegTimes < 20) {
-                            MessageParser.parseRawData(msg, eeg);
-                            eegTimes++;
-                            break;
-                        }
-                        if (patternCounter < RegisterPatternActivity.PATTERN_SIZE) {
-                            Log.i("Some", patternCounter + " ");
-                            RegisterPatternActivity.tmpPattern.add(eeg);
-                            eeg = new Eeg();
-                            eegTimes = 0;
-                            patternCounter++;
-                            break;
-                        }
-                        if (patternCounter == RegisterPatternActivity.PATTERN_SIZE) {
-                            Log.i("Some", MessageParser.toString(RegisterPatternActivity.tmpPattern.toArray()));
-                            RegisterPatternActivity.nextValue();
-                            patternCounter = 0;
-                        }
-
-                        if (RegisterPatternActivity.baselineBoolean) {
-                            Log.i("Some", "hello1");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.BASELINE);
-
-
-                        } else if (RegisterPatternActivity.leftBoolean) {
-                            Log.i("Some", "hello2");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.LEFT);
+                            if (RegisterPatternActivity.baselineBoolean) {
+                                Log.i("Some", "hello1");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.BASELINE);
 
 
-                        } else if (RegisterPatternActivity.rightBoolean) {
-                            Log.i("Some", "hello3");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.RIGHT);
+                            } else if (RegisterPatternActivity.leftBoolean) {
+                                Log.i("Some", "hello2");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.LEFT);
 
-                        } else if (RegisterPatternActivity.forwardBoolean) {
-                            Log.i("Some", "hello4");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.FORWARD);
 
-                        } else if (RegisterPatternActivity.stopBoolean) {
-                            Log.i("Some", "hello5");
-                            RegisterPatternActivity.populateArray(RegisterPatternActivity.STOP);
+                            } else if (RegisterPatternActivity.rightBoolean) {
+                                Log.i("Some", "hello3");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.RIGHT);
 
-                        } else if (RegisterPatternActivity.endBoolean) {
-                            Log.i("Something", "final else");
+                            } else if (RegisterPatternActivity.forwardBoolean) {
+                                Log.i("Some", "hello4");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.FORWARD);
 
+                            } else if (RegisterPatternActivity.stopBoolean) {
+                                Log.i("Some", "hello5");
+                                RegisterPatternActivity.populateArray(RegisterPatternActivity.STOP);
+
+                            }
+                        } else {
                             try {
                                 NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");
                                 File nnet = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".nnet");
-                                byte[] b = Files.toByteArray(nnet);
+                                byte[] neuralNetworkBytes = Files.toByteArray(nnet);
+
+                                RegisterPatternActivity.neuralNetwork.stopLearning();
+                                NeuralNetworkHelper.saveTrainingSet(BluetoothActivity.this, RegisterPatternActivity.trainingSet, RegisterPatternActivity.name + ".tset");
+                                File tset = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".tset");
+                                byte[] trainingSetBytes = Files.toByteArray(tset);
+
                                 databaseAccess.open();
                                 ContentValues contentValues = new ContentValues();
-                                contentValues.put("neuralnetwork", b);
+                                contentValues.put("neuralnetwork", neuralNetworkBytes);
+                                contentValues.put("trainingset", trainingSetBytes);
                                 databaseAccess.update("Users", contentValues, RegisterPatternActivity.name);
                                 databaseAccess.close();
                                 startLearning = false;

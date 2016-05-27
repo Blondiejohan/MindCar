@@ -27,8 +27,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button bSIGNUP;
     TextView devView;
 
-    public static String un, pw;
-
     //Sanja
         //Creates all buttons and fields
     @Override

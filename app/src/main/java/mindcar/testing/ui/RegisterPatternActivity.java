@@ -94,7 +94,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     static ImageView stopIcon;
 
     private static ProgressBar activityProgress;
-    private static ProgressBar patternProgress;
+    public static ProgressBar patternProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         registerPatternReady = (Button) findViewById(R.id.registerPatternReady);
         registerPatternReady.setOnClickListener(this);
 
-
+        getUNPW();
     }
 
     @Override
@@ -200,7 +200,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     public static void nextValue() {
         if (baselineBoolean) {
-            if (times >= 1) {
+            if (times >= 0) {
                 populateInputs(BASELINE);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(int doubles = 0; doubles < 1;doubles++) {
@@ -232,7 +232,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
 
         } else if (leftBoolean) {
-            if (times >= 1) {
+            if (times >= 0) {
                 populateInputs(LEFT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -247,16 +247,13 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             } else {
                 populateInputs(LEFT);
                 left = new double[INPUT_SIZE];
-
-                stopIcon.setVisibility(View.GONE);
-                leftIcon.setVisibility(View.VISIBLE);
                 times++;
                 patternProgress.setProgress(times * 20);
             }
 
 
         } else if (rightBoolean) {
-            if (times >= 1) {
+            if (times >= 0) {
                 populateInputs(RIGHT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -272,13 +269,11 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             } else {
                 populateInputs(RIGHT);
                 right = new double[INPUT_SIZE];
-                leftIcon.setVisibility(View.GONE);
-                rightIcon.setVisibility(View.VISIBLE);
                 times++;
                 patternProgress.setProgress(times * 20);
             }
         } else if (forwardBoolean) {
-            if (times >= 1) {
+            if (times >= 0) {
                 populateInputs(FORWARD);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -293,13 +288,11 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             }else {
                 populateInputs(FORWARD);
                 forward = new double[INPUT_SIZE];
-                rightIcon.setVisibility(View.GONE);
-                forwardIcon.setVisibility(View.VISIBLE);
                 times++;
                 patternProgress.setProgress(times * 20);
             }
         } else if (stopBoolean) {
-            if (times >= 1) {
+            if (times >= 0) {
                 populateInputs(STOP);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -310,23 +303,15 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
                 inputs = new LinkedList<>();
                 activityProgress.setProgress(activityProgress.getProgress() + 20);
                 neuralNetwork.learnInNewThread(trainingSet);
-                stopIcon.setVisibility(View.GONE);
                 changeText();
                 patternProgress.setProgress(0);
                 times = 0;
             } else {
                 populateInputs(STOP);
                 stop = new double[INPUT_SIZE];
-                forwardIcon.setVisibility(View.GONE);
-                stopIcon.setVisibility(View.VISIBLE);
                 times++;
                 patternProgress.setProgress(times * 20);
             }
-
-        } else {
-            stopBoolean = false;
-            endBoolean = true;
-
         }
     }
 
@@ -335,14 +320,23 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             registerPatternsText.setText("Establishing baseline");
         } else if (leftBoolean) {
             registerPatternsText.setText("Think about going left");
+            stopIcon.setVisibility(View.GONE);
+            leftIcon.setVisibility(View.VISIBLE);
         } else if (rightBoolean) {
             registerPatternsText.setText("Think about going right");
+            leftIcon.setVisibility(View.GONE);
+            rightIcon.setVisibility(View.VISIBLE);
         } else if (forwardBoolean) {
             registerPatternsText.setText("Think about going forward");
+            rightIcon.setVisibility(View.GONE);
+            forwardIcon.setVisibility(View.VISIBLE);
         } else if (stopBoolean) {
             registerPatternsText.setText("Think about stopping");
+            forwardIcon.setVisibility(View.GONE);
+            stopIcon.setVisibility(View.VISIBLE);
         } else {
             registerPatternsText.setText("Processing");
+            stopIcon.setVisibility(View.GONE);
         }
     }
 

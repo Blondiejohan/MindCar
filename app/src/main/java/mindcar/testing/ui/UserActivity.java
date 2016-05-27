@@ -38,6 +38,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     Button userSettings;
     public static NeuralNetwork neuralNetwork;
+    public static TrainingSet trainingSet;
     public static DatabaseAccess databaseAccess;
 
     //Variables from StartsActivity
@@ -100,10 +101,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         if(neuralNetwork == null){
                             databaseAccess.open();
                             byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
-                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes);
+                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
                             databaseAccess.close();
                         }
-                        neuralNetwork.resumeLearning();
+                        if(trainingSet == null){
+                            databaseAccess.open();
+                            byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
+                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
+                            databaseAccess.close();
+                        }
+                        if(neuralNetwork.getLearningThread() == null) {
+                            neuralNetwork.learnInNewThread(trainingSet);
+                        }
                         toggle.setText("Pause");
                     }
                 } else {
@@ -116,7 +125,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         //Madisen
         displayName(v);
-        displayPhoto(iv);
+//        displayPhoto(iv);
         username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
@@ -181,6 +190,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 neuralNetwork = null;
+                trainingSet = null;
                 startActivity(new Intent(this, StartActivity.class));
                 this.finish();
                 break;
