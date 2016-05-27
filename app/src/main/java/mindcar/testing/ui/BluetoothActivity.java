@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import mindcar.testing.R;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
 import mindcar.testing.util.MessageParser;
@@ -160,7 +161,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                         } else {
 
                             startLearning = false;
-                            next();
+                            nextnext();
 
                         }
                         break;
@@ -377,6 +378,10 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
     //Sarah
     //goes to next activity
     private void next() {
+        startActivity(new Intent(this, RegisterPatternActivity.class));
+    }
+
+    private void nextnext() {
         startActivity(new Intent(this, UserActivity.class));
     }
 

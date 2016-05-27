@@ -1,4 +1,5 @@
 package mindcar.testing.ui;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,14 +30,13 @@ import mindcar.testing.util.NeuralNetworkHelper;
 
 // Madisen & Nikos & Sanja & Mattias
 //This class handles the main view while controlling the car
-public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserActivity extends Activity implements View.OnClickListener {
 
     public static Boolean appRunning = false;//used by Bluetooth to start/stop communication with the car
 
     Button userSettings;
     public static NeuralNetwork neuralNetwork;
     public static TrainingSet trainingSet;
-    public static DatabaseAccess databaseAccess;
 
     //Variables from StartsActivity
     String name = null;
@@ -114,7 +113,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-        username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(this);
