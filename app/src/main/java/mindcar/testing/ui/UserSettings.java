@@ -77,20 +77,20 @@ public class UserSettings  extends Activity implements View.OnClickListener {
             case R.id.usernameOK:
 
 
-                    if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)) {
+                if (databaseAccess.checkAvailability(Username) && Username.equals(UsernameConf)) {
 
-                        databaseAccess.updateUsername(loggedUsername, Username);
-                        Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
-                        saveNewInfo();
-                        startActivity(new Intent(this, UserActivity.class));
-                    }
-                    else if ((databaseAccess.checkAvailability(Username) && !Username.equals(UsernameConf)) || Username.equals(loggedUsername)){
-                        Toast.makeText(getApplicationContext(), "Confirm right username", Toast.LENGTH_SHORT).show();
+                    databaseAccess.updateUsername(loggedUsername, Username);
+                    Toast.makeText(getApplicationContext(), "Username successfully changed to " + "" + Username, Toast.LENGTH_SHORT).show();
+                    saveNewInfo();
+                    startActivity(new Intent(this, UserActivity.class));
+                }
+                else if ((databaseAccess.checkAvailability(Username) && !Username.equals(UsernameConf)) || Username.equals(loggedUsername)){
+                    Toast.makeText(getApplicationContext(), "Confirm right username", Toast.LENGTH_SHORT).show();
 
-                    }
-                    else
+                }
+                else
 
-                        Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -107,7 +107,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
                 else if (Password.equals(PasswordConf) && Password.equals(loggedUsername)) {
                     Toast.makeText(getApplicationContext(), "Password must not be same as your username ", Toast.LENGTH_LONG).show();
 
-            }
+                }
                 else
                     Toast.makeText(getApplicationContext(), "Confirm the right password ", Toast.LENGTH_LONG).show();
 
@@ -117,7 +117,7 @@ public class UserSettings  extends Activity implements View.OnClickListener {
 
     }
 
-   public void saveNewInfo(){
+    public void saveNewInfo(){
         SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("username", changeUsername.getText().toString());

@@ -1,7 +1,7 @@
 package mindcar.testing.util;
 
 /**
- * Created by Darkthronen on 13/05/2016.
+ * Created by Nikolaos-Machairiotis Sasopoulos on 13/05/2016.
  */
 public class UserData {
 
