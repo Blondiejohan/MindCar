@@ -177,8 +177,8 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                     Log.i("Send message ", send);
                                     if (send == "w") {
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
-                                        UserActivity.directionText.setText("Stop");
-                                        connected.write("s");
+                                        UserActivity.directionText.setText("");
+//                                        connected.write("s");
                                     } else {
                                         if (send.equals("l") && directionCounter >= 2) {
                                             UserActivity.direction.setImageDrawable(getDrawable(R.drawable.left));

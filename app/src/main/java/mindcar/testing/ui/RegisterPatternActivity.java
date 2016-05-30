@@ -35,7 +35,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
 
 
     private static final int INPUT_SIZE = 800;
-    private static final int HIDDEN_SIZE = 397;
+    private static final int HIDDEN_SIZE = 37;
     private static final int OUTPUT_SIZE = 4;
 
     public static final int PATTERN_SIZE = 100;
@@ -61,7 +61,6 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
     private static int times = 0;
     public static TextView registerPatternsText;
     private Button registerPatternReady;
-    public static String name, password;
 
     //Sanja
     static ImageView forwardIcon;
@@ -71,6 +70,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
 
     private static ProgressBar activityProgress;
     public static ProgressBar patternProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,14 +96,11 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         trainingSet = new TrainingSet(INPUT_SIZE, OUTPUT_SIZE);
         neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.STEP, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
         neuralNetwork.setLearningRule(new MomentumBackpropagation());
-        neuralNetwork.setLabel(name);
 
         registerPatternsText = (TextView) findViewById(R.id.registerPatternText);
 
         registerPatternReady = (Button) findViewById(R.id.registerPatternReady);
         registerPatternReady.setOnClickListener(this);
-
-        getUNPW();
     }
 
     @Override
@@ -178,19 +175,19 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
             if (times >= 0) {
                 populateInputs(BASELINE);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
-                for(int doubles = 0; doubles < 1;doubles++) {
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(4)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(5)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(6)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(7)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(8)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(9)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(10)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(11)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(12)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(13)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(14)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(15)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(4)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(5)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(6)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(7)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(8)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(9)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(10)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(11)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(12)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(13)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(14)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(15)));
                 }
                 baselineBoolean = false;
                 leftBoolean = true;
@@ -207,7 +204,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
 
 
         } else if (leftBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(LEFT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -228,7 +225,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
 
 
         } else if (rightBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(RIGHT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -248,7 +245,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
                 patternProgress.setProgress(times * 20);
             }
         } else if (forwardBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(FORWARD);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -267,7 +264,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
                 patternProgress.setProgress(times * 20);
             }
         } else if (stopBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(STOP);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -313,17 +310,5 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
             registerPatternsText.setText("Processing");
             stopIcon.setVisibility(View.GONE);
         }
-    }
-
-    //Madisen
-    //get user name and password from global settings
-    public void getUNPW() {
-        SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
-        name = sharedPref.getString("username", "");
-        password = sharedPref.getString("password", "");
-    }
-
-    public void close(){
-        RegisterPatternActivity.this.finish();
     }
 }

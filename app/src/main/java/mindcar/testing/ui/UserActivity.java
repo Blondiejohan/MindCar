@@ -33,19 +33,13 @@ import mindcar.testing.util.NeuralNetworkHelper;
 public class UserActivity extends Activity implements View.OnClickListener {
 
     public static Boolean appRunning = false;//used by Bluetooth to start/stop communication with the car
-
-    Button userSettings;
     public static NeuralNetwork neuralNetwork;
     public static TrainingSet trainingSet;
 
-    //Variables from StartsActivity
-    String name = null;
-    String password = null;
     //Madisen
     View v;
     ImageView iv;
     TextView username;
-    Button logout;
     ImageView userPic;
     static ImageView direction;
     static TextView directionText;
@@ -70,8 +64,6 @@ public class UserActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_user);
 
         //Nikos & Madisen & Sanja & Johan
-        userSettings = (Button) findViewById(R.id.userSettings);
-        logout = (Button) findViewById(R.id.logout);
         mindoption = (RadioButton) findViewById(R.id.mindoption);
         attentionoption = (RadioButton) findViewById(R.id.attentionoption);
         blinkoption = (RadioButton) findViewById(R.id.blinksoption);
@@ -80,10 +72,6 @@ public class UserActivity extends Activity implements View.OnClickListener {
         directionText = (TextView) findViewById(R.id.directionText);
         direction = (ImageView) findViewById(R.id.direction);
         attentionInstructions = (TextView) findViewById(R.id.attentionInstructions);
-        userSettings.setOnClickListener(this);
-
-        //Madisen
-        iv = (ImageView) findViewById(R.id.profile_image_view);
 
         //Madisen & Sanja & Mattias
             //Handling of button clicks
@@ -91,31 +79,26 @@ public class UserActivity extends Activity implements View.OnClickListener {
             public void onClick(View v) {
                 if (toggle.isChecked()) {
                     appRunning = true;
-                    if(mindoption.isChecked()) {
+                    if (mindoption.isChecked()) {
                         toggle.setText("Loading");
-                        if(neuralNetwork == null){
+                        if (neuralNetwork == null) {
                             neuralNetwork = RegisterPatternActivity.neuralNetwork;
                         }
-                        if(trainingSet == null){
+                        if (trainingSet == null) {
                             trainingSet = RegisterPatternActivity.trainingSet;
                         }
-                        if(neuralNetwork.getLearningThread() == null) {
+                        if (neuralNetwork.getLearningThread() == null) {
                             neuralNetwork.learnInNewThread(trainingSet);
                         }
                         toggle.setText("Pause");
                     }
                 } else {
                     appRunning = false;
-                    BluetoothActivity.connected.write("STOP");
+//                    BluetoothActivity.connected.write("STOP");
                 }
 
             }
         });
-
-
-        System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
-        logout = (Button) findViewById(R.id.logout);
-        logout.setOnClickListener(this);
     }
 
 
@@ -130,10 +113,6 @@ public class UserActivity extends Activity implements View.OnClickListener {
         //Button handling
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.logout: //logout button
-                neuralNetwork.stopLearning();
-                this.finish();
-                break;
             case R.id.mindoption: //radio button options
                 mindControl = true;
                 attentionControl = false;

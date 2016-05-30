@@ -12,33 +12,6 @@
     tools:context=".ui.UserActivity"
     tools:showIn="@layout/activity_user">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/username"
-        android:textStyle="bold"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:visibility="visible"
-        android:textSize="35sp"
-        android:text= ""
-        android:layout_gravity=""
-        android:phoneNumber="false"
-        android:linksClickable="false"
-        android:clickable="false"
-        android:editable="false"
-        android:layout_alignRight="@+id/profile_image_view"
-        android:layout_alignEnd="@+id/profile_image_view" />
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/profile_image_view"
-        android:scaleType="fitXY"
-        android:layout_below="@+id/username" />
-
     <ToggleButton
         style="@style/button"
         android:layout_width="130dp"
@@ -51,41 +24,19 @@
         android:visibility="visible"
         android:textSize="12dp"
         android:text="start_pause_toggle_button"
-        android:layout_marginTop="400dp"
 
-        android:layout_centerHorizontal="true" />
-    <Button
-        android:layout_width="@dimen/buttonWidth"
-        android:layout_height="@dimen/buttonHeight"
-        android:text="Settings"
-        android:id="@+id/userSettings"
-        android:clickable="true"
-        style="@style/button"
-        android:layout_alignTop="@+id/logout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-    <Button
-        style="@style/button"
-        android:layout_width="@dimen/buttonWidth"
-        android:layout_height="@dimen/buttonHeight"
-        android:text="Log Out"
-        android:id="@+id/logout"
-        android:visibility="visible"
-        android:clickable="true"
-        android:onClick="logout"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
+
 
     <RadioGroup
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:id="@+id/radio"
-        android:layout_below="@+id/profile_image_view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_above="@+id/toggleButton"
+        android:layout_toRightOf="@+id/directionText"
+        android:layout_toEndOf="@+id/directionText"
+        android:layout_marginBottom="54dp">
         <RadioButton android:id="@+id/mindoption"
             android:layout_width="match_parent"
             android:layout_height="34dp"
@@ -116,14 +67,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/blinkInstructions"
         android:layout_alignTop="@+id/radio"
-        android:layout_alignLeft="@+id/userSettings"
-        android:layout_alignStart="@+id/userSettings"
-        android:layout_alignBottom="@+id/radio"
-        android:layout_alignRight="@+id/userSettings"
-        android:layout_alignEnd="@+id/userSettings"
         android:lines="6"
         android:text="Left - 3 blinks \n \nRight - 6 blinks\n\n"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/radio"
+        android:layout_toLeftOf="@+id/toggleButton"
+        android:layout_toStartOf="@+id/toggleButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -131,11 +80,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Move - Attention > 40%"
         android:id="@+id/attentionInstructions"
-        android:layout_alignBottom="@+id/radio"
-        android:layout_marginBottom="37dp"
         android:visibility="invisible"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginTop="41dp"
+        android:layout_alignTop="@+id/radio"
+        android:layout_alignRight="@+id/direction"
+        android:layout_alignEnd="@+id/direction" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -144,9 +93,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/directionText"
-        android:layout_toRightOf="@+id/username"
-        android:layout_toEndOf="@+id/username" />
+        android:layout_above="@+id/directionText" />
 
     <TextView
         android:layout_width="wrap_content"
