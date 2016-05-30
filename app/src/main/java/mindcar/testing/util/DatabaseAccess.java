@@ -11,26 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import org.neuroph.core.NeuralNetwork;
-import org.neuroph.nnet.MultiLayerPerceptron;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
-
-import mindcar.testing.ui.BluetoothActivity;
-import mindcar.testing.ui.RegisterPatternActivity;
-import mindcar.testing.ui.StartActivity;
-import mindcar.testing.ui.UserActivity;
-import mindcar.testing.ui.UserSettings;
-
 //Sanja & Mattias & Johan
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
@@ -156,7 +136,7 @@ public class DatabaseAccess {
     }
 
     public void update(String table, ContentValues values, String username) {
-        database.update(table, values, "username = " + username, null);
+        database.update(table, values, username, null);
     }
 
     public void updateUsername (String oldUsername, String newUsername) {
