@@ -81,7 +81,6 @@ public class EditUsersActivity extends Activity implements EditActivity{
                 break;
 
             case (R.id.devAddUser):
-                int devBoolean = 0;
                 if(aSwitch.isChecked()){
                     devBoolean = 1;
                 }
@@ -113,12 +112,6 @@ public class EditUsersActivity extends Activity implements EditActivity{
         dialog.setTitle("Edit user");
         cursor.moveToPosition(position);
 
-        textView1 = (TextView) dialog.findViewById(R.id.textView1);
-        textView1.setText("Username");
-
-        textView2 = (TextView) dialog.findViewById(R.id.textView2);
-        textView2.setText("Password");
-
         text1 = (EditText) dialog.findViewById(R.id.text1);
         text1.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
 
@@ -127,15 +120,25 @@ public class EditUsersActivity extends Activity implements EditActivity{
         text2.setTransformationMethod(PasswordTransformationMethod.getInstance());
         text2.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
 
+        updateDevStatus = (Switch) findViewById(R.id.devSwitch);
+        if(cursor.getInt(cursor.getColumnIndex("developer")) == 1){
+            updateDevStatus.setChecked(true);
+        }
+
 
         final Button update = (Button) dialog.findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int updateDev = 0;
+                if(updateDevStatus.isChecked()){
+                    updateDev = 1;
+                }
+
                 ContentValues cv = new ContentValues();
                 cv.put("username", text1.getText().toString());
                 cv.put("password", text2.getText().toString());
-                cv.put("developer", devBoolean);
+                cv.put("developer", updateDev);
                 databaseAccess.update("Users", cv, ((int) id));
                 update();
                 dialog.cancel();

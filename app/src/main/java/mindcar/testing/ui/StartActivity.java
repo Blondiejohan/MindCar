@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import mindcar.testing.R;
 import mindcar.testing.ui.dev.DeveloperActivity;
+import mindcar.testing.ui.dev.edit.EditUsersActivity;
 import mindcar.testing.util.DatabaseAccess;
 
 //Sanja & Mattias
@@ -56,7 +57,14 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bLogin:
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
                 databaseAccess.open();
-                if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
+                if(databaseAccess.isDeveloper(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
+                    mp.start();
+
+                    startActivity(new Intent(this, EditUsersActivity.class));
+                    this.finish();
+                    break;
+                } else if (databaseAccess.checkUser(ET_USER_NAME.getText().toString(), ET_PASSWORD.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
                     //This value will be passed to User activity to fetch the name and photo
@@ -64,12 +72,14 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     saveInfo();
 
                     //Sanja
-                        //Play positive sound when successful login.
-                        //User is sent to the main use screen
+                    //Play positive sound when successful login.
+                    //User is sent to the main use screen
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.yes);
                     mp.start();
+
                     startActivity(new Intent(this, UserActivity.class));
                     this.finish();
+                    break;
                 }
                 else {
                     //Sanja

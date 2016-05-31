@@ -54,39 +54,6 @@ public class DatabaseAccess {
         Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + userName + "'", null);
         return cursor.getCount() == 0;
     }
-    public int getNumberOfRows(String table){
-        Cursor cursor = database.rawQuery("select id from " + table + ";",null);
-        return cursor.getCount();
-    }
-
-    public Cursor getRow(String table, int i){
-        Cursor cursor = database.rawQuery("select * from " + table + " where id = " + i + ";",null);
-        return cursor;
-    }
-
-    public double[] getPattern(String direction, String username) {
-        Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '" + username + "'", null);
-        String str= "";
-        double[] arr = new double[800];
-        cursor.moveToFirst();
-        //str = cursor.getString(0);
-
-
-        int i = 0;
-        Log.i("String1", username + " " + cursor.getString(cursor.getColumnIndex(direction)).toString());
-        while (str.length()!= 0 && str.charAt(0) == 's') {
-            String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
-            arr[i] = Double.parseDouble(s);
-
-            str = str.substring(str.indexOf('e')+1);
-            i++;
-        }
-        StringBuilder log = new StringBuilder();
-        for (int j = 0; j < arr.length;j++){
-            log.append(arr[j]+" ");
-        }
-        return arr;
-    }
 
     public Cursor getCursor(String table){
         Cursor cursor = database.rawQuery("select * from " + table + ";",null);
@@ -108,12 +75,6 @@ public class DatabaseAccess {
         database.insert("USERS", null, values);
     }
 
-    public void addPhoto(byte[] photo)throws SQLException{
-        ContentValues pic = new ContentValues();
-        pic.put("photo", photo);
-        database.insert("USERS", null, pic);
-    }
-
     public byte[] getPhoto(String username){
         System.out.println("The user name for the login passed to getPhoto is " + username);
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "'", null);
@@ -124,8 +85,6 @@ public class DatabaseAccess {
         return picByte;}
         else return null;
     }
-
-
 
     public void delete(String table, int id) {
         database.delete(table, "_id = ?", new String[]{id + ""});
@@ -152,36 +111,6 @@ public class DatabaseAccess {
     public boolean isDeveloper(String username, String password) {
         Cursor cursor = database.rawQuery("select * from users where username = '" + username + "' and password = '" + password + "' and developer = 1", null);
         return cursor.getCount() == 1;
-    }
-
-
-    public void addPattern(String direction, String pattern, String username) {
-        ContentValues direc = new ContentValues();
-        direc.put(direction, pattern);
-            database.update("Users", direc, username, null);
-    }
-
-    public double[] getBaseline(String username) {
-        Cursor cursor = database.rawQuery("SELECT * FROM USERS WHERE username = '"+username+"'", null);
-        String str= "";
-        double[] arr = new double[800];
-        if (cursor.moveToFirst()) {
-            str = cursor.getString(cursor.getColumnIndex("baseline"));
-        }
-        int i = 0;
-        while (str.length()!= 0 && str.charAt(0) == 's') {
-            String s = str.substring(str.indexOf('s')+1,str.indexOf('e'));
-            arr[i] = Double.parseDouble(s);
-
-            str = str.substring(str.indexOf('e')+1);
-            i++;
-        }
-        StringBuilder log = new StringBuilder();
-        for (int j = 0; j < arr.length;j++){
-            log.append(arr[j]+" ");
-        }
-        //Log.i("String2",log.toString()+"");
-        return arr;
     }
 
     public byte[] getNetwork(Context context, String username) {

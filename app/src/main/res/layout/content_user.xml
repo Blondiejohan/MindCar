@@ -51,9 +51,13 @@
         android:visibility="visible"
         android:textSize="12dp"
         android:text="start_pause_toggle_button"
-        android:layout_marginTop="400dp"
 
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/userSettings"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="@dimen/buttonHeight"
@@ -61,7 +65,7 @@
         android:id="@+id/userSettings"
         android:clickable="true"
         style="@style/button"
-        android:layout_alignTop="@+id/logout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -83,7 +87,7 @@
         android:layout_width="200dp"
         android:layout_height="120dp"
         android:id="@+id/radio"
-        android:layout_below="@+id/profile_image_view"
+        android:layout_above="@+id/toggleButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <RadioButton android:id="@+id/mindoption"
@@ -141,21 +145,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/direction"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/directionText"
-        android:layout_toRightOf="@+id/username"
-        android:layout_toEndOf="@+id/username" />
+        android:layout_toEndOf="@+id/radio"
+        android:layout_toRightOf="@+id/radio"
+        android:layout_alignTop="@+id/profile_image_view"
+        android:layout_alignBottom="@+id/profile_image_view" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/directionText"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/profile_image_view"
+        android:layout_marginTop="34dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="134dp" />
+        android:textAlignment="center"
+        android:textSize="60sp" />
 
 
 </RelativeLayout>

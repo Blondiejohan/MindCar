@@ -155,6 +155,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     saveInfo();
 
                     startActivity(new Intent(this, RegisterPatternActivity.class));
+                    this.finish();
                 } else
                     Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
                 break;

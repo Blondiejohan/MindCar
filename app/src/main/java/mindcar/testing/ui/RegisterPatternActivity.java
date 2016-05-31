@@ -71,11 +71,15 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
     private static ProgressBar activityProgress;
     public static ProgressBar patternProgress;
 
+    public static String name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_pattern);
+
+        retriveUsername();
 
         //create image view for saving patterns
         forwardIcon = (ImageView) findViewById(R.id.forwartIcon);
@@ -148,7 +152,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
             inputs.add(stop);
         }
     }
-    
+
     public static void populateOutputs() {
         outputs.add(new double[]{1, 0, 0, 0});  //  0   LEFT
         outputs.add(new double[]{0, 1, 0, 0});  //  1   RIGHT
@@ -310,5 +314,10 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
             registerPatternsText.setText("Processing");
             stopIcon.setVisibility(View.GONE);
         }
+    }
+
+    private void retriveUsername(){
+        SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
+        name = sharedPref.getString("username", "");
     }
 }

@@ -97,21 +97,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (toggle.isChecked()) {
                     appRunning = true;
-                    if(mindoption.isChecked()) {
+                    if (mindoption.isChecked()) {
                         toggle.setText("Loading");
-                        if(neuralNetwork == null){
+                        if (neuralNetwork == null) {
                             databaseAccess.open();
                             byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
                             neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
                             databaseAccess.close();
                         }
-                        if(trainingSet == null){
+                        if (trainingSet == null) {
                             databaseAccess.open();
                             byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
                             neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
                             databaseAccess.close();
                         }
-                        if(neuralNetwork.getLearningThread() == null) {
+                        if (neuralNetwork.getLearningThread() == null) {
                             neuralNetwork.learnInNewThread(trainingSet);
                         }
                         toggle.setText("Pause");
@@ -176,18 +176,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout: //logout button
-                neuralNetwork.stopLearning();
-                try {
-                    NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, name);
-                    File nnet = UserActivity.this.getFileStreamPath(name + ".nnet");
-                    byte[] b = Files.toByteArray(nnet);
-                    databaseAccess.open();
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put("neuralnetwork", b);
-                    databaseAccess.update("Users", contentValues, name);
-                    databaseAccess.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(neuralNetwork != null) {
+                    neuralNetwork.stopLearning();
+                    try {
+                        NeuralNetworkHelper.saveNetwork(UserActivity.this, neuralNetwork, name);
+                        File nnet = UserActivity.this.getFileStreamPath(name + ".nnet");
+                        byte[] b = Files.toByteArray(nnet);
+                        databaseAccess.open();
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("neuralnetwork", b);
+                        databaseAccess.update("Users", contentValues, name);
+                        databaseAccess.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 neuralNetwork = null;
