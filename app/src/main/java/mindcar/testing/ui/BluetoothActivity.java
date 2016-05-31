@@ -23,16 +23,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.google.common.io.Files;
 import com.neurosky.thinkgear.TGDevice;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
-
 import mindcar.testing.R;
 import mindcar.testing.objects.Connected;
 import mindcar.testing.objects.EegBlink;
@@ -116,7 +113,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                 case TGDevice.MSG_RAW_DATA:
                     if (startLearning) { //REGISTRATION LEARNING DATA
                         RegisterPatternActivity.changeText();
-                        if(!RegisterPatternActivity.endBoolean) {
+                        if (!RegisterPatternActivity.endBoolean) {
                             if (eegTimes < 20) {
                                 MessageParser.parseRawData(msg, eeg);
                                 eegTimes++;
@@ -163,11 +160,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                             }
                         } else {
                             try {
+                                RegisterPatternActivity.neuralNetwork.stopLearning();
+                                
                                 NeuralNetworkHelper.saveNetwork(BluetoothActivity.this, RegisterPatternActivity.neuralNetwork, RegisterPatternActivity.name + ".nnet");
                                 File nnet = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".nnet");
                                 byte[] neuralNetworkBytes = Files.toByteArray(nnet);
 
-                                RegisterPatternActivity.neuralNetwork.stopLearning();
                                 NeuralNetworkHelper.saveTrainingSet(BluetoothActivity.this, RegisterPatternActivity.trainingSet, RegisterPatternActivity.name + ".tset");
                                 File tset = BluetoothActivity.this.getFileStreamPath(RegisterPatternActivity.name + ".tset");
                                 byte[] trainingSetBytes = Files.toByteArray(tset);
@@ -515,7 +513,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     bar.setVisibility(View.GONE);
                     activate.setText("Discover and Pair");
                 }
-                if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) {
+                if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) { //TODO - change this back!!!
                     next();
                 }
             }

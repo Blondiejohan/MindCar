@@ -86,6 +86,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         userSettings.setOnClickListener(this);
         databaseAccess = DatabaseAccess.getInstance(this);
 
+
         //Madisen
         iv = (ImageView) findViewById(R.id.profile_image_view);
         getUNPW();
@@ -117,7 +118,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else {
                     appRunning = false;
-                    BluetoothActivity.connected.write("STOP");
+                    BluetoothActivity.connected.write("s");
                 }
 
             }
@@ -125,7 +126,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         //Madisen
         displayName(v);
-//        displayPhoto(iv);
+        displayPhoto(iv);
         username.setVisibility(View.VISIBLE);
         System.out.println("The user name passed to UserActivity from StartActivity is: " + name);
         logout = (Button) findViewById(R.id.logout);

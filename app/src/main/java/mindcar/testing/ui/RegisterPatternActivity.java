@@ -1,14 +1,8 @@
 package mindcar.testing.ui;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.neurosky.thinkgear.TGDevice;
-
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.SupervisedTrainingElement;
 import org.neuroph.core.learning.TrainingSet;
@@ -26,28 +18,14 @@ import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
-import java.sql.Blob;
 import java.util.LinkedList;
 
 import mindcar.testing.R;
 import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
-import mindcar.testing.util.DatabaseAccess;
 import mindcar.testing.util.MessageParser;
-import mindcar.testing.util.NeuralNetworkHelper;
 
-public class RegisterPatternActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterPatternActivity extends Activity implements View.OnClickListener {
 
     public static double[] baseline;
     public static double[] left;
@@ -57,7 +35,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
 
     private static final int INPUT_SIZE = 800;
-    private static final int HIDDEN_SIZE = 397;
+    private static final int HIDDEN_SIZE = 37;
     private static final int OUTPUT_SIZE = 4;
 
     public static final int PATTERN_SIZE = 100;
@@ -73,8 +51,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     public static LinkedList<double[]> outputs = new LinkedList<>();
     public static boolean startBoolean, baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean, endBoolean;
 
-    private DatabaseAccess databaseAccess;
-
     public static Pattern baselinePattern = null;
     public static Pattern tmpPattern;
     public static Eeg tmpEeg;
@@ -85,7 +61,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
     private static int times = 0;
     public static TextView registerPatternsText;
     private Button registerPatternReady;
-    public static String name, password;
 
     //Sanja
     static ImageView forwardIcon;
@@ -95,6 +70,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
     private static ProgressBar activityProgress;
     public static ProgressBar patternProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +89,6 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         times = 0;
         tmpEeg = new Eeg();
         tmpPattern = new Pattern(PATTERN_SIZE);
-        databaseAccess = DatabaseAccess.getInstance(this);
         populateOutputs();
 
         initializeArrays();
@@ -121,14 +96,11 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
         trainingSet = new TrainingSet(INPUT_SIZE, OUTPUT_SIZE);
         neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.STEP, INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
         neuralNetwork.setLearningRule(new MomentumBackpropagation());
-        neuralNetwork.setLabel(name);
 
         registerPatternsText = (TextView) findViewById(R.id.registerPatternText);
 
         registerPatternReady = (Button) findViewById(R.id.registerPatternReady);
         registerPatternReady.setOnClickListener(this);
-
-        getUNPW();
     }
 
     @Override
@@ -176,25 +148,25 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             inputs.add(stop);
         }
     }
-
+    
     public static void populateOutputs() {
-        outputs.add(new double[]{1, 0, 0, 0});  //  0
-        outputs.add(new double[]{0, 1, 0, 0});  //  1
-        outputs.add(new double[]{0, 0, 1, 0});  //  2
-        outputs.add(new double[]{0, 0, 0, 1});  //  3
+        outputs.add(new double[]{1, 0, 0, 0});  //  0   LEFT
+        outputs.add(new double[]{0, 1, 0, 0});  //  1   RIGHT
+        outputs.add(new double[]{0, 0, 1, 0});  //  2   FORWARD
+        outputs.add(new double[]{0, 0, 0, 1});  //  3   STOP
 
-        outputs.add(new double[]{0, 0, 0, 0});  //  4
-        outputs.add(new double[]{0, 0, 1, 1});  //  5
-        outputs.add(new double[]{0, 1, 1, 0});  //  6
-        outputs.add(new double[]{1, 1, 0, 0});  //  7
-        outputs.add(new double[]{1, 0, 1, 0});  //  8
-        outputs.add(new double[]{0, 1, 0, 1});  //  9
-        outputs.add(new double[]{1, 0, 0, 1});  //  10
-        outputs.add(new double[]{0, 1, 1, 1});  //  11
-        outputs.add(new double[]{1, 1, 1, 0});  //  12
-        outputs.add(new double[]{1, 0, 1, 1});  //  13
-        outputs.add(new double[]{1, 1, 0, 1});  //  14
-        outputs.add(new double[]{1, 1, 1, 1});  //  15
+        outputs.add(new double[]{0, 0, 0, 0});  //  4   BASELINE
+        outputs.add(new double[]{0, 0, 1, 1});  //  5   BASELINE
+        outputs.add(new double[]{0, 1, 1, 0});  //  6   BASELINE
+        outputs.add(new double[]{1, 1, 0, 0});  //  7   BASELINE
+        outputs.add(new double[]{1, 0, 1, 0});  //  8   BASELINE
+        outputs.add(new double[]{0, 1, 0, 1});  //  9   BASELINE
+        outputs.add(new double[]{1, 0, 0, 1});  //  10  BASELINE
+        outputs.add(new double[]{0, 1, 1, 1});  //  11  BASELINE
+        outputs.add(new double[]{1, 1, 1, 0});  //  12  BASELINE
+        outputs.add(new double[]{1, 0, 1, 1});  //  13  BASELINE
+        outputs.add(new double[]{1, 1, 0, 1});  //  14  BASELINE
+        outputs.add(new double[]{1, 1, 1, 1});  //  15  BASELINE
     }
 
 
@@ -203,19 +175,19 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             if (times >= 0) {
                 populateInputs(BASELINE);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
-                for(int doubles = 0; doubles < 1;doubles++) {
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(4)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(5)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(6)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(7)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(8)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(9)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(10)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(11)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(12)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(13)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(14)));
-                    trainingSet.addElement(new SupervisedTrainingElement(inputs.get(doubles), outputs.get(15)));
+                for(double[] doubles: inputs) {
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(4)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(5)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(6)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(7)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(8)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(9)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(10)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(11)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(12)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(13)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(14)));
+                    trainingSet.addElement(new SupervisedTrainingElement(doubles, outputs.get(15)));
                 }
                 baselineBoolean = false;
                 leftBoolean = true;
@@ -232,7 +204,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
 
         } else if (leftBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(LEFT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -253,7 +225,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
 
 
         } else if (rightBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(RIGHT);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -273,7 +245,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
                 patternProgress.setProgress(times * 20);
             }
         } else if (forwardBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(FORWARD);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -292,7 +264,7 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
                 patternProgress.setProgress(times * 20);
             }
         } else if (stopBoolean) {
-            if (times >= 0) {
+            if (times >= 2) {
                 populateInputs(STOP);
                 Log.i("inputs", MessageParser.toString(inputs.get(0)));
                 for(double[] doubles: inputs) {
@@ -338,17 +310,5 @@ public class RegisterPatternActivity extends AppCompatActivity implements View.O
             registerPatternsText.setText("Processing");
             stopIcon.setVisibility(View.GONE);
         }
-    }
-
-    //Madisen
-    //get user name and password from global settings
-    public void getUNPW() {
-        SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
-        name = sharedPref.getString("username", "");
-        password = sharedPref.getString("password", "");
-    }
-
-    public void close(){
-        RegisterPatternActivity.this.finish();
     }
 }
