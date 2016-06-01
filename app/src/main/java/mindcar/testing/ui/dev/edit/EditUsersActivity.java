@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,7 +28,7 @@ import mindcar.testing.util.DatabaseAccess;
  * This class creates the activity for editing the commands table within the database.
  * Created by Mattias Landkvist on 4/27/16.
  */
-public class EditUsersActivity extends Activity implements EditActivity{
+public class EditUsersActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
     private DatabaseAccess databaseAccess;
     private Button addNewUser, addUser, updateAddImage;
     private Cursor cursor;
@@ -35,6 +38,7 @@ public class EditUsersActivity extends Activity implements EditActivity{
     private Switch aSwitch, updateDevStatus;
     private ListView databaseList;
     private int devBoolean = 0;
+    private ImageView userImage;
 
     /**
      * Creates the activity for editing the Users table.
@@ -58,6 +62,8 @@ public class EditUsersActivity extends Activity implements EditActivity{
         databaseList.setOnItemClickListener(this);
 
         addNewUser.setOnClickListener(this);
+
+        userImage = (ImageView) findViewById(R.id.devUserImage);
 
     }
 
@@ -123,6 +129,14 @@ public class EditUsersActivity extends Activity implements EditActivity{
         updateDevStatus = (Switch) findViewById(R.id.devSwitch);
         if(cursor.getInt(cursor.getColumnIndex("developer")) == 1){
             updateDevStatus.setChecked(true);
+        }
+
+
+        byte[] tmpImageBytes = cursor.getBlob(cursor.getColumnIndex("photo"));
+        if(tmpImageBytes != null) {
+            Log.e("bild1", userImage.toString());
+            Log.e("bild2", tmpImageBytes.toString());
+            userImage.setImageBitmap(BitmapFactory.decodeByteArray(tmpImageBytes, 0, tmpImageBytes.length));
         }
 
 

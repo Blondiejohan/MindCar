@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import mindcar.testing.R;
-import mindcar.testing.ui.dev.DeveloperActivity;
 import mindcar.testing.ui.dev.edit.EditUsersActivity;
 import mindcar.testing.util.DatabaseAccess;
 
@@ -98,7 +97,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
             //Mattias
                 //Developer view selected
             case R.id.devView:
-                startActivity(new Intent(this, DeveloperActivity.class));
+                startActivity(new Intent(this, EditUsersActivity.class));
                 this.finish();
                 break;
         }
