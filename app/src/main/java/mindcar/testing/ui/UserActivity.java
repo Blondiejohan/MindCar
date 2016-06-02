@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -108,7 +107,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         if (trainingSet == null) {
                             databaseAccess.open();
                             byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
-                            neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
+                            trainingSet = NeuralNetworkHelper.loadTrainingSet(UserActivity.this, bytes, name);
                             databaseAccess.close();
                         }
                         if (neuralNetwork.getLearningThread() == null) {

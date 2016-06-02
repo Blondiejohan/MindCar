@@ -36,8 +36,6 @@ public class UserSettings  extends Activity implements View.OnClickListener {
     public static String loggedUsername;
     public static String loggedPassword;
 
-    //UserData newCredentials = new UserData();
-
     public void userpass(){
         SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         loggedUsername = sharedPref.getString("username", "");

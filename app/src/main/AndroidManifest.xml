@@ -40,7 +40,6 @@
         <activity android:name=".ui.RegistrationActivity"/>
         <activity android:name=".ui.BluetoothActivity"/>
         <activity android:name=".ui.dev.edit.EditUsersActivity"/>
-        <activity android:name=".ui.UserImageActivity"/>
         <activity android:name=".ui.UserTakeImage"/>
         <activity android:name=".ui.UserSettings"/>
         <activity android:name=".ui.StartActivity"/>

@@ -128,14 +128,4 @@ public class DatabaseAccess {
         byte[] bytes = cursor.getBlob(cursor.getColumnIndex("trainingset"));
         return bytes;
     }
-
-    //public boolean update1(String username) {
-        //Cursor cursor = database.rawQuery("UPDATE USERS SET username = '" + username + "' where username ='" + UserSettings.loggedUsername + "'", null);
-        //return cursor.getCount() == 0;
-    //}
-
-    //public boolean update2(String password) {
-        //Cursor cursor = database.rawQuery("UPDATE USERS SET password = '" + password + "' where username ='" + UserSettings.loggedUsername + "'", null);
-        //return cursor.getCount() == 0;
-    //}
 }

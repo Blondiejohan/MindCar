@@ -93,13 +93,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
             case R.id.bSIGNUP:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
-
-            //Mattias
-                //Developer view selected
-            case R.id.devView:
-                startActivity(new Intent(this, EditUsersActivity.class));
-                this.finish();
-                break;
         }
 
     }

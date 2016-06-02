@@ -12,26 +12,6 @@ import mindcar.testing.objects.Pattern;
  * Created by Mattias & Sarah on 3/7/16.
  */
 public class MessageParser {
-
-    /**
-     * Saves incomming raw values to a eeg object.
-     *
-     * @param msg
-     * @param eeg
-     */
-    public static void parseEeg(Message msg, Eeg eeg) {
-        TGEegPower tgEegPower = (TGEegPower) msg.obj;
-        eeg.setDelta(tgEegPower.delta);
-        eeg.setTheta(tgEegPower.theta);
-        eeg.setLowAlpha(tgEegPower.lowAlpha);
-        eeg.setHighAlpha(tgEegPower.highAlpha);
-        eeg.setLowBeta(tgEegPower.lowBeta);
-        eeg.setHighAlpha(tgEegPower.highBeta);
-        eeg.setLowGamma(tgEegPower.lowGamma);
-        eeg.setHighGamma(tgEegPower.midGamma);
-    }
-
-
     /**
      * Assign values from raw data to the correct eeg frequency
      *

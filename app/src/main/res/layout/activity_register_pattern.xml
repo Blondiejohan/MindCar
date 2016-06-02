@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Prepare to register the commands to drive the car"
+        android:text="Prepare to register the commands to drive the car. First you will have to relax while your EEG baseline is saved. Next the system will cycle through the commands left, right, forward and stop three times each."
         android:id="@+id/registerPatternText"
         android:layout_marginTop="158dp"
         android:layout_alignParentTop="true"
@@ -43,38 +43,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/forwartIcon"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/registerPatternReady"
-        android:layout_alignStart="@+id/registerPatternReady"
         android:src="@drawable/forward"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/rightIcon"
+        android:layout_alignStart="@+id/rightIcon" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/leftIcon"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/registerPatternReady"
-        android:layout_alignStart="@+id/registerPatternReady"
         android:src="@drawable/left"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/forwartIcon"
+        android:layout_alignLeft="@+id/registerPatterns"
+        android:layout_alignStart="@+id/registerPatterns" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rightIcon"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/registerPatternReady"
-        android:layout_alignStart="@+id/registerPatternReady"
         android:src="@drawable/right"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/forwartIcon"
+        android:layout_alignRight="@+id/registerPatterns"
+        android:layout_alignEnd="@+id/registerPatterns" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/stopIcon"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/registerPatternReady"
-        android:layout_alignStart="@+id/registerPatternReady"
         android:src="@drawable/stop"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/forwartIcon"
+        android:layout_centerHorizontal="true" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
