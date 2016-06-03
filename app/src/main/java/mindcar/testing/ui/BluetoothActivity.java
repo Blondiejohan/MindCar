@@ -28,7 +28,6 @@ import com.neurosky.thinkgear.TGDevice;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Set;
 import mindcar.testing.R;
 import mindcar.testing.objects.Connected;

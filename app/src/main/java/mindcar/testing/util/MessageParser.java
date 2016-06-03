@@ -2,10 +2,7 @@ package mindcar.testing.util;
 
 import android.os.Message;
 
-import com.neurosky.thinkgear.TGEegPower;
-
 import mindcar.testing.objects.Eeg;
-import mindcar.testing.objects.Pattern;
 
 /**
  * this class parses msgs and updates the smart car object

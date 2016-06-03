@@ -1,15 +1,10 @@
 package mindcar.testing.objects;
 
-import mindcar.testing.util.DatabaseAccess;
-
 /**
  * Object storing values from a Neurosky Mindwave Mobile
  * Created by Mattias Landkvist & Nikolaos-Machairiotis Sasopoulos on 3/2/16.
  */
 public class Eeg {
-    private int attention;
-    private int meditation;
-    private int blink;
     private int delta;
     private int theta;
     private int lowAlpha;
@@ -18,77 +13,11 @@ public class Eeg {
     private int highBeta;
     private int lowGamma;
     private int highGamma;
-    private double[] arr;
-    //TODO - integrate patterns?
 
     /**
      * Constructs a basic Eeg with all of the values set to zero (0)
      */
-    public Eeg() {
-        attention = 0;
-        meditation = 0;
-        blink = 0;
-//        delta = 0;
-//        theta = 0;
-//        lowAlpha = 0;
-//        highAlpha = 0;
-//        lowBeta = 0;
-//        highBeta = 0;
-//        lowGamma = 0;
-//        highGamma = 0;
-    }
-
-    /**
-     * @return the attention value
-     */
-    public int getAttention() {
-        return attention;
-    }
-
-    public double[] getArray() {
-        return arr;
-    }
-
-    /**
-     * @return the meditation value
-     */
-    public int getMeditation() {
-        return meditation;
-    }
-
-    /**
-     * @return the blink value
-     */
-    public int getBlink() {
-        return blink;
-    }
-
-    /**
-     * Set the attention value of the instance
-     *
-     * @param attention
-     */
-    public void setAttention(int attention) {
-        this.attention = attention;
-    }
-
-    /**
-     * Set the meditation value of the instance
-     *
-     * @param meditation
-     */
-    public void setMeditation(int meditation) {
-        this.meditation = meditation;
-    }
-
-    /**
-     * Set the blink value of the instance
-     *
-     * @param blink
-     */
-    public void setBlink(int blink) {
-        this.blink = blink;
-    }
+    public Eeg() {}
 
     public void setDelta(int delta) {
         this.delta = delta;

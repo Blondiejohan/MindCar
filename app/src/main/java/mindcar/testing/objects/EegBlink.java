@@ -1,7 +1,5 @@
 package mindcar.testing.objects;
 
-import com.neurosky.thinkgear.TGDevice;
-
 /**
  * Created by Nikolaos-Machairiotis Sasopoulos on 13/05/2016.
  */

@@ -3,26 +3,16 @@ package mindcar.testing.util;
 import android.content.Context;
 
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.learning.SupervisedTrainingElement;
 import org.neuroph.core.learning.TrainingSet;
-import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.nnet.learning.MomentumBackpropagation;
-import org.neuroph.util.TransferFunctionType;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Iterator;
-import java.util.List;
-
-import mindcar.testing.ui.BluetoothActivity;
-import mindcar.testing.ui.StartActivity;
 
 /**
  * Created by Mattias on 5/11/16.
