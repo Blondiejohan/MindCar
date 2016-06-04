@@ -9,7 +9,7 @@ import mindcar.testing.util.DatabaseAccess;
 
 /**
  * This class compares the inmcoming steam of data with the existing neural network.
- * Created by Johan Laptop on 2016-04-18.
+ * Contributors: Johan and Mattias.
  */
 public class ComparePatterns extends Activity {
     public double[] compare1;

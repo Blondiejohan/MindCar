@@ -12,12 +12,19 @@ public class Pattern {
     private LinkedList<Eeg> list;
     private final int capacity;
 
-    // constructor of the list and a capacity limit to the list
+    /**
+     *  constructor of the list and a capacity set to 100
+     */
     public Pattern() {
         this.list = new LinkedList<>();
         this.capacity = 100;
     }
 
+    /**
+     * Contructs new pattern with an initial Eeg object and a custom capacity
+     * @param eeg
+     * @param capacity
+     */
     public Pattern(Eeg eeg, int capacity) {
         this.list = new LinkedList<>();
         this.capacity = capacity;
