@@ -25,7 +25,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
     Button bLogin;
     EditText ET_USER_NAME, ET_PASSWORD;
     Button bSIGNUP;
-    TextView devView;
 
     //Sanja
         //Creates all buttons and fields
@@ -38,12 +37,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
         ET_PASSWORD = (EditText) findViewById(R.id.ET_PASSWORD);
         bLogin = (Button) findViewById(R.id.bLogin);
         bSIGNUP = (Button) findViewById(R.id.bSIGNUP);
-        devView = (TextView) findViewById(R.id.devView);
 
 
         bLogin.setOnClickListener(this);
         bSIGNUP.setOnClickListener(this);
-        devView.setOnClickListener(this);
     }
 
     //Sanja

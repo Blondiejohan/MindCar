@@ -54,15 +54,31 @@ public class DatabaseAccess {
         return cursor.getCount() == 0;
     }
 
+    /**
+     * @param table
+     * @return a Cursor with a table from the database
+     */
     public Cursor getCursor(String table){
         Cursor cursor = database.rawQuery("select * from " + table + ";",null);
         return cursor;
     }
 
+    /**
+     * Insert a set of ContentValues into a table
+     * @param table
+     * @param values
+     */
     public void insert(String table, ContentValues values){
             database.insert(table,null,values);
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @param photo
+     * @throws SQLException
+     */
     public void addRegistration(String username, String password, byte[] photo) throws SQLException{
         ContentValues values = new ContentValues();
         values.put("username", username);

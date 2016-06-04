@@ -5,8 +5,8 @@ import android.os.Message;
 import mindcar.testing.objects.Eeg;
 
 /**
- * this class parses msgs and updates the smart car object
- * Created by Mattias & Sarah on 3/7/16.
+ * This class help with assigning messages to containers
+ * Contributors: Mattias, Sarah and Johan.
  */
 public class MessageParser {
 
@@ -39,10 +39,15 @@ public class MessageParser {
 
     }
 
+    /**
+     * Creates a String from an array of doubles
+     * @param doubles
+     * @return
+     */
     public static String toString(double[] doubles){
         StringBuilder str = new StringBuilder();
         for(double d: doubles){
-            str.append(d);
+            str.append(d + " ");
         }
         return str.toString();
     }

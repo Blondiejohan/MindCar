@@ -195,28 +195,28 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                     if (send == "w") {
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
                                         UserActivity.directionText.setText("Stop");
-                                        connected.write("s");
+ //                                       connected.write("s");
                                     } else {
                                         if (send.equals("l") && directionCounter >= 2) {
                                             UserActivity.direction.setImageDrawable(getDrawable(R.drawable.left));
                                             UserActivity.directionText.setText("Left");
                                             directionCounter = 0;
-                                            connected.write(send);
+ //                                           connected.write(send);
                                         } else if (send.equals("r") && directionCounter >= 2) {
                                             UserActivity.direction.setImageDrawable(getDrawable(R.drawable.right));
                                             UserActivity.directionText.setText("Right");
                                             directionCounter = 0;
-                                            connected.write(send);
+//                                            connected.write(send);
                                         } else if (send.equals("f") && directionCounter >= 2) {
                                             UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
                                             UserActivity.directionText.setText("Forward");
                                             directionCounter = 0;
-                                            connected.write(send);
+//                                            connected.write(send);
                                         } else if (send.equals("s") && directionCounter >= 2) {
                                             UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
                                             UserActivity.directionText.setText("Stop");
                                             directionCounter = 0;
-                                            connected.write(send);
+//                                            connected.write(send);
                                         } else {
                                             directionCounter++;
                                         }
@@ -257,7 +257,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                     if (blinkCount >= 2 && blinkCount <= 4) { // left is 3 +-1
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.left));
                                         UserActivity.directionText.setText("Left");
-                                        connected.write("l");
+//                                        connected.write("l");
                                         synchronized (this) { // pause app until turn is finnished
                                             try {
                                                 this.wait(1200);
@@ -266,12 +266,12 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                         }
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
                                         UserActivity.directionText.setText("Forward");
-                                        connected.write("f");
+//                                        connected.write("f");
                                         blinkCount = 0;
                                     } else if (blinkCount >= 5) { // right is 5+, aim for 6 +-1
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.right));
                                         UserActivity.directionText.setText("Right");
-                                        connected.write("r");
+//                                        connected.write("r");
                                         synchronized (this) { // pause app until turn is finnished
                                             try {
                                                 this.wait(1200);
@@ -281,18 +281,18 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
                                         UserActivity.directionText.setText("Forward");
                                         connected.write("f");
-                                        blinkCount = 0;
+//                                        blinkCount = 0;
                                     } else {
                                         UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
                                         UserActivity.directionText.setText("Forward");
-                                        connected.write("f");
+//                                        connected.write("f");
                                         blinkCount = 0;
                                     }
                                 }
                             } else {
                                 UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
                                 UserActivity.directionText.setText("Stop");
-                                connected.write("s");
+//                                connected.write("s");
                                 blinkCount = 0;
                             }
                             //Johan
@@ -300,11 +300,11 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                             if (attentionLevel > ATTENTIONLIMIT) {
                                 UserActivity.direction.setImageDrawable(getDrawable(R.drawable.forward));
                                 UserActivity.directionText.setText("Forward");
-                                connected.write("f");
+//                                connected.write("f");
                             } else
                                 UserActivity.direction.setImageDrawable(getDrawable(R.drawable.stop));
                             UserActivity.directionText.setText("Stop");
-                            connected.write("s");
+//                            connected.write("s");
                         }
                     }
                     break;
@@ -512,7 +512,7 @@ public class BluetoothActivity extends Activity implements AdapterView.OnItemCli
                     bar.setVisibility(View.GONE);
                     activate.setText("Discover and Pair");
                 }
-                if (connectedDevices.contains("Group 2") && connectedDevices.contains("MindWave Mobile")) { //TODO - change this back!!!
+                if (/*connectedDevices.contains("Group 2") && */connectedDevices.contains("MindWave Mobile")) { //TODO - change this back!!!
                     next();
                 }
             }

@@ -36,8 +36,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public static Boolean appRunning = false;//used by Bluetooth to start/stop communication with the car
 
     Button userSettings;
-    public static NeuralNetwork neuralNetwork;
-    public static TrainingSet trainingSet;
+    public static NeuralNetwork neuralNetwork = null;
+    public static TrainingSet trainingSet = null;
     public static DatabaseAccess databaseAccess;
 
     //Variables from StartsActivity
@@ -103,21 +103,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                             byte[] bytes = databaseAccess.getNetwork(UserActivity.this, name);
                             neuralNetwork = NeuralNetworkHelper.loadNetwork(UserActivity.this, bytes, name);
                             databaseAccess.close();
+                            if (trainingSet == null) {
+                                databaseAccess.open();
+                                byte[] b = databaseAccess.getTrainingSet(UserActivity.this, name);
+                                trainingSet = NeuralNetworkHelper.loadTrainingSet(UserActivity.this, b, name);
+                                databaseAccess.close();
+                                neuralNetwork.learnInNewThread(trainingSet);
+                            }
                         }
-                        if (trainingSet == null) {
-                            databaseAccess.open();
-                            byte[] bytes = databaseAccess.getTrainingSet(UserActivity.this, name);
-                            trainingSet = NeuralNetworkHelper.loadTrainingSet(UserActivity.this, bytes, name);
-                            databaseAccess.close();
-                        }
-                        if (neuralNetwork.getLearningThread() == null) {
-                            neuralNetwork.learnInNewThread(trainingSet);
-                        }
+
                         toggle.setText("Pause");
                     }
                 } else {
                     appRunning = false;
-                    BluetoothActivity.connected.write("s");
+//                    BluetoothActivity.connected.write("s");
                 }
 
             }

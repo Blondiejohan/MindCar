@@ -18,7 +18,7 @@ public class Intro extends Activity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent mainIntent = new Intent(Intro.this,StartActivity.class);
+                Intent mainIntent = new Intent(Intro.this,BluetoothActivity.class);
                 Intro.this.startActivity(mainIntent);
                 Intro.this.finish();
             }

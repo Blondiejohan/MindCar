@@ -15,9 +15,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
+ * Helper class for saving and loading NeuralNetworks and TrainingSets to and from Files.
  * Created by Mattias on 5/11/16.
  */
 public class NeuralNetworkHelper {
+
+    /**
+     * Creates a file from the input NeuralNetwork with name as name.
+     * @param context
+     * @param neuralNetwork
+     * @param name
+     */
     public static void saveNetwork(Context context, NeuralNetwork neuralNetwork, String name) {
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
@@ -42,6 +50,13 @@ public class NeuralNetworkHelper {
         }
     }
 
+    /**
+     * Converts a byte array into a File with name as name and returns it through and ObjectInputStream as a NeuralNetwork
+     * @param context
+     * @param bytes
+     * @param name
+     * @return a NeuralNetwork from a byte array
+     */
     public static NeuralNetwork loadNetwork(Context context, byte[] bytes, String name) {
         ObjectInputStream objectInputStream = null;
         NeuralNetwork neuralNetwork = null;
@@ -62,7 +77,12 @@ public class NeuralNetworkHelper {
         return neuralNetwork;
     }
 
-
+    /**
+     * Creates a file from the input TrainingSet with name as name.
+     * @param context
+     * @param trainingSet
+     * @param name
+     */
     public static void saveTrainingSet(Context context, TrainingSet trainingSet, String name) {
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
@@ -87,12 +107,19 @@ public class NeuralNetworkHelper {
         }
     }
 
+    /**
+     * Converts a byte array into a File with name as name and returns it through and ObjectInputStream as a TrainingSet
+     * @param context
+     * @param bytes
+     * @param name
+     * @return  a TrainingSet from a byte array
+     */
     public static TrainingSet loadTrainingSet(Context context, byte[] bytes, String name) {
         ObjectInputStream objectInputStream = null;
         TrainingSet trainingSet = null;
 
         try {
-            File file = new File(name + ".nnet");
+            File file = new File(name + ".tset");
             FileInputStream fileInputStream = context.openFileInput(file.getName());
             fileInputStream.read(bytes);
             objectInputStream = new ObjectInputStream(new BufferedInputStream(fileInputStream));
