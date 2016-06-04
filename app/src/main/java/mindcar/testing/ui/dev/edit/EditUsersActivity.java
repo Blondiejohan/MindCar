@@ -25,7 +25,7 @@ import mindcar.testing.objects.SimpleListCursorAdapter;
 import mindcar.testing.util.DatabaseAccess;
 
 /**
- * This class creates the activity for editing the commands table within the database.
+ * This class creates the activity for editing the User table within the database.
  * Created by Mattias Landkvist on 4/27/16.
  */
 public class EditUsersActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
@@ -105,7 +105,7 @@ public class EditUsersActivity extends Activity implements AdapterView.OnItemCli
     }
 
     /**
-     * Handles clicks on the list items within the ListView.
+     * Opens an dialog with edit options on item click.
      * @param parent
      * @param view
      * @param position

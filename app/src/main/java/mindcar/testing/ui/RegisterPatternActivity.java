@@ -25,14 +25,15 @@ import mindcar.testing.objects.Eeg;
 import mindcar.testing.objects.Pattern;
 import mindcar.testing.util.MessageParser;
 
+
+/**
+ * Activity for saving Patterns for specific commands
+ * Contributors: Mattias and Johan.
+ */
 public class RegisterPatternActivity extends Activity implements View.OnClickListener {
 
-    public static double[] baseline;
-    public static double[] left;
-    public static double[] right;
-    public static double[] forward;
-    public static double[] stop;
-
+    public static double[] baseline, left, right, forward ,stop;
+    public static boolean baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean, endBoolean;
 
     private static final int INPUT_SIZE = 800;
     private static final int HIDDEN_SIZE = 37;
@@ -49,9 +50,8 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
 
     public static LinkedList<double[]> inputs = new LinkedList<>();
     public static LinkedList<double[]> outputs = new LinkedList<>();
-    public static boolean startBoolean, baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean, endBoolean;
 
-    public static Pattern baselinePattern = null;
+
     public static Pattern tmpPattern;
     public static Eeg tmpEeg;
 
@@ -59,6 +59,7 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
     public static NeuralNetwork neuralNetwork;
 
     private static int times = 0;
+
     public static TextView registerPatternsText;
     private Button registerPatternReady;
 
@@ -107,6 +108,10 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         registerPatternReady.setOnClickListener(this);
     }
 
+    /**
+     * Start registering patterns on click
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         BluetoothActivity.startLearning = true;
@@ -114,6 +119,9 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         registerPatternReady.setEnabled(false);
     }
 
+    /**
+     * Initializes the double arrays with the INPUT_SIZE parameter
+     */
     public static void initializeArrays() {
         baseline = new double[INPUT_SIZE];
         left = new double[INPUT_SIZE];
@@ -122,7 +130,10 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         stop = new double[INPUT_SIZE];
     }
 
-
+    /**
+     * Populates the array with a Pattern. Use the global ints BASELINE, LEFT, RIGHT, FORWARD and STOP to specify the target array.
+     * @param i
+     */
     public static void populateArray(int i) {
         if (i == BASELINE) {
             baseline = tmpPattern.toArray();
@@ -139,6 +150,10 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         tmpPattern = new Pattern(PATTERN_SIZE);
     }
 
+    /**
+     * Populate the inputs list with a Pattern. Use the global ints BASELINE, LEFT, RIGHT, FORWARD and STOP to specify the target array.
+     * @param i
+     */
     public static void populateInputs(int i) {
         if (i == BASELINE) {
             inputs.add(baseline);
@@ -153,6 +168,9 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         }
     }
 
+    /**
+     * Build the outputs list with double arrays containing different setups of 0 and 1 making up simplified pattern markers.
+     */
     public static void populateOutputs() {
         outputs.add(new double[]{1, 0, 0, 0});  //  0   LEFT
         outputs.add(new double[]{0, 1, 0, 0});  //  1   RIGHT
@@ -173,7 +191,10 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         outputs.add(new double[]{1, 1, 1, 1});  //  15  BASELINE
     }
 
-
+    /**
+     * Change from one boolean value to the next adding the inputs to the TrainingSet as it goes forward.
+     * Order: baselineBoolean, leftBoolean, rightBoolean, forwardBoolean, stopBoolean, endBoolean.
+     */
     public static void nextValue() {
         if (baselineBoolean) {
             if (times >= 0) {
@@ -291,6 +312,9 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         }
     }
 
+    /**
+     * Change a TextView and one ImageView when the boolean value changed by nextValue() is changed.
+     */
     public static void changeText(){
         if (baselineBoolean) {
             registerPatternsText.setText("Establishing baseline");
@@ -316,6 +340,9 @@ public class RegisterPatternActivity extends Activity implements View.OnClickLis
         }
     }
 
+    /**
+     * Retrieves the username stored in shared preferences under the registrationInfo target.
+     */
     private void retriveUsername(){
         SharedPreferences sharedPref = getSharedPreferences("registrationInfo", Context.MODE_PRIVATE);
         name = sharedPref.getString("username", "");

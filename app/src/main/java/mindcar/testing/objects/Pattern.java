@@ -13,7 +13,7 @@ public class Pattern {
     private final int capacity;
 
     /**
-     *  constructor of the list and a capacity set to 100
+     *  Constructor of the list and a capacity set to 100
      */
     public Pattern() {
         this.list = new LinkedList<>();
@@ -31,13 +31,19 @@ public class Pattern {
         add(eeg);
     }
 
-    // another constructor with the capacity set to the limit
+    /**
+     * Constructs new Pattern with custom capacity
+     * @param capacity
+     */
     public Pattern(int capacity) {
         this.list = new LinkedList<>();
         this.capacity = capacity;
     }
 
-    // values are added to the pattern list and are limited to the size of the list
+    /**
+     * Values are added to this Pattern and are limited to the capacity
+     * @param eeg
+     */
     public void add(Eeg eeg) {
         if (isFull()) {
             list.removeFirst();
@@ -74,7 +80,6 @@ public class Pattern {
         return true;
     }
 
-
     /**
      * @param i
      * @return Eeg at position i in this Pattern
@@ -102,6 +107,9 @@ public class Pattern {
         return doubles;
     }
 
+    /**
+     * @return the number of elements in this Pattern
+     */
     public int length() {
         return list.size();
     }

@@ -9,9 +9,9 @@ import mindcar.testing.objects.Eeg;
  * Created by Mattias & Sarah on 3/7/16.
  */
 public class MessageParser {
+
     /**
      * Assign values from raw data to the correct eeg frequency
-     *
      * @param msg
      * @param eeg
      */
