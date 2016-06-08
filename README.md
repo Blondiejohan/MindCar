@@ -2,13 +2,10 @@
 With the MCC project, we aim to ease the concept of mind controll by enabling multi-directional movement trough the power of EEG pattern recognition. The project is our take on the 'DIT524 Project: System Development' course held at the University of Gothenburg for second term Software Engeneering and Management Bachalore Programme students.
 
 ### Key features
-EEG pattern recognition
-
-Machine learning through artificial neural network
-
-User friendly design
-
-Secure user experience (aspiring to be)
+- EEG pattern recognition
+- Machine learning through artificial neural network
+- User friendly design
+- Secure user experience (aspiring to be)
 
 
 ### More of the system
